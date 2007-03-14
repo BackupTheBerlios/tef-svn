@@ -1,9 +1,9 @@
 package hub.sam.tef.templates;
 
-import fri.patterns.interpreter.parsergenerator.semantics.TreeBuilderSemantic;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
+import hub.sam.tef.models.IModelChangeListener;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.IASTBasedModelUpdater;
 import hub.sam.tef.parse.ISyntaxProvider;
@@ -11,9 +11,8 @@ import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.parse.TextBasedUpdatedAST;
 import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
-import hub.sam.tef.treerepresentation.ModelBasedTreeContent;
-import hub.sam.tef.treerepresentation.TreeContents;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.ModelTreeContents;
+import hub.sam.tef.treerepresentation.TreeModelRepresentation;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.Text;
 
@@ -164,27 +163,28 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		return result;
 	}
 
-	public TreeRepresentation createTreeRepresentation(TreeRepresentation parent, String property, Object model) {
-		ModelBasedTreeContent contents = new ModelBasedTreeContent(fElementTemplate, (IModelElement)model);
-		TreeRepresentation result = new TreeRepresentation(contents);
+	public Object createTreeRepresentation(String notused, Object model) {
+		ModelTreeContents contents = new ModelTreeContents(fElementTemplate, (IModelElement)model);
+		TreeModelRepresentation result = new TreeModelRepresentation(contents);
 		
 		for (Template subTemplate: fElementTemplate.getNestedTemplates()) {
 			if (subTemplate instanceof PropertyTemplate) {
-				property = ((PropertyTemplate)subTemplate).getProperty();
-				subTemplate.getAdapter(ITreeRepresentationFromModelProvider.class).
-						createTreeRepresentation(result, property, model);
+				String property = ((PropertyTemplate)subTemplate).getProperty();
+				result.addContent(property, subTemplate.getAdapter(ITreeRepresentationFromModelProvider.class).
+						createTreeRepresentation(property, model));
 			} else if (subTemplate instanceof TerminalTemplate) {
-				contents.addContent(((TerminalTemplate)subTemplate).getTerminalText());
+				result.addContent(((TerminalTemplate)subTemplate).getTerminalText());
 			} else {
 				throw new RuntimeException("assert");
 			}
 		}
-				
-		if (parent != null) {
-			((ModelBasedTreeContent)parent.getElement()).addContent(contents);
-			parent.addChild(result);
-		}
 		
 		return result;
+	}
+	
+	class ModelChangeListener implements IModelChangeListener {
+		public void propertyChanged(Object element, String property) {
+			// TODO Auto-generated method stub		
+		}		
 	}
 }

@@ -4,8 +4,6 @@ import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.IType;
 import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
-import hub.sam.tef.treerepresentation.ModelBasedTreeContent;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
 
 public abstract class PrimitiveValueTemplate<ModelType> extends ValueTemplate<ModelType> {
 
@@ -35,9 +33,8 @@ public abstract class PrimitiveValueTemplate<ModelType> extends ValueTemplate<Mo
 	}
 
 	class TreeRepresentationProvider implements ITreeRepresentationFromModelProvider {
-		public TreeRepresentation createTreeRepresentation(TreeRepresentation parent, String property, Object model) {
-			((ModelBasedTreeContent)parent.getElement()).addContent(model);
-			return parent;
+		public Object createTreeRepresentation(String property, Object model) {
+			return (model == null) ? "<null>" : model;
 		}
 	}
 }

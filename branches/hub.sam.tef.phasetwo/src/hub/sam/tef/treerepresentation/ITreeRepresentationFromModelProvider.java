@@ -3,6 +3,6 @@ package hub.sam.tef.treerepresentation;
 
 public interface ITreeRepresentationFromModelProvider {
 	
-	public TreeRepresentation createTreeRepresentation(TreeRepresentation parent, String property, Object model);
+	public Object createTreeRepresentation(String property, Object model);
 
 }

@@ -2,14 +2,9 @@ package hub.sam.tef.models;
 
 import hub.sam.tef.models.extensions.DelegateCommandFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
 public abstract class AbstractModel implements IModel {
 
-	private ICommandFactory fFactory = null;
-	private Map<IModelElement, IModelElementExtension> fExtensions = new HashMap<IModelElement, IModelElementExtension>();
+	private ICommandFactory fFactory = null;	
 	private final Object editedResource;
 	
 	public AbstractModel(final Object editedResource) {

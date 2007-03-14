@@ -30,8 +30,8 @@ import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.parse.TextBasedUpdatedAST;
 import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
-import hub.sam.tef.treerepresentation.ModelBasedTreeContent;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.ModelTreeContents;
+import hub.sam.tef.treerepresentation.TreeModelRepresentation;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
@@ -229,19 +229,16 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 	}
 	
 	class TreeRepresentationProvider implements ITreeRepresentationFromModelProvider {
-		public TreeRepresentation createTreeRepresentation(TreeRepresentation parent, String property, Object model) {			
-			ModelBasedTreeContent contents = new ModelBasedTreeContent(ChoiceTemplate.this, (IModelElement)model);
-			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
+		public Object createTreeRepresentation(String notused, Object model) {			
+			ModelTreeContents contents = new ModelTreeContents(ChoiceTemplate.this, (IModelElement)model);
+			TreeModelRepresentation treeRepresentation = new TreeModelRepresentation(contents);
 
 			for (ValueTemplate alternative: fAlternativeTemplates) {
 				if (alternative.isTemplateFor(model)) {
-					TreeRepresentation result =  alternative.getAdapter(ITreeRepresentationFromModelProvider.class).
-							createTreeRepresentation(treeRepresentation, property, model);
-					
-					((ModelBasedTreeContent)parent.getElement()).addContent(contents);
-					parent.addChild(treeRepresentation);
-					
-					return result;
+					treeRepresentation.addContent(alternative.getAdapter(ITreeRepresentationFromModelProvider.class).
+							createTreeRepresentation(null, model));
+																			
+					return treeRepresentation;
 				}
 			}
 			throw new RuntimeException("assert");

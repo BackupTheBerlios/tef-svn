@@ -18,7 +18,7 @@ package editortest.mof.model;
 
 import hub.sam.tef.models.AbstractModelElement;
 import hub.sam.tef.models.IMetaModelElement;
-import hub.sam.tef.models.ModelEventListener;
+import hub.sam.tef.models.IModelChangeListener;
 
 
 public class MofModelElementImpl extends AbstractModelElement {
@@ -31,12 +31,12 @@ public class MofModelElementImpl extends AbstractModelElement {
 	}
 
 	@Override
-	protected void addChangeListenerToPlatformElement(ModelEventListener listener) {
+	protected void addChangeListenerToPlatformElement(IModelChangeListener listener) {
 		fObject.addListener(new PropertyChangeListenerWrapper(listener));
 	}
 
 	@Override
-	protected void removeChangeListenerFromPlatformElement(ModelEventListener listener) {
+	protected void removeChangeListenerFromPlatformElement(IModelChangeListener listener) {
 		fObject.removeListener(new PropertyChangeListenerWrapper(listener));		
 	}
 

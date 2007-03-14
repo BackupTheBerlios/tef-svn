@@ -1,5 +1,8 @@
 package hub.sam.util.trees;
 
+import hub.sam.tef.treerepresentation.TreeModelRepresentation;
+
+import java.io.PrintStream;
 import java.util.List;
 
 
@@ -83,5 +86,19 @@ public abstract class AbstractTree<T extends AbstractTree, E> implements ITree<T
 	
 	public boolean isLeaf() {
 		return getChildNodes().size() == 0;
+	}
+	
+	public void print(PrintStream out) {
+		print(out, 0);
+	}
+	
+	private void print(PrintStream out, int depth) {
+		for (int i = 0; i < depth; i++) {
+			out.print(" ");
+		}
+		out.println(toString());
+		for (AbstractTree<AbstractTree, E> child: getChildNodes()) {
+			child.print(out, depth +3);
+		}
 	}
 }

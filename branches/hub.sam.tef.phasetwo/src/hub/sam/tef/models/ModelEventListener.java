@@ -19,7 +19,8 @@ package hub.sam.tef.models;
 import hub.sam.tef.views.ITextStatusListener;
 import hub.sam.tef.views.Text;
 
-public abstract class ModelEventListener {
+@Deprecated
+public abstract class ModelEventListener implements IModelChangeListener {
 	
 	private final Text fView;	
 	private final IModelElement fModel;
@@ -31,7 +32,7 @@ public abstract class ModelEventListener {
 		fView.addTextStatusListener(new ITextStatusListener() {
 
 			public void disposed() {
-				model.removeChangeListener(ModelEventListener.this);
+				//model.removeChangeListener(ModelEventListener.this);
 			}
 
 			public void hidden() {

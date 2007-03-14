@@ -29,10 +29,9 @@ import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.parse.TextBasedUpdatedAST;
-import hub.sam.tef.templates.FlagTemplate.ModelUpdater;
 import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
-import hub.sam.tef.treerepresentation.ModelBasedTreeContent;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.ModelTreeContents;
+import hub.sam.tef.treerepresentation.TreeModelRepresentation;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.ITextStatusListener;
 import hub.sam.tef.views.Text;
@@ -231,15 +230,12 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	
 	class TreeRepresentationProvider implements ITreeRepresentationFromModelProvider {
 
-		public TreeRepresentation createTreeRepresentation(TreeRepresentation parent, String property, Object model) {
-			ModelBasedTreeContent contents = new ModelBasedTreeContent(ReferenceTemplate.this, (IModelElement)model);
-			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
+		public Object createTreeRepresentation(String notused, Object model) {
+			ModelTreeContents contents = new ModelTreeContents(ReferenceTemplate.this, (IModelElement)model);
+			TreeModelRepresentation treeRepresentation = new TreeModelRepresentation(contents);
 			
-			fIdentifierTemplate.getAdapter(ITreeRepresentationFromModelProvider.class).
-					createTreeRepresentation(treeRepresentation, null, model);
-			
-			((ModelBasedTreeContent)parent.getElement()).addContent(contents);
-			parent.addChild(treeRepresentation);
+			treeRepresentation.addContent(fIdentifierTemplate.getAdapter(ITreeRepresentationFromModelProvider.class).
+					createTreeRepresentation(null, model));						
 			
 			return treeRepresentation;
 		}		

@@ -29,7 +29,6 @@ import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.views.Text;
 
 public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<ModelType> {
@@ -107,10 +106,9 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 	}
 	
 	class TreeRepresentationProvider implements ITreeRepresentationFromModelProvider {
-		public TreeRepresentation createTreeRepresentation(TreeRepresentation parent, String property, 
-				Object model) {
+		public Object createTreeRepresentation(String property, Object model) {
 			return getValueTemplate().getAdapter(ITreeRepresentationFromModelProvider.class).
-					createTreeRepresentation(parent, property, ((IModelElement)model).getValue(property));			
+					createTreeRepresentation(null, ((IModelElement)model).getValue(property));			
 		}		
 	}
 

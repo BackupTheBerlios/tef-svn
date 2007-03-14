@@ -18,7 +18,7 @@ package editortest.emf.model;
 
 import hub.sam.tef.models.AbstractModelElement;
 import hub.sam.tef.models.IMetaModelElement;
-import hub.sam.tef.models.ModelEventListener;
+import hub.sam.tef.models.IModelChangeListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,10 +40,10 @@ public class EMFModelElement  extends AbstractModelElement {
 	}
 	
 	class EMFListener implements Adapter {		
-		private final ModelEventListener fListener;
+		private final IModelChangeListener fListener;
 		private Notifier target = null;
 		
-		public EMFListener(final ModelEventListener listener) {
+		public EMFListener(final IModelChangeListener listener) {
 			super();
 			fListener = listener;
 		}
@@ -77,13 +77,13 @@ public class EMFModelElement  extends AbstractModelElement {
 		
 	}
 
-	protected void addChangeListenerToPlatformElement(final ModelEventListener listener) {		
+	protected void addChangeListenerToPlatformElement(final IModelChangeListener listener) {		
 		Adapter emfListener = new EMFListener(listener);
 		fObject.eAdapters().add(emfListener);
 	}
 	
 	
-	protected void removeChangeListenerFromPlatformElement(ModelEventListener listener) {
+	protected void removeChangeListenerFromPlatformElement(IModelChangeListener listener) {
 		int index = 0;		
 		boolean hasListener = false;
 		loop: for (Object o: fObject.eAdapters()) {

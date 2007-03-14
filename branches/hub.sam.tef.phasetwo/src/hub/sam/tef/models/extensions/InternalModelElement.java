@@ -1,19 +1,19 @@
 package hub.sam.tef.models.extensions;
 
+import hub.sam.tef.models.IMetaModelElement;
+import hub.sam.tef.models.IModelChangeListener;
+import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.views.Text;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import hub.sam.tef.models.IMetaModelElement;
-import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.models.ModelEventListener;
-import hub.sam.tef.views.Text;
-
 public class InternalModelElement implements IModelElement {
 
 	private final IMetaModelElement fMetaModel;
-	private final Collection<ModelEventListener> fListeners = new Vector<ModelEventListener>();
+	private final Collection<IModelChangeListener> fListeners = new Vector<IModelChangeListener>();
 	private final Map<String, Object> fValues = new HashMap<String, Object>();	
 	
 	public InternalModelElement(final IMetaModelElement metaModel) {
@@ -21,7 +21,7 @@ public class InternalModelElement implements IModelElement {
 		fMetaModel = metaModel;
 	}
 
-	public void addChangeListener(ModelEventListener listener) {
+	public void addChangeListener(IModelChangeListener listener) {
 		fListeners.add(listener);
 	}
 
@@ -39,7 +39,7 @@ public class InternalModelElement implements IModelElement {
 	
 	public void setValue(String property, Object value) {
 		fValues.put(property, value);
-		for (ModelEventListener listener: fListeners) {
+		for (IModelChangeListener listener: fListeners) {
 			listener.propertyChanged(this, property);
 		}
 	}
@@ -48,7 +48,7 @@ public class InternalModelElement implements IModelElement {
 		// empty
 	}
 
-	public void removeChangeListener(ModelEventListener listener) {
+	public void removeChangeListener(IModelChangeListener listener) {
 		fListeners.remove(listener);
 	}
 

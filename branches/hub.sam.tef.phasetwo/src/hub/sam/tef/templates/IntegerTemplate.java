@@ -25,10 +25,6 @@ import hub.sam.tef.parse.IASTBasedModelUpdater;
 import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
-import hub.sam.tef.templates.FlagTemplate.ModelUpdater;
-import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
-import hub.sam.tef.treerepresentation.ModelBasedTreeContent;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.views.ChangeText;
 import hub.sam.tef.views.Text;
 

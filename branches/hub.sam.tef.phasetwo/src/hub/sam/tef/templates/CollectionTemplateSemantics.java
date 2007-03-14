@@ -1,9 +1,5 @@
 package hub.sam.tef.templates;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Vector;
-
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.AST;
@@ -13,10 +9,14 @@ import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.parse.TextBasedUpdatedAST;
 import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
-import hub.sam.tef.treerepresentation.ModelBasedTreeContent;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.ModelTreeContents;
+import hub.sam.tef.treerepresentation.TreeModelRepresentation;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.Text;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Vector;
 
 public class CollectionTemplateSemantics implements ISyntaxProvider, IASTBasedModelUpdater, ITreeRepresentationFromModelProvider {
 
@@ -78,39 +78,39 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, IASTBasedMo
 		return null;
 	}
 	
-	public TreeRepresentation createTreeRepresentation(TreeRepresentation parent, String property, Object model) {
+	public Object createTreeRepresentation(String property, Object model) {
 		ICollection elements = (ICollection)((IModelElement)model).getValue(property);
-		int i = 0;
-		TreeRepresentation oldParent = parent;
-		for (Object element: elements) {
-			ModelBasedTreeContent contents = new ModelBasedTreeContent(fTemplate, (IModelElement)model);
-			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
+		int i = 0;		
+		boolean first = true;
+		TreeModelRepresentation result = null;
+		TreeModelRepresentation parentNode = null;
+		for (Object element: elements) {			
+			TreeModelRepresentation treeRepresentation = new TreeModelRepresentation(
+					new ModelTreeContents(fTemplate, (IModelElement)model));
 			
-			parent = treeRepresentation;			
+			if (first) {
+				result = treeRepresentation;
+				first = false;
+			} else {
+				parentNode.addContent(treeRepresentation);
+			}
 			
-			fTemplate.getValueTemplate().getAdapter(ITreeRepresentationFromModelProvider.class).
-					createTreeRepresentation(parent, null, (IModelElement)element);
+			treeRepresentation.addContent(fTemplate.getValueTemplate().getAdapter(ITreeRepresentationFromModelProvider.class).
+					createTreeRepresentation(null, (IModelElement)element));
 						
 			if (fTemplate.fSeparator != null && i+1 < elements.size()) {
-				contents.addContent(fTemplate.fSeparator);
+				treeRepresentation.addContent(fTemplate.fSeparator);
 			}			
-			i++;
-			
-			((ModelBasedTreeContent)oldParent.getElement()).addContent(contents);
-			oldParent.addChild(treeRepresentation);
-			parent = oldParent;
+			i++;						
+			parentNode = treeRepresentation;
 		}
-		if (fTemplate.fSeparateLast && fTemplate.fSeparator != null) {
-			ModelBasedTreeContent contents = new ModelBasedTreeContent(fTemplate, (IModelElement)model);
-			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
-										
-			contents.addContent(fTemplate.fSeparator);
-			
-			((ModelBasedTreeContent)parent.getElement()).addContent(contents);
-			parent.addChild(treeRepresentation);
-			parent = treeRepresentation;
+		if (fTemplate.fSeparateLast && fTemplate.fSeparator != null) {			
+			TreeModelRepresentation treeRepresentation = 
+					new TreeModelRepresentation(new ModelTreeContents(fTemplate, (IModelElement)model));										
+			treeRepresentation.addContent(fTemplate.fSeparator);			
+			parentNode.addContent(treeRepresentation);
 		}
-		return parent;		
+		return result;		
 	}
 
 	public void executeModelUpdate(ModelUpdateConfiguration configuration) {		

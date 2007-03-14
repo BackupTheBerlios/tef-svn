@@ -5,7 +5,7 @@ import hub.sam.tef.TEFModelDocument;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.TreeModelRepresentation;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -24,10 +24,10 @@ public class TestParseAction implements IEditorActionDelegate {
 		TEFModelDocument document = ((TEFEditor)editor).getDocument().getModelDocument();
 		Template topLevelTemplate = document.getTopLevelTemplate();
 		IModelElement model = document.getDocumentText().getTexts().get(0).getElement(IModelElement.class);
-		TreeRepresentation representation = topLevelTemplate.getAdapter(ITreeRepresentationFromModelProvider.class).
-				createTreeRepresentation(null, null, model);
+		TreeModelRepresentation representation = (TreeModelRepresentation)topLevelTemplate.getAdapter(ITreeRepresentationFromModelProvider.class).
+				createTreeRepresentation(null, model);
 		representation.print(System.out);
-		System.out.println(representation.getElement().getContent());
+		System.out.println(representation.getContent());
 		//new ParserInterface(document.getTopLevelTemplate()).test(document.getDocumentText());
 	}
 

@@ -16,19 +16,17 @@
  */
 package editortest.mof.model;
 
-import hub.sam.tef.models.ModelEventListener;
+import hub.sam.tef.models.IModelChangeListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.swt.widgets.Listener;
-
 
 public class PropertyChangeListenerWrapper implements PropertyChangeListener {
 
-	private final ModelEventListener fListener;
+	private final IModelChangeListener fListener;
 
-	public PropertyChangeListenerWrapper(final ModelEventListener listener) {
+	public PropertyChangeListenerWrapper(final IModelChangeListener listener) {
 		super();
 		fListener = listener;
 	}
