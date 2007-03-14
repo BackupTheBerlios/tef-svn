@@ -28,7 +28,7 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
 import hub.sam.tef.parse.IASTBasedModelUpdater;
 import hub.sam.tef.parse.ISyntaxProvider;
-import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
+import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.Text;
 
@@ -180,7 +180,7 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	public <T> T getAdapter(Class<T> adapter) {
 		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
 			return (T) new ElementTemplateSemantics(this);
-		} else if (ITreeRepresentationFromModelProvider.class == adapter) {
+		} else if (ITreeRepresentationProvider.class == adapter) {
 			return (T) new ElementTemplateSemantics(this);
 		} else {
 			return null;

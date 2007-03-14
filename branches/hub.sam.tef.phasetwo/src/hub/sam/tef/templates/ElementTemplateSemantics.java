@@ -10,13 +10,14 @@ import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.parse.TextBasedUpdatedAST;
-import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
+import hub.sam.tef.treerepresentation.IDisposable;
+import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.treerepresentation.ModelTreeContents;
-import hub.sam.tef.treerepresentation.TreeModelRepresentation;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.Text;
 
-public class ElementTemplateSemantics extends ValueTemplateSemantics implements IASTBasedModelUpdater, ISyntaxProvider, ITreeRepresentationFromModelProvider {
+public class ElementTemplateSemantics extends ValueTemplateSemantics implements IASTBasedModelUpdater, ISyntaxProvider, ITreeRepresentationProvider {
 
 	private final IModel fModel;
 	private final IMetaModelElement fMetaModelElement;
@@ -165,13 +166,16 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 
 	public Object createTreeRepresentation(String notused, Object model) {
 		ModelTreeContents contents = new ModelTreeContents(fElementTemplate, (IModelElement)model);
-		TreeModelRepresentation result = new TreeModelRepresentation(contents);
+		TreeRepresentation result = new TreeRepresentation(contents);
 		
 		for (Template subTemplate: fElementTemplate.getNestedTemplates()) {
 			if (subTemplate instanceof PropertyTemplate) {
 				String property = ((PropertyTemplate)subTemplate).getProperty();
-				result.addContent(property, subTemplate.getAdapter(ITreeRepresentationFromModelProvider.class).
+				result.addContent(property, subTemplate.getAdapter(ITreeRepresentationProvider.class).
 						createTreeRepresentation(property, model));
+				ModelChangeListener changeListener = 
+						new ModelChangeListener(result, (PropertyTemplate)subTemplate, (IModelElement)model);
+				result.registerComponent(changeListener);
 			} else if (subTemplate instanceof TerminalTemplate) {
 				result.addContent(((TerminalTemplate)subTemplate).getTerminalText());
 			} else {
@@ -182,9 +186,29 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		return result;
 	}
 	
-	class ModelChangeListener implements IModelChangeListener {
-		public void propertyChanged(Object element, String property) {
-			// TODO Auto-generated method stub		
+	class ModelChangeListener implements IModelChangeListener, IDisposable {
+		private final TreeRepresentation fRepresentation;
+		private final PropertyTemplate fTemplate;
+		private final IModelElement fModel;				
+		
+		public ModelChangeListener(final TreeRepresentation representation, final PropertyTemplate template, final IModelElement model) {
+			super();
+			fRepresentation = representation;
+			fTemplate = template;
+			fModel = model;
+			fModel.addChangeListener(this);
+		}
+				
+		public void dispose() {
+			fModel.removeChangeListener(this);			
+		}
+
+		public void propertyChanged(Object element, String changedProperty) {
+			String property = fTemplate.getProperty();
+			if (changedProperty.equals(property)) {
+				fRepresentation.changeContent(property, fTemplate.getAdapter(ITreeRepresentationProvider.class).
+						createTreeRepresentation(property, fModel));
+			}
 		}		
 	}
 }

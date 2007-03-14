@@ -27,7 +27,7 @@ import hub.sam.tef.parse.IASTBasedModelUpdater;
 import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
-import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
+import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
@@ -121,7 +121,7 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 	public <T> T getAdapter(Class<T> adapter) {
 		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
 			return (T)new ModelUpdater();
-		} else if (ITreeRepresentationFromModelProvider.class == adapter) {
+		} else if (ITreeRepresentationProvider.class == adapter) {
 			return (T)new TreeRepresentationProvider();
 		} else {
 			return super.getAdapter(adapter);
@@ -151,7 +151,7 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 		}				
 	}
 	
-	class TreeRepresentationProvider implements ITreeRepresentationFromModelProvider {
+	class TreeRepresentationProvider implements ITreeRepresentationProvider {
 		public Object createTreeRepresentation(String property, Object model) {
 			if ((Boolean)model) {
 				return fFlagKeyword + " ";				

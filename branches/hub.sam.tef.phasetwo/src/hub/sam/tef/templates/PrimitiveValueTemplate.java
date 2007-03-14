@@ -3,7 +3,7 @@ package hub.sam.tef.templates;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.IType;
-import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
+import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 
 public abstract class PrimitiveValueTemplate<ModelType> extends ValueTemplate<ModelType> {
 
@@ -25,14 +25,14 @@ public abstract class PrimitiveValueTemplate<ModelType> extends ValueTemplate<Mo
 		
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
-		if (ITreeRepresentationFromModelProvider.class == adapter) {
+		if (ITreeRepresentationProvider.class == adapter) {
 			return (T) new TreeRepresentationProvider();
 		} else {
 			return super.getAdapter(adapter);
 		}
 	}
 
-	class TreeRepresentationProvider implements ITreeRepresentationFromModelProvider {
+	class TreeRepresentationProvider implements ITreeRepresentationProvider {
 		public Object createTreeRepresentation(String property, Object model) {
 			return (model == null) ? "<null>" : model;
 		}

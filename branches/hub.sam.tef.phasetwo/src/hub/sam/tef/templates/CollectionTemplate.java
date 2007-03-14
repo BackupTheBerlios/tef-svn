@@ -28,7 +28,7 @@ import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.IASTBasedModelUpdater;
 import hub.sam.tef.parse.ISyntaxProvider;
-import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
+import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
@@ -247,7 +247,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	public <T> T getAdapter(Class<T> adapter) {
 		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
 			return (T)new CollectionTemplateSemantics(this);
-		} else if (ITreeRepresentationFromModelProvider.class == adapter) {
+		} else if (ITreeRepresentationProvider.class == adapter) {
 			return (T)new CollectionTemplateSemantics(this);
 		} else {
 			return super.getAdapter(adapter);			

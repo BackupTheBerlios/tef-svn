@@ -28,7 +28,7 @@ import hub.sam.tef.parse.IASTBasedModelUpdater;
 import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
-import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
+import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.views.Text;
 
 public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<ModelType> {
@@ -98,16 +98,16 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 	public <T> T getAdapter(Class<T> adapter) {
 		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
 			return (T)new ModelUpdater();
-		} else if (ITreeRepresentationFromModelProvider.class == adapter) {
+		} else if (ITreeRepresentationProvider.class == adapter) {
 			return (T)new TreeRepresentationProvider();
 		} else {
 			return super.getAdapter(adapter);
 		}
 	}
 	
-	class TreeRepresentationProvider implements ITreeRepresentationFromModelProvider {
+	class TreeRepresentationProvider implements ITreeRepresentationProvider {
 		public Object createTreeRepresentation(String property, Object model) {
-			return getValueTemplate().getAdapter(ITreeRepresentationFromModelProvider.class).
+			return getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
 					createTreeRepresentation(null, ((IModelElement)model).getValue(property));			
 		}		
 	}

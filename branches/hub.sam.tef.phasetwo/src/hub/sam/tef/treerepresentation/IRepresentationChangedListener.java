@@ -1,5 +1,5 @@
 package hub.sam.tef.treerepresentation;
 
-public interface IContentChangedListener {
+public interface IRepresentationChangedListener {
 	public void contentChanged(int start, int length, String text);
 }

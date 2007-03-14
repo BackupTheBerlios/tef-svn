@@ -29,9 +29,9 @@ import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.parse.TextBasedUpdatedAST;
-import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
+import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.treerepresentation.ModelTreeContents;
-import hub.sam.tef.treerepresentation.TreeModelRepresentation;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.ITextStatusListener;
 import hub.sam.tef.views.Text;
@@ -187,7 +187,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	public <T> T getAdapter(Class<T> adapter) {
 		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
 			return (T)new ModelUpdater();
-		} else if (ITreeRepresentationFromModelProvider.class == adapter) {
+		} else if (ITreeRepresentationProvider.class == adapter) {
 			return (T)new TreeRepresentationProvider();
 		} else{
 			return super.getAdapter(adapter);
@@ -228,13 +228,13 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		}			
 	}
 	
-	class TreeRepresentationProvider implements ITreeRepresentationFromModelProvider {
+	class TreeRepresentationProvider implements ITreeRepresentationProvider {
 
 		public Object createTreeRepresentation(String notused, Object model) {
 			ModelTreeContents contents = new ModelTreeContents(ReferenceTemplate.this, (IModelElement)model);
-			TreeModelRepresentation treeRepresentation = new TreeModelRepresentation(contents);
+			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
 			
-			treeRepresentation.addContent(fIdentifierTemplate.getAdapter(ITreeRepresentationFromModelProvider.class).
+			treeRepresentation.addContent(fIdentifierTemplate.getAdapter(ITreeRepresentationProvider.class).
 					createTreeRepresentation(null, model));						
 			
 			return treeRepresentation;
