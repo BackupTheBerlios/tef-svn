@@ -1,10 +1,11 @@
 package hub.sam.tef.parse;
 
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
 
 public class ModelUpdateConfiguration {
 
-	private TextBasedUpdatedAST ast;
+	private TreeRepresentation ast;
 	private String value = null;
 	private IModelElement owner;
 	private String property;
@@ -13,7 +14,7 @@ public class ModelUpdateConfiguration {
 	private boolean hasOldParent;
 	private int postion = -1;
 	
-	public ModelUpdateConfiguration(TextBasedUpdatedAST ast, IModelElement owner, String property, boolean hasOldParent) {
+	public ModelUpdateConfiguration(TreeRepresentation ast, IModelElement owner, String property, boolean hasOldParent) {
 		super();
 		this.ast = ast;
 		this.owner = owner;
@@ -24,7 +25,7 @@ public class ModelUpdateConfiguration {
 		this.isCollection = false;
 	}
 	
-	private ModelUpdateConfiguration(TextBasedUpdatedAST ast, String value, IModelElement owner, String property, boolean isComposite, boolean isCollection, boolean hasOldParent, int position) {
+	private ModelUpdateConfiguration(TreeRepresentation ast, String value, IModelElement owner, String property, boolean isComposite, boolean isCollection, boolean hasOldParent, int position) {
 		super();
 		this.ast = ast;
 		this.value = value;
@@ -36,7 +37,7 @@ public class ModelUpdateConfiguration {
 		this.postion = position;
 	}
 
-	public TextBasedUpdatedAST getAst() {
+	public TreeRepresentation getAst() {
 		return ast;
 	}
 	public boolean isHasOldParent() {
@@ -59,19 +60,19 @@ public class ModelUpdateConfiguration {
 		return value;
 	}
 	
-	public ModelUpdateConfiguration createReferenceConfiguration(TextBasedUpdatedAST referenceAST) {		
+	public ModelUpdateConfiguration createReferenceConfiguration(TreeRepresentation referenceAST) {		
 		return new ModelUpdateConfiguration(referenceAST, null, owner, property, false, isCollection, hasOldParent, -1);
 	}
 	
-	public ModelUpdateConfiguration createCollectionConfiguration(TextBasedUpdatedAST valueAST) {		
+	public ModelUpdateConfiguration createCollectionConfiguration(TreeRepresentation valueAST) {		
 		return new ModelUpdateConfiguration(valueAST, null, owner, property, isComposite, true, hasOldParent, -1);
 	}
 	
-	public ModelUpdateConfiguration createCollectionConfiguration(TextBasedUpdatedAST valueAST, int position) {
+	public ModelUpdateConfiguration createCollectionConfiguration(TreeRepresentation valueAST, int position) {
 		return new ModelUpdateConfiguration(valueAST, null, owner, property, isComposite, true, hasOldParent, position);
 	}
 	
-	public ModelUpdateConfiguration createDelegateConfiguration(TextBasedUpdatedAST ast) {
+	public ModelUpdateConfiguration createDelegateConfiguration(TreeRepresentation ast) {
 		return new ModelUpdateConfiguration(ast, null, owner, property, isComposite, isCollection, hasOldParent, -1);
 	}
 	
@@ -80,7 +81,7 @@ public class ModelUpdateConfiguration {
 	}
 	
 	public boolean isOldNode() {
-		return (this.ast != null) ? ast.referencesOldASTNode() : false;
+		return (this.ast != null) ? ast.referencesOldTreeNode() : false;
 	}
 	
 	public boolean hasPosition() {

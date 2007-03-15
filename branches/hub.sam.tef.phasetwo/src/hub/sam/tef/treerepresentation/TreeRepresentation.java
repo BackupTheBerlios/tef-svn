@@ -140,7 +140,7 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 		replaceStringContent(startIndexOfOldContent, oldContentLength, newObject.getContent());		
 	}
 	
-	public Object getContent(Object key) {
+	public TreeRepresentationLeaf getContent(Object key) {
 		return fContents.get(fContentsMap.get(key));
 	}
 	
@@ -236,8 +236,20 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 		}
 	}
 	
-	public void registerComponent(IDisposable component) {
+	public void registerComponentListener(IDisposable component) {
 		fComponents.add(component);
+	}
+	
+	public void disconnect() {
+		for (IDisposable component: fComponents) {
+			component.dispose();
+		}
+		fComponents.clear();
+		for (Object content: fContents) {
+			if (content instanceof TreeRepresentation) {				
+				((TreeRepresentation)content).disconnect();
+			}
+		}
 	}
 
 	public List<TreeRepresentation> getChildNodes() {

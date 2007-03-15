@@ -190,10 +190,10 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 		}
 
 		public void executeModelUpdate(ModelUpdateConfiguration configuration) {	
-			TextBasedUpdatedAST childNode = configuration.getAst().getChildNodes().get(0);
+			TreeRepresentation childNode = configuration.getAst().getChildNodes().get(0);
 			boolean successful = false;
 			for(ValueTemplate alternatives: fAlternativeTemplates) {
-				if (alternatives.getAdapter(ISyntaxProvider.class).getNonTerminal().equals(childNode.getSymbol())) {
+				if (alternatives.getAdapter(ISyntaxProvider.class).getNonTerminal().equals(childNode.getElement().getSymbol())) {
 					alternatives.getAdapter(IASTBasedModelUpdater.class).
 							executeModelUpdate(configuration.createDelegateConfiguration(childNode));
 					successful = true;

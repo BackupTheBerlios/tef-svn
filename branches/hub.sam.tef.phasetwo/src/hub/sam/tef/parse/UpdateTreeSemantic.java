@@ -3,6 +3,8 @@ package hub.sam.tef.parse;
 import fri.patterns.interpreter.parsergenerator.Semantic;
 import fri.patterns.interpreter.parsergenerator.Token.Range;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.templates.ElementTemplate;
+import hub.sam.tef.templates.Template;
 import hub.sam.tef.treerepresentation.IndexTreeRepresentationSelector;
 import hub.sam.tef.treerepresentation.SyntaxTreeContent;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
@@ -39,13 +41,27 @@ public class UpdateTreeSemantic implements Semantic {
 		}
 		int i = 0;
 		boolean allOldParseResults = true;
-		TreeRepresentation result = new TreeRepresentation(new SyntaxTreeContent(rule, 
-				fParserInterface.getTemplateForNonTerminal(rule.getNonterminal())));
+		Template template = fParserInterface.getTemplateForNonTerminal(rule.getNonterminal()); 
+		TreeRepresentation result = new TreeRepresentation(new SyntaxTreeContent(rule, template));
+				
 		for(Object parseResult: parseResults) {
 			if (!isOldParseResult(parseResult, resultRanges.get(i))) {
 				allOldParseResults = false;				
 			} 
-			result.addContent(parseResult); // TODO whitespaces			
+
+			 // TODO whitespaces
+			if (template instanceof ElementTemplate) {
+				String property = ((ElementTemplate)template).getPropertyForRuleAndPosition(rule, i);
+				if (property != null) {
+					result.addContent(property, parseResult);
+				} else {
+					// its a terminal
+					result.addContent(parseResult);
+				}
+			} else {			
+				result.addContent(parseResult);
+			}
+			i++;
 		}
 		
 		if (allOldParseResults) {

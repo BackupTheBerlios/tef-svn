@@ -115,22 +115,22 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, IASTBasedMo
 	}
 
 	public void executeModelUpdate(ModelUpdateConfiguration configuration) {		
-		List<TextBasedUpdatedAST> allValueNodes = (List)
-				collectAllValueNodes((AST)configuration.getAst(), new Vector<AST>());
+		List<TreeRepresentation> allValueNodes = collectAllValueNodes(configuration.getAst(), new Vector<TreeRepresentation>());
 		if (configuration.isHasOldParent()) {
-			List<TextBasedAST> allOldValueNodes = (List)
-				collectAllValueNodes((AST)configuration.getAst().getParent().getElement().getChild(configuration.getProperty()), new Vector<AST>());								
+			List<TreeRepresentation> allOldValueNodes = 
+				collectAllValueNodes((TreeRepresentation)configuration.getAst().getParent().getReferencedOldTreeNode().
+						getContent(configuration.getProperty()), new Vector<TreeRepresentation>());								
 			
 			int actualPosition = 0;
 			int actualPositionInOldValue = 0;
-			for(TextBasedUpdatedAST valueNode: allValueNodes) {
-				if (valueNode.getElement() == null) {
+			for(TreeRepresentation valueNode: allValueNodes) {
+				if (!valueNode.referencesOldTreeNode()) {
 					// its a new value insert at position
 					fTemplate.getValueTemplate().getAdapter(IASTBasedModelUpdater.class).
 							executeModelUpdate(configuration.createCollectionConfiguration(valueNode, actualPosition));
 					actualPosition++;
 				} else {
-					int positionInOldValues = allOldValueNodes.indexOf(valueNode.getElement());
+					int positionInOldValues = allOldValueNodes.indexOf(valueNode.getReferencedOldTreeNode());
 					if (positionInOldValues != -1) {
 						// remove values from actionalPosition(incl) to actualPosition + positionInOldValue - actutualPositionInOldValues(excl)
 						for(int i = actualPositionInOldValue; i < positionInOldValues - actualPositionInOldValue; i++) {
@@ -150,28 +150,28 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, IASTBasedMo
 			// delete everything behind actualPositionInOldValue
 			for(int i = actualPositionInOldValue; i < allOldValueNodes.size(); i++) {
 				fTemplate.getModel().getCommandFactory().remove(configuration.getOwner(), 
-						configuration.getProperty(), allOldValueNodes.get(i).getModelElement()).execute();
+						configuration.getProperty(), ((ModelTreeContents)allOldValueNodes.get(i).getElement()).getModelElement()).execute();
 			}
 		} else {
-			for(TextBasedUpdatedAST valueNode: allValueNodes) {
+			for(TreeRepresentation valueNode: allValueNodes) {
 				fTemplate.getValueTemplate().getAdapter(IASTBasedModelUpdater.class).
-						executeModelUpdate(configuration.createCollectionConfiguration((TextBasedUpdatedAST)valueNode));	
+						executeModelUpdate(configuration.createCollectionConfiguration(valueNode));	
 			}
 		}					
 	}
 	
-	private AST getTailNode(AST<? extends AST, Text> ast) {
-		for (AST child: ast.getChildNodes()) {
-			if (child.getSymbol().equals(ast.getSymbol())) {
+	private TreeRepresentation getTailNode(TreeRepresentation ast) {
+		for (TreeRepresentation child: ast.getChildNodes()) {
+			if (child.getElement().getSymbol().equals(ast.getElement().getSymbol())) {
 				return child;
 			}
 		}
 		return null;
 	}
 
-	private AST getValueNode(AST<? extends AST, Text> ast) {
-		for (AST child: ast.getChildNodes()) {
-			if (!child.getSymbol().equals(ast.getSymbol())) {
+	private TreeRepresentation getValueNode(TreeRepresentation ast) {
+		for (TreeRepresentation child: ast.getChildNodes()) {
+			if (!child.getElement().getSymbol().equals(ast.getElement().getSymbol())) {
 				return child;
 			}
 		}
@@ -179,9 +179,9 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, IASTBasedMo
 		throw new RuntimeException("assert");
 	}
 	
-	private Collection<AST> collectAllValueNodes(AST<AST, Text> head, Collection<AST> nodes) {
+	private List<TreeRepresentation> collectAllValueNodes(TreeRepresentation head, List<TreeRepresentation> nodes) {
 		nodes.add(getValueNode(head));
-		AST tail = getTailNode(head);
+		TreeRepresentation tail = getTailNode(head);
 		if (tail != null) {
 			collectAllValueNodes(tail, nodes);
 		}

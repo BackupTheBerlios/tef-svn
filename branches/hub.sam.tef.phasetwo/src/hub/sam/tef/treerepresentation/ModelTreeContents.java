@@ -4,7 +4,6 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.templates.Template;
 
-@Deprecated
 public class ModelTreeContents implements ITreeContents {
 
 	private final IModelElement fModel;
@@ -14,6 +13,10 @@ public class ModelTreeContents implements ITreeContents {
 		super();
 		this.fModel = fmodel;
 		fTemplate = template;
+	}
+	
+	public IModelElement getModelElement() {
+		return fModel;
 	}
 	
 	public String toString() {

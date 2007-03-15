@@ -202,7 +202,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		}
 
 		public void executeModelUpdate(ModelUpdateConfiguration configuration) {
-				TextBasedUpdatedAST childNode = configuration.getAst().getChildNodes().get(0);		
+			TreeRepresentation childNode = configuration.getAst().getChildNodes().get(0);		
 			fIdentifierTemplate.getAdapter(IASTBasedModelUpdater.class).
 					executeModelUpdate(configuration.createReferenceConfiguration(childNode));
 		}

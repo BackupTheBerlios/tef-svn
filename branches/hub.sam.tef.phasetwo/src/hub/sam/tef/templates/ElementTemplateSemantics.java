@@ -15,6 +15,7 @@ import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.treerepresentation.ModelTreeContents;
 import hub.sam.tef.treerepresentation.SyntaxTreeContent;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.Text;
 
@@ -39,10 +40,10 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		if (configuration.getOwner() != null) {
 			if (configuration.isOldNode() && configuration.isHasOldParent()) {
 				// nothing, everything is old, everything stays old
-				newElement = configuration.getAst().getElement().getModelElement();
+				newElement = ((ModelTreeContents)configuration.getAst().getReferencedOldTreeNode().getElement()).getModelElement();
 			} else if (configuration.isOldNode() && !configuration.isHasOldParent()) {
 				// set the old value into the new owner
-				IModelElement theOldElement = configuration.getAst().getElement().getModelElement();
+				IModelElement theOldElement = ((ModelTreeContents)configuration.getAst().getReferencedOldTreeNode().getElement()).getModelElement();
 				newElement = theOldElement;
 				if (configuration.isCollection()) {					
 					if (configuration.hasPosition()) {
@@ -102,24 +103,25 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 						fModel.getOutermostCompositesOfEditedResource().iterator().next()).execute();
 				fModel.getCommandFactory().add(fModel.getOutermostCompositesOfEditedResource(), newElement).execute();
 			} else {
-				newElement = configuration.getAst().getElement().getModelElement();
+				newElement = ((ModelTreeContents)configuration.getAst().getReferencedOldTreeNode().getElement()).getModelElement();
 			}
 		}
 		
 		for (Template nestedTemplate: fElementTemplate.getNestedTemplates()) {
 			if (nestedTemplate instanceof PropertyTemplate) {
 				PropertyTemplate propertyTemplate = (PropertyTemplate)nestedTemplate;
-				TextBasedUpdatedAST propertyChild = configuration.getAst().getChild(propertyTemplate.getProperty());
-				if (propertyChild != null) {
+				TreeRepresentationLeaf propertyContent = configuration.getAst().getContent(propertyTemplate.getProperty());
+				if (propertyContent instanceof TreeRepresentation) {
+					TreeRepresentation propertyChild = (TreeRepresentation)propertyContent;				
 					// check wether the child is old, but not old. In that case this node is no old parent anymore.
 					boolean isOldNode = configuration.isOldNode();
 					if (propertyTemplate instanceof SingleValueTemplate) {
-						isOldNode &= propertyChild.getElement() == null || propertyChild.getElement().getModelElement().equals(newElement.getValue(propertyTemplate.getProperty()));
+						isOldNode &= !propertyChild.referencesOldTreeNode() || ((ModelTreeContents)propertyChild.getReferencedOldTreeNode().getElement()).getModelElement().equals(newElement.getValue(propertyTemplate.getProperty()));
 					}
 					propertyTemplate.getAdapter(IASTBasedModelUpdater.class).executeModelUpdate(new ModelUpdateConfiguration(
 							propertyChild, newElement, propertyTemplate.getProperty(), isOldNode));
 				} else {
-					String propertyStringValue = configuration.getAst().getStringValueForProperty(propertyTemplate.getProperty());
+					String propertyStringValue = propertyContent.getContent();
 											
 					propertyTemplate.getValueTemplate().getAdapter(IASTBasedModelUpdater.class).
 							executeModelUpdate(new ModelUpdateConfiguration(null, newElement, propertyTemplate.getProperty(), configuration.isOldNode()).
@@ -176,7 +178,7 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 						createTreeRepresentation(property, model));
 				ModelChangeListener changeListener = 
 						new ModelChangeListener(result, (PropertyTemplate)subTemplate, (IModelElement)model);
-				result.registerComponent(changeListener);
+				result.registerComponentListener(changeListener);
 			} else if (subTemplate instanceof TerminalTemplate) {
 				result.addContent(((TerminalTemplate)subTemplate).getTerminalText());
 			} else {
