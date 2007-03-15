@@ -34,6 +34,15 @@ public abstract class TreeIterator<T extends ITree, E> implements Iterator<T> {
 			visitor.visit(iterator.next());
 		}
 	}
+	
+	public static <T extends ITree> T select(IChildSelector<T> selector, T tree) {
+		for (Object child: tree.getChildNodes()) {
+			if (selector.selectChild((T)child)) {
+				return select(selector, (T)child);
+			}
+		}
+		return tree;
+	}
 
 	public void remove() {
 		throw new RuntimeException();	

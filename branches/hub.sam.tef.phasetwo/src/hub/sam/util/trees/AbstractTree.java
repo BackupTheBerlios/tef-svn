@@ -43,7 +43,7 @@ public abstract class AbstractTree<T extends AbstractTree, E> implements ITree<T
 	}	
 	
 	public T getFirstChild() {
-		List<T> childNodes = getChildNodes();
+		List<? extends T> childNodes = getChildNodes();
 		return (childNodes.size() > 0) ? childNodes.get(0) : null;		
 	}
 	

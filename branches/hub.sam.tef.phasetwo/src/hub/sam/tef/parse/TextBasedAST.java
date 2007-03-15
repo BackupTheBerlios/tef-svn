@@ -11,6 +11,7 @@ import hub.sam.tef.views.Text;
 import java.util.List;
 import java.util.Vector;
 
+@Deprecated
 public class TextBasedAST extends AST<TextBasedAST, Text> {
 	
 	/**

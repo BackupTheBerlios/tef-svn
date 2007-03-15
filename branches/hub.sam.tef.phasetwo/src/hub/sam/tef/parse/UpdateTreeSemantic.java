@@ -3,9 +3,11 @@ package hub.sam.tef.parse;
 import fri.patterns.interpreter.parsergenerator.Semantic;
 import fri.patterns.interpreter.parsergenerator.Token.Range;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
-import hub.sam.tef.views.Text;
+import hub.sam.tef.treerepresentation.IndexTreeRepresentationSelector;
+import hub.sam.tef.treerepresentation.SyntaxTreeContent;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.util.strings.Changes;
-import hub.sam.util.trees.DepthFirstLeafFirstTreeIterator;
+import hub.sam.util.trees.IChildSelector;
 import hub.sam.util.trees.TreeIterator;
 
 import java.util.List;
@@ -18,15 +20,14 @@ import java.util.List;
  * or nodes that already reference a node in the old AST (non-terminals). And (2) the according old
  * nodes reduced to the same symbol then the new node.
  */
-@Deprecated
-public class UpdatedASTTreeSemantic implements Semantic {
+public class UpdateTreeSemantic implements Semantic {
 
-	private final TextBasedAST fOldASTRootNode;
+	private final TreeRepresentation fOldASTRootNode;
 	private final Changes fChanges;
-	private TextBasedUpdatedAST result;
+	private TreeRepresentation result;
 	private final ParserInterface fParserInterface;
 	
-	public UpdatedASTTreeSemantic(TextBasedAST tree, Changes changes, ParserInterface parserInterface) {		
+	public UpdateTreeSemantic(TreeRepresentation tree, Changes changes, ParserInterface parserInterface) {		
 		this.fOldASTRootNode = tree;
 		this.fChanges = changes;
 		this.fParserInterface = parserInterface;
@@ -38,32 +39,27 @@ public class UpdatedASTTreeSemantic implements Semantic {
 		}
 		int i = 0;
 		boolean allOldParseResults = true;
-		TextBasedUpdatedAST result = new TextBasedUpdatedAST(rule, 
-				fParserInterface.getTemplateForNonTerminal(rule.getNonterminal()));
+		TreeRepresentation result = new TreeRepresentation(new SyntaxTreeContent(rule, 
+				fParserInterface.getTemplateForNonTerminal(rule.getNonterminal())));
 		for(Object parseResult: parseResults) {
 			if (!isOldParseResult(parseResult, resultRanges.get(i))) {
 				allOldParseResults = false;				
 			} 
-			if (parseResult instanceof TextBasedUpdatedAST) {				
-				result.addChild(i, (TextBasedUpdatedAST)parseResult, rule);
-			} else {
-				result.addTerminal(i, (String)parseResult, rule);
-			}
-			i++;
+			result.addContent(parseResult); // TODO whitespaces			
 		}
 		
 		if (allOldParseResults) {
 			// check whether old results have same parent
-			TextBasedAST commonParent = null;
+			TreeRepresentation commonParent = null;
 			i = 0;
 			loop: for (Object parseResult: parseResults) {				
-				TextBasedAST currentParseResultParent = null;
-				if (parseResult instanceof TextBasedUpdatedAST) {
-					currentParseResultParent = ((TextBasedUpdatedAST)parseResult).getElement().getParent();
+				TreeRepresentation currentParseResultParent = null;
+				if (parseResult instanceof TreeRepresentation) {
+					currentParseResultParent = ((TreeRepresentation)parseResult).getReferencedOldTreeNode().getParent();
 				} else {					
 					currentParseResultParent = findOldASTNode((String)parseResult, resultRanges.get(i));
 					if (currentParseResultParent == null) {
-						new RuntimeException("assert");
+						throw new RuntimeException("assert");
 					}					
 				}
 				if (i == 0) {
@@ -78,11 +74,11 @@ public class UpdatedASTTreeSemantic implements Semantic {
 				i++;				
 			}
 			
-			if (commonParent != null && commonParent.getSymbol().equals(rule.getNonterminal())) {
+			if (commonParent != null && commonParent.getElement().getSymbol().equals(rule.getNonterminal())) {
 				// the old parent can be preserved
-				result.setReferenceToOldASTNode(commonParent);
+				result.setReferenceToOldTreeNode(commonParent);
 			}	else {
-				System.out.println("hoop");
+				throw new RuntimeException("assert?");
 			}
 		}
 		
@@ -93,44 +89,36 @@ public class UpdatedASTTreeSemantic implements Semantic {
 	private boolean isOldParseResult(Object parseResult, Range range) {
 		if (parseResult instanceof String) {
 			return isOldInput(range.start.offset, range.end.offset);
-		} else if (parseResult instanceof TextBasedUpdatedAST) {
-			return ((TextBasedUpdatedAST)parseResult).referencesOldASTNode();
+		} else if (parseResult instanceof TreeRepresentation) {
+			return ((TreeRepresentation)parseResult).referencesOldTreeNode();
 		} else {
 			throw new RuntimeException("assert");
 		}
 	}
 
-	// TODO performance
-	private TextBasedAST findOldASTNode(String input, Range range) {
-		TreeIterator<TextBasedAST, Text> iterator = new DepthFirstLeafFirstTreeIterator<TextBasedAST, Text>(fOldASTRootNode);
-		while (iterator.hasNext()) {
-			TextBasedAST next = iterator.next();
-			/**
-			 * The problem with this commented piece of code is that once we removed terminals from the ASTs it
-			 * became impossible to find terminals within the old tree. Ergo it is now impossible to find the parents of terminals
-			 * only based on leafs. 
-			 * 
-			 * We now return the first node that contains the new terminal. Since we doing this from the
-			 * leafs up, it should work.
-			 */
-			//if (next.isLeaf()) {
-				Text text = next.getElement();
-				int absolutOffset = text.getAbsolutOffset(0);
-				int relativeStart = fChanges.getIndexBeforeChanges(range.start.offset) - absolutOffset;
-				int relativeEnd = fChanges.getIndexBeforeChanges(range.end.offset) - absolutOffset;
-				if (relativeStart >= 0 && relativeEnd >= 0 && relativeEnd <= text.getLength()) {
-					if (text.getContent(relativeStart, relativeEnd).equals(input)) {
-						if (Rule.isTerminal(next.getSymbol())) {
-							return next.getParent();
-						} else {
-							return next;
-						}
-					} else {
-						return null;
-					}
-				} 
-			//}
+	private TreeRepresentation findOldASTNode(String input, Range range) {
+		int rangeStart = fChanges.getIndexBeforeChanges(range.start.offset);
+		int rangeEnd = fChanges.getIndexBeforeChanges(range.end.offset) ;
+		IChildSelector<TreeRepresentation> selector = new IndexTreeRepresentationSelector(rangeStart, rangeEnd-rangeStart);
+		
+		TreeRepresentation result = TreeIterator.select(selector, fOldASTRootNode);
+		if (result == null) {
+			return null;
 		}
+		int absolutOffset = result.getAbsoluteOffset(0);
+		int relativeStart = rangeStart - absolutOffset;
+		int relativeEnd = rangeEnd - absolutOffset;
+		if (relativeStart >= 0 && relativeEnd >= 0 && relativeEnd <= result.getLength()) {
+			if (result.getContent().substring(relativeStart, relativeEnd).equals(input)) {
+				if (Rule.isTerminal(result.getElement().getSymbol())) {
+					return result.getParent();
+				} else {
+					return result;
+				}
+			} else {
+				return null;
+			}
+		}		
 		return null;
 	}
 	
@@ -140,7 +128,7 @@ public class UpdatedASTTreeSemantic implements Semantic {
 		return startIndexInOldContent != -1 && endIndexInOldContent != -1;
 	}
 	
-	public TextBasedUpdatedAST getCurrentResult() {
+	public TreeRepresentation getCurrentResult() {
 		return result;
 	}
 }

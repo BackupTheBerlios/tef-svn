@@ -13,6 +13,7 @@ import hub.sam.tef.parse.TextBasedUpdatedAST;
 import hub.sam.tef.treerepresentation.IDisposable;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.treerepresentation.ModelTreeContents;
+import hub.sam.tef.treerepresentation.SyntaxTreeContent;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.Text;

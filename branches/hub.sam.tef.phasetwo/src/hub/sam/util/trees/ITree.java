@@ -6,7 +6,7 @@ public interface ITree <T extends ITree, E> {
 	
 	public E getElement();
 	
-	public List<T> getChildNodes();
+	public List<? extends T> getChildNodes();
 	
 	public T getParent();
 }
