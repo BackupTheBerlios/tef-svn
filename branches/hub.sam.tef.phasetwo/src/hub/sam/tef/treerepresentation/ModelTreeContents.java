@@ -26,7 +26,14 @@ public class ModelTreeContents implements ITreeContents {
 	}
 	
 	public String getSymbol() {
-		return fTemplate.getAdapter(ISyntaxProvider.class).getNonTerminal();
+		return getSyntaxProvider().getNonTerminal();
 	}
 
+	public ISyntaxProvider getSyntaxProvider() {
+		return fTemplate.getAdapter(ISyntaxProvider.class);
+	}	
+
+	public Template getTemplate() {
+		return fTemplate;
+	}
 }

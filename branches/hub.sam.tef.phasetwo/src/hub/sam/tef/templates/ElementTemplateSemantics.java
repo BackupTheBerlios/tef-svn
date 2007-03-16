@@ -148,6 +148,20 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		}
 		return new String[][] { result };					
 	}
+	
+	public boolean tryToReuse() {
+		// TODO performance
+		/*
+		boolean result = true;
+		for (Template subtemplate: fElementTemplate.getNestedTemplates()) {
+			if (subtemplate instanceof PropertyTemplate) {
+				result &= !(((PropertyTemplate)subtemplate).getValueTemplate() instanceof PrimitiveValueTemplate);
+			}
+		}
+		return result;
+		*/
+		return true;
+	}				
 
 	public TextBasedAST createAST(TextBasedAST parent, IModelElement model, Text text) {
 		if (!fElementTemplate.equals(text.getElement(Template.class))) {
@@ -187,8 +201,48 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		}
 		
 		return result;
-	}
+	}	
 	
+	public void updateTreeRepresentation(TreeRepresentation treeRepresentation, String notused, Object model) {
+		if (!treeRepresentation.getElement().getSymbol().equals(fElementTemplate.getAdapter(ISyntaxProvider.class).getNonTerminal())) {
+			throw new RuntimeException("assert -- templates do not match");
+		}
+		
+		ModelTreeContents content = new ModelTreeContents(fElementTemplate, (IModelElement)model);
+		treeRepresentation.setElement(content);
+		
+		for (Template subTemplate: fElementTemplate.getNestedTemplates()) {
+			if (subTemplate instanceof PropertyTemplate) {
+				String property = ((PropertyTemplate)subTemplate).getProperty();
+				TreeRepresentationLeaf propertyContent = treeRepresentation.getContent(property);
+				if (propertyContent instanceof TreeRepresentation) {
+					subTemplate.getAdapter(ITreeRepresentationProvider.class).
+							updateTreeRepresentation((TreeRepresentation)treeRepresentation.getContent(property), property, model);
+				}
+				ModelChangeListener changeListener = 
+					new ModelChangeListener(treeRepresentation, (PropertyTemplate)subTemplate, (IModelElement)model);
+				treeRepresentation.registerComponentListener(changeListener);
+			}			
+		}
+	}	
+
+	public boolean compare(TreeRepresentationLeaf treeRepresentation, String notused, Object model) {
+		if (!treeRepresentation.getElement().getSymbol().equals(fElementTemplate.getAdapter(ISyntaxProvider.class).getNonTerminal())) {
+			return false;
+		} else {			
+			for (Template subTemplate: fElementTemplate.getNestedTemplates()) {
+				if (subTemplate instanceof PropertyTemplate) {
+					String property = ((PropertyTemplate)subTemplate).getProperty();
+					if (!subTemplate.getAdapter(ITreeRepresentationProvider.class).
+							compare(((TreeRepresentation)treeRepresentation).getContent(property), property, model)) {
+						return false;
+					}					
+				}			
+			}
+			return true;
+		}			
+	}
+
 	class ModelChangeListener implements IModelChangeListener, IDisposable {
 		private final TreeRepresentation fRepresentation;
 		private final PropertyTemplate fTemplate;

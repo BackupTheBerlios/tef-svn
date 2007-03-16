@@ -29,6 +29,8 @@ import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 import hub.sam.tef.views.Text;
 
 public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<ModelType> {
@@ -109,7 +111,18 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		public Object createTreeRepresentation(String property, Object model) {
 			return getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
 					createTreeRepresentation(null, ((IModelElement)model).getValue(property));			
-		}		
+		}
+
+		public void updateTreeRepresentation(TreeRepresentation treeRepresentation, String property, Object model) {
+			getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
+					updateTreeRepresentation(treeRepresentation, property, ((IModelElement)model).getValue(property));
+		}
+
+		public boolean compare(TreeRepresentationLeaf treeRepresentation, String property, Object model) {
+			return getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
+					compare(treeRepresentation, property, ((IModelElement)model).getValue(property));
+		}			
+				
 	}
 
 	class ModelUpdater implements IASTBasedModelUpdater, ISyntaxProvider {	
@@ -131,7 +144,10 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		public String[][] getRules() {
 			return new String[][] {};
 		}
-		
+
+		public boolean tryToReuse() {
+			return true;
+		}				
 	}
 		
 }

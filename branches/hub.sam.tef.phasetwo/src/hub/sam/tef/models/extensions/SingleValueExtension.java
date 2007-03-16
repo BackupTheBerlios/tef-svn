@@ -17,10 +17,13 @@ public class SingleValueExtension extends Extension {
 		if (originalValue == null) {
 			return fValue;
 		} else {
-			// remove the extension because there is a real value
+			// the extension is more important
+			/*
 			fExtension.remove(fProperty);
 			fExtension = null;
 			return originalValue;
+			*/
+			return fValue;
 		}
 	}	
 	

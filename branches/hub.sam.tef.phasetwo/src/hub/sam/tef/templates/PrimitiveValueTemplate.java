@@ -4,6 +4,8 @@ import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.IType;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 
 public abstract class PrimitiveValueTemplate<ModelType> extends ValueTemplate<ModelType> {
 
@@ -14,7 +16,7 @@ public abstract class PrimitiveValueTemplate<ModelType> extends ValueTemplate<Mo
 	protected final void executeASTSemanticsWithConvertedValue(Object convertedValue, IModelElement owner, String property, boolean isCollection, boolean isOld) {
 		if (isCollection) {
 			if (!isOld || ((ICollection)owner.getValue(property)).contains(convertedValue)) {			
-				getModel().getCommandFactory().add(owner, property, convertedValue);
+				getModel().getCommandFactory().add(owner, property, convertedValue).execute();
 			}
 		} else {
 			if (!convertedValue.equals(owner.getValue(property))) {
@@ -36,5 +38,14 @@ public abstract class PrimitiveValueTemplate<ModelType> extends ValueTemplate<Mo
 		public Object createTreeRepresentation(String property, Object model) {
 			return (model == null) ? "<null>" : model;
 		}
+
+		public void updateTreeRepresentation(TreeRepresentation treeRepresentation, String property, Object model) {
+			// empty			
+		}
+
+		public boolean compare(TreeRepresentationLeaf treeRepresentation, String property, Object model) {
+			return treeRepresentation.getContent().equals(model.toString());
+		}				
+		
 	}
 }

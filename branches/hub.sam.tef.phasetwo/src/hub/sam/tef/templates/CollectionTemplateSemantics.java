@@ -12,6 +12,7 @@ import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.treerepresentation.ModelTreeContents;
 import hub.sam.tef.treerepresentation.SyntaxTreeContent;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.Text;
 
@@ -54,6 +55,10 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, IASTBasedMo
 		}
 	}	
 	
+	public boolean tryToReuse() {
+		return true;
+	}				
+	
 	public TextBasedAST createAST(TextBasedAST parent, IModelElement model, Text text) {
 		List<Text> elements = new Vector<Text>();		
 		for(Text elementText: ((CompoundText)((CompoundText)text).getTexts().get(0)).getTexts()) {
@@ -79,6 +84,9 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, IASTBasedMo
 		return null;
 	}
 	
+	private static final String valueKey = "VALUE_KEY";
+	private static final String tailKey = "TAIL_KEY";
+	
 	public Object createTreeRepresentation(String property, Object model) {
 		ICollection elements = (ICollection)((IModelElement)model).getValue(property);
 		int i = 0;		
@@ -93,10 +101,10 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, IASTBasedMo
 				result = treeRepresentation;
 				first = false;
 			} else {
-				parentNode.addContent(treeRepresentation);
+				parentNode.addContent(tailKey, treeRepresentation);
 			}
 			
-			treeRepresentation.addContent(fTemplate.getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
+			treeRepresentation.addContent(valueKey, fTemplate.getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
 					createTreeRepresentation(null, (IModelElement)element));
 						
 			if (fTemplate.fSeparator != null && i+1 < elements.size()) {
@@ -109,9 +117,24 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, IASTBasedMo
 			TreeRepresentation treeRepresentation = 
 					new TreeRepresentation(new ModelTreeContents(fTemplate, (IModelElement)model));										
 			treeRepresentation.addContent(fTemplate.fSeparator);			
-			parentNode.addContent(treeRepresentation);
+			parentNode.addContent(tailKey, treeRepresentation);
 		}
 		return result;		
+	}	
+
+	public void updateTreeRepresentation(TreeRepresentation treeRepresentation, String property, Object model) {
+		ICollection elements = (ICollection)((IModelElement)model).getValue(property);				
+		for (Object element: elements) {			
+			treeRepresentation.setElement(new ModelTreeContents(fTemplate, (IModelElement)model));					
+			fTemplate.getValueTemplate().getAdapter(ITreeRepresentationProvider.class).updateTreeRepresentation(
+					(TreeRepresentation)treeRepresentation.getChildNodes().get(0), property, (IModelElement)element);															
+			treeRepresentation = (TreeRepresentation)treeRepresentation.getChildNodes().get(treeRepresentation.getChildNodes().size()-1);
+		}
+	}	
+
+	public boolean compare(TreeRepresentationLeaf treeRepresentation, String property, Object model) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public void executeModelUpdate(ModelUpdateConfiguration configuration) {		
@@ -137,12 +160,14 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, IASTBasedMo
 							fTemplate.getModel().getCommandFactory().remove(configuration.getOwner(), 
 									configuration.getProperty(), allOldValueNodes.get(i)).execute();
 						}
+						fTemplate.getValueTemplate().getAdapter(IASTBasedModelUpdater.class).
+								executeModelUpdate(configuration.createCollectionConfiguration(valueNode, actualPosition));
 						actualPosition++;
 						actualPositionInOldValue = positionInOldValues + 1;
 					} else {
 						// treat as new value, insert at position
 						fTemplate.getValueTemplate().getAdapter(IASTBasedModelUpdater.class).
-						executeModelUpdate(configuration.createCollectionConfiguration(valueNode, actualPosition));
+								executeModelUpdate(configuration.createCollectionConfiguration(valueNode, actualPosition));
 						actualPosition++;
 					}
 				}
@@ -179,12 +204,12 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, IASTBasedMo
 		throw new RuntimeException("assert");
 	}
 	
-	private List<TreeRepresentation> collectAllValueNodes(TreeRepresentation head, List<TreeRepresentation> nodes) {
-		nodes.add(getValueNode(head));
+	private List<TreeRepresentation> collectAllValueNodes(TreeRepresentation head, List<TreeRepresentation> nodes) {		
 		TreeRepresentation tail = getTailNode(head);
 		if (tail != null) {
 			collectAllValueNodes(tail, nodes);
 		}
+		nodes.add(getValueNode(head));
 		return nodes;
 	}
 }

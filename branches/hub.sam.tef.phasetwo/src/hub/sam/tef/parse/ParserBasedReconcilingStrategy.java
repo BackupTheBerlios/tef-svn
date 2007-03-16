@@ -41,11 +41,21 @@ public class ParserBasedReconcilingStrategy implements IReconcilingStrategy {
 					UpdateTreeSemantic semantic = new UpdateTreeSemantic(representation, document.getChanges(), getParserInterface());					
 					getParserInterface().parse(document.getContent(), semantic);				
 					TreeRepresentation newAST = semantic.getCurrentResult();
+					newAST.print(System.out);
 					newAST.topDownInclusionOfOldAST(representation);
 					newAST.print(System.out);
 					
 					document.getModelDocument().getTopLevelTemplate().getAdapter(IASTBasedModelUpdater.class).
-									executeModelUpdate(new ModelUpdateConfiguration(newAST, null, null, false));
+							executeModelUpdate(new ModelUpdateConfiguration(newAST, null, null, false));
+					
+					newAST.removeReferencecToOldTree();
+					System.out.println(newAST.getContent());
+					
+					document.getModelDocument().getTopLevelTemplate().getAdapter(ITreeRepresentationProvider.class).
+							updateTreeRepresentation(newAST, null, model);
+					System.out.println(newAST.getContent());
+					
+					newAST.disconnect(); // just for testing
 					if (document.stopReconciliation()) {
 						PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {					
 							public void run() {			

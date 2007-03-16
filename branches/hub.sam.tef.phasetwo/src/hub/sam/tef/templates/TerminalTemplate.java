@@ -98,8 +98,12 @@ public class TerminalTemplate extends Template implements ISyntaxProvider {
 	public String[][] getRules() {
 		return new String[][] {};
 	}
+	
+	public boolean tryToReuse() {
+		return false;
+	}				
 
 	public TextBasedAST createAST(TextBasedAST parent,  IModelElement model, Text text) {	
 		return null;
-	}	
+	}		
 }

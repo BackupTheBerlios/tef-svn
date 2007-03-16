@@ -33,6 +33,7 @@ import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.treerepresentation.ModelTreeContents;
 import hub.sam.tef.treerepresentation.SyntaxTreeContent;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.ITextStatusListener;
 import hub.sam.tef.views.Text;
@@ -213,6 +214,11 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 
 		public String[][] getRules() {
 			return new String[][] {{ getNonTerminal(), fIdentifierTemplate.getAdapter(ISyntaxProvider.class).getNonTerminal() }};
+		}		
+		
+		public boolean tryToReuse() {
+			// reuse of references, cause changes in the element instead of the reference
+			return false;
 		}
 
 		public TextBasedAST createAST(TextBasedAST parent,  IModelElement model, Text text) {
@@ -239,6 +245,27 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 					createTreeRepresentation(null, model));						
 			
 			return treeRepresentation;
-		}		
+		}
+
+		public void updateTreeRepresentation(TreeRepresentation treeRepresentation, String property, Object model) {
+			ModelTreeContents contents = new ModelTreeContents(ReferenceTemplate.this, (IModelElement)model);
+			treeRepresentation.setElement(contents);
+						
+			if (!fIdentifierTemplate.getAdapter(ITreeRepresentationProvider.class).
+					compare(treeRepresentation.getChildNodes().get(0), property, model)) {
+				// create a new mock-object for the valid reference have become invalid due to model changes
+				getAdapter(IASTBasedModelUpdater.class).
+						executeModelUpdate(new ModelUpdateConfiguration((TreeRepresentation)
+								treeRepresentation, 
+								((ModelTreeContents)treeRepresentation.getParent().getElement()).getModelElement(), property, true));
+			}
+			fIdentifierTemplate.getAdapter(ITreeRepresentationProvider.class).
+					updateTreeRepresentation(treeRepresentation.getChildNodes().get(0), property, model);								
+		}
+
+		public boolean compare(TreeRepresentationLeaf treeRepresentation, String property, Object model) {
+			// TODO Auto-generated method stub
+			return false;
+		}								
 	}
 }

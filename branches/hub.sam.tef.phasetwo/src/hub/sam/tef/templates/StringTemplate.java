@@ -116,7 +116,11 @@ public class StringTemplate extends PrimitiveValueTemplate<String>{
 
 		public String[][] getRules() {
 			return new String[][]{};
-		}		
+		}
+
+		public boolean tryToReuse() {
+			return false;
+		}						
 	}
 	
 }

@@ -111,6 +111,10 @@ public class IntegerTemplate extends PrimitiveValueTemplate<Integer>{
 
 		public String[][] getRules() {
 			return new String[][] {};
-		}		
+		}
+
+		public boolean tryToReuse() {
+			return false;
+		}				
 	}
 }

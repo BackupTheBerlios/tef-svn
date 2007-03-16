@@ -93,8 +93,6 @@ public class UpdateTreeSemantic implements Semantic {
 			if (commonParent != null && commonParent.getElement().getSymbol().equals(rule.getNonterminal())) {
 				// the old parent can be preserved
 				result.setReferenceToOldTreeNode(commonParent);
-			}	else {
-				throw new RuntimeException("assert?");
 			}
 		}
 		
@@ -113,8 +111,8 @@ public class UpdateTreeSemantic implements Semantic {
 	}
 
 	private TreeRepresentation findOldASTNode(String input, Range range) {
-		int rangeStart = fChanges.getIndexBeforeChanges(range.start.offset);
-		int rangeEnd = fChanges.getIndexBeforeChanges(range.end.offset) ;
+		int rangeStart = fChanges.getIndexBeforeChanges(range.start.offset, true);
+		int rangeEnd = fChanges.getIndexBeforeChanges(range.end.offset, false) ;
 		IChildSelector<TreeRepresentation> selector = new IndexTreeRepresentationSelector(rangeStart, rangeEnd-rangeStart);
 		
 		TreeRepresentation result = TreeIterator.select(selector, fOldASTRootNode);
@@ -139,8 +137,8 @@ public class UpdateTreeSemantic implements Semantic {
 	}
 	
 	private boolean isOldInput(int start, int end) {
-		int startIndexInOldContent = fChanges.getIndexBeforeChanges(start);
-		int endIndexInOldContent = fChanges.getIndexBeforeChanges(end);
+		int startIndexInOldContent = fChanges.getIndexBeforeChanges(start, true);
+		int endIndexInOldContent = fChanges.getIndexBeforeChanges(end, false);
 		return startIndexInOldContent != -1 && endIndexInOldContent != -1;
 	}
 	

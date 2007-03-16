@@ -28,6 +28,8 @@ import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
@@ -148,6 +150,10 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 
 		public String[][] getRules() {		
 			return new String[][] {};
+		}	
+		
+		public boolean tryToReuse() {
+			return false;
 		}				
 	}
 	
@@ -158,6 +164,18 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 			} else {
 				return "";
 			}
-		}		
+		}
+
+		public void updateTreeRepresentation(TreeRepresentation treeRepresentation, String property, Object model) {
+			// empty
+		}
+
+		public boolean compare(TreeRepresentationLeaf treeRepresentation, String property, Object model) {
+			if ((Boolean)model) {
+				return fFlagKeyword.equals(treeRepresentation.getContent());
+			} else {
+				return treeRepresentation.getContent().equals("");
+			}
+		}							
 	}
 }

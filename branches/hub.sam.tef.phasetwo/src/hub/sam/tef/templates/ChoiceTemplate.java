@@ -33,6 +33,7 @@ import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.treerepresentation.ModelTreeContents;
 import hub.sam.tef.treerepresentation.SyntaxTreeContent;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
@@ -212,6 +213,10 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 			}
 			return result;					
 		}
+		
+		public boolean tryToReuse() {
+			return true;
+		}				
 
 		public TextBasedAST createAST(TextBasedAST parent, IModelElement model, Text text) {
 			if (text.getElement(Template.class) != null) {
@@ -243,6 +248,34 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 				}
 			}
 			throw new RuntimeException("assert");
-		}		
+		}
+
+		public void updateTreeRepresentation(TreeRepresentation treeRepresentation, String property, Object model) {
+			ModelTreeContents contents = new ModelTreeContents(ChoiceTemplate.this, (IModelElement)model);
+			treeRepresentation.setElement(contents);
+
+			for (ValueTemplate alternative: fAlternativeTemplates) {
+				if (alternative.isTemplateFor(model)) {
+					alternative.getAdapter(ITreeRepresentationProvider.class).
+							updateTreeRepresentation(treeRepresentation.getChildNodes().get(0), property, model);
+					return;
+				}
+			}
+			throw new RuntimeException("assert");			
+		}
+
+		public boolean compare(TreeRepresentationLeaf treeRepresentation, String property, Object model) {
+			if (treeRepresentation.getElement().getTemplate() != ChoiceTemplate.this) {
+				return false;
+			} else {
+				for (ValueTemplate alternative: fAlternativeTemplates) {
+					if (alternative.isTemplateFor(model)) {
+						return alternative.getAdapter(ITreeRepresentationProvider.class).
+								compare(treeRepresentation.getChildNodes().get(0), property, model);						
+					}
+				}
+				throw new RuntimeException("assert");
+			}
+		}					
 	}
 }

@@ -6,11 +6,12 @@ public class ChangeTest extends TestCase {
 
 	
 	private StringBuffer test;
-	private final String document = "0123456789";
+	private String document = "0123456789";
 	private Changes changes;
 	
 	@Override
 	protected void setUp() throws Exception {
+		document = "0123456789";
 		test = new StringBuffer(document);
 		changes = new Changes();
 	}
@@ -55,7 +56,7 @@ public class ChangeTest extends TestCase {
 		changes.addChange(b);
 
 		assertEquals(test.toString(), "0abABCDf3456789");
-		assertEquals(document.charAt(changes.getIndexBeforeChanges(9)), test.toString().charAt(9));			
+		assertEquals(document.charAt(changes.getIndexBeforeChanges(9, true)), test.toString().charAt(9));			
 	}
 	
 	public void testChangesIndexAfter() {
@@ -92,7 +93,32 @@ public class ChangeTest extends TestCase {
 		
 	    changes.apply(test);
 	    assertEquals(test.toString(), "0abABCDf3456789");
-		assertEquals(test.toString().charAt(changes.getIndexBeforeChanges(3)), document.charAt(4));		
+		assertEquals(changes.getIndexBeforeChanges(3, true), -1);		
+	}
+	
+	public void testBug1() {
+		document = "a.testProperty.foo";
+		test = new StringBuffer(document);
+		
+		changes.addChange(new Change(14, 1, ""));
+		changes.addChange(new Change(13, 1, ""));		
+		changes.addChange(new Change(12, 1, ""));
+		changes.addChange(new Change(11, 1, ""));
+		changes.addChange(new Change(10, 1, ""));
+		changes.addChange(new Change(9, 1, ""));
+		changes.addChange(new Change(8, 1, ""));
+		changes.addChange(new Change(7, 1, ""));
+		changes.addChange(new Change(6, 1, ""));
+		changes.addChange(new Change(5, 1, ""));
+		changes.addChange(new Change(4, 1, ""));
+		changes.addChange(new Change(3, 1, ""));
+		changes.addChange(new Change(2, 1, ""));
+		
+		changes.apply(test);
+		assertEquals(test.toString(), "a.foo");
+		assertEquals(document.substring(changes.getIndexBeforeChanges(2, true), changes.getIndexBeforeChanges(5, false)), "foo");
+		assertEquals(document.substring(changes.getIndexBeforeChanges(1, true), changes.getIndexBeforeChanges(2, false)), ".");
+		assertEquals(document.substring(changes.getIndexBeforeChanges(1, true), changes.getIndexBeforeChanges(2, true)), ".testProperty.");
 	}
 	
 }

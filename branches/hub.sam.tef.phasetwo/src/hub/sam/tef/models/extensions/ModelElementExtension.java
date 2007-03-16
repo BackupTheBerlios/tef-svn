@@ -77,7 +77,7 @@ public abstract class ModelElementExtension implements IModelElementExtension {
 	
 	public final void setValue(String property, Object value) {
 		if (value instanceof InternalModelElement) {
-			extensions.put(property, new SingleValueExtension(value, this, property));
+			extensions.put(property, new SingleValueExtension(value, this, property));			
 			for (IModelChangeListener listener: fListeners) {
 				listener.propertyChanged(this, property);
 			}

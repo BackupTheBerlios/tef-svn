@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import sun.rmi.transport.proxy.CGIHandler;
+
 public class TreeRepresentation extends TreeRepresentationLeaf {
 	
 	private final Collection<IRepresentationChangedListener> fListeners = new Vector<IRepresentationChangedListener>();	
@@ -315,12 +317,14 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 				}
 			}			
 						
-			setReferenceToOldTreeNode(oldAST);
-			int i = 0;
-			List<TreeRepresentation> oldASTChildren = oldAST.getChildNodes();
-			for (TreeRepresentation child: getChildNodes()) {
-				child.topDownInclusionOfOldAST(oldASTChildren.get(i++));
-			}		
+			if (oldAST.getElement().getSyntaxProvider().tryToReuse()) {
+				setReferenceToOldTreeNode(oldAST);
+				int i = 0;
+				List<TreeRepresentation> oldASTChildren = oldAST.getChildNodes();
+				for (TreeRepresentation child: getChildNodes()) {
+					child.topDownInclusionOfOldAST(oldASTChildren.get(i++));
+				}
+			}
 		}
 	}	
 	
@@ -348,4 +352,11 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 		return oldTreeNode;
 	}
 	
+	public void removeReferencecToOldTree() {
+		this.reused = false;
+		this.oldTreeNode = null;
+		for (TreeRepresentation child: getChildNodes()) {
+			child.removeReferencecToOldTree();
+		}
+	}
 }

@@ -116,8 +116,8 @@ public class UpdatedASTTreeSemantic implements Semantic {
 			//if (next.isLeaf()) {
 				Text text = next.getElement();
 				int absolutOffset = text.getAbsolutOffset(0);
-				int relativeStart = fChanges.getIndexBeforeChanges(range.start.offset) - absolutOffset;
-				int relativeEnd = fChanges.getIndexBeforeChanges(range.end.offset) - absolutOffset;
+				int relativeStart = fChanges.getIndexBeforeChanges(range.start.offset, true) - absolutOffset;
+				int relativeEnd = fChanges.getIndexBeforeChanges(range.end.offset, false) - absolutOffset;
 				if (relativeStart >= 0 && relativeEnd >= 0 && relativeEnd <= text.getLength()) {
 					if (text.getContent(relativeStart, relativeEnd).equals(input)) {
 						if (Rule.isTerminal(next.getSymbol())) {
@@ -135,8 +135,8 @@ public class UpdatedASTTreeSemantic implements Semantic {
 	}
 	
 	private boolean isOldInput(int start, int end) {
-		int startIndexInOldContent = fChanges.getIndexBeforeChanges(start);
-		int endIndexInOldContent = fChanges.getIndexBeforeChanges(end);
+		int startIndexInOldContent = fChanges.getIndexBeforeChanges(start, true);
+		int endIndexInOldContent = fChanges.getIndexBeforeChanges(end, false);
 		return startIndexInOldContent != -1 && endIndexInOldContent != -1;
 	}
 	

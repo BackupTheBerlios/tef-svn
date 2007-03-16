@@ -16,6 +16,8 @@ public interface ISyntaxProvider {
 	 */
 	public String[][] getRules();
 	
+	public boolean tryToReuse();
+	
 	public TextBasedAST createAST(TextBasedAST parent, IModelElement model, Text text);
 	
 }

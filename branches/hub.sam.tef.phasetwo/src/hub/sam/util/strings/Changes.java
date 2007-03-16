@@ -27,21 +27,21 @@ public class Changes {
 		combinedChanges.add(change);
 	}
 	
-	public int getIndexBeforeChanges(int index) {
-		int difference = 0;
+	public int getIndexBeforeChanges(int index, boolean inclusive) {		
 		for (Change change: combinedChanges) {
-			if (index <= change.pos) {
-				return index + difference;
+			boolean indexIsBefore = inclusive ? index < change.pos : index <= change.pos;			
+			if (indexIsBefore) {
+				return index;
 			} else {
-				int newIndex = change.getIndexBeforeChange(index);
+				int newIndex = change.getIndexBeforeChange(index, inclusive);
 				if (newIndex != -1) {
-					difference += newIndex - index;
+					index = newIndex;
 				} else {
 					return -1;
 				}
 			}
 		}		
-		return index + difference;
+		return index;
 	}
 	
 	public int getIndexAfterChanges(int index) {
@@ -81,7 +81,7 @@ public class Changes {
 		changes.addChange(b);
 		
 		System.out.println(buffer);
-		System.out.println(document.charAt(changes.getIndexBeforeChanges(9)));		
+		System.out.println(document.charAt(changes.getIndexBeforeChanges(9, true)));		
 	}
 	
 	public static void test2() {

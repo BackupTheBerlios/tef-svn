@@ -45,8 +45,9 @@ public class Change {
 		return new Change(pos, newLength, newText);
 	}
 
-	int getIndexBeforeChange(int index) {
-		if (index <= pos) {
+	int getIndexBeforeChange(int index, boolean inclusive) {
+		boolean indexIsBefore = inclusive ? index < pos : index <= pos;		
+		if (indexIsBefore) {
 			return index;
 		} else if (index > pos && index <= pos + text.length()) {
 			return -1; // TODO?

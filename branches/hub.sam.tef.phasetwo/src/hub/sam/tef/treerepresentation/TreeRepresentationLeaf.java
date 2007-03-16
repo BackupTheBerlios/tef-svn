@@ -10,7 +10,7 @@ public abstract class TreeRepresentationLeaf extends AbstractTree<TreeRepresenta
 	protected TreeRepresentation parent = null;
 	protected TreeRepresentationLeaf previous = null;
 	
-	private final ITreeContents fElement;	
+	private ITreeContents fElement;	
 	
 	protected TreeRepresentationLeaf(final ITreeContents contents) {
 		super();
@@ -29,6 +29,10 @@ public abstract class TreeRepresentationLeaf extends AbstractTree<TreeRepresenta
 		return fElement;
 	}
 	
+	public final void setElement(ITreeContents contents) {
+		fElement = contents;
+	}
+	
 	public abstract int getLength();
 	
 	public int getOffsetWithInParent(int offset) {
@@ -45,7 +49,7 @@ public abstract class TreeRepresentationLeaf extends AbstractTree<TreeRepresenta
 		} else {
 			return parent.getAbsoluteOffset(0) + getOffsetWithInParent(offset);
 		}
-	}
+	}	
 	
 	public abstract String getContent();
 	

@@ -1,7 +1,6 @@
 package hub.sam.tef.treerepresentation;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
-import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.templates.Template;
 
@@ -17,17 +16,20 @@ public class SyntaxTreeContent implements ITreeContents {
 		fTemplate = template;
 	}
 	
-	public SyntaxTreeContent(final Template template, final IModelElement fmodel) {
-		super();		
-		fRule = null;
-		fTemplate = template;
-	}
-	
 	public String getSymbol() {
-		return fTemplate.getAdapter(ISyntaxProvider.class).getNonTerminal();
+		return getSyntaxProvider().getNonTerminal();
 	}
+
+	public ISyntaxProvider getSyntaxProvider() {
+		return fTemplate.getAdapter(ISyntaxProvider.class);
+	}	
 
 	public String toString() {
 		return fTemplate.getAdapter(ISyntaxProvider.class).getNonTerminal();	
 	}
+
+	public Template getTemplate() {
+		return fTemplate;
+	}
+		
 }
