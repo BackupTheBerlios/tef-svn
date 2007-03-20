@@ -20,6 +20,7 @@ package hub.sam.tef.views;
  * Implementations of this interface can traverse a tree of texts. This
  * interface is also used to control the recursive decent along a tree of texts.
  */
+@Deprecated
 public interface ITextVisitor {
 	
 	/**

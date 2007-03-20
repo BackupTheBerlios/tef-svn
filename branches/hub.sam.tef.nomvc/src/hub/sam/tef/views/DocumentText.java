@@ -16,8 +16,6 @@
  */
 package hub.sam.tef.views;
 
-import hub.sam.tef.TEFModelDocument;
-
 import java.util.Collection;
 import java.util.Vector;
 
@@ -28,9 +26,10 @@ import org.eclipse.jface.text.BadLocationException;
  * A DocuementText functions as the toplevel text. It is also the interface to
  * the eclipse model (IDocument) and eclipse view (ISourceViewer).
  */
+@Deprecated
 public class DocumentText extends CompoundText {
 	
-	private final TEFModelDocument fDocument;	
+	//private final TEFModelDocument fDocument;	
 	private final Collection<IDocumentUpdateListener> fListener = new Vector<IDocumentUpdateListener>();
 	
 	private boolean toBeUpdated = false;
@@ -38,10 +37,11 @@ public class DocumentText extends CompoundText {
 	private int changesDocumentEnd = 0;
 	private int changesTextEnd = 0;
 	
-	
+	/*
 	public DocumentText(TEFModelDocument document) {
 		this.fDocument = document;
 	}	
+	*/
 	
 	/**
 	 * Forwards any change to the document to the eclipse model (IDocument).
@@ -85,8 +85,8 @@ public class DocumentText extends CompoundText {
 				for (IDocumentUpdateListener listener: fListener) {
 					listener.documentAboutToBeUpdated(this);
 				}
-				fDocument.doReplace(changesBegin, changesDocumentEnd - changesBegin, getContent(changesBegin, changesTextEnd));
-			} catch (BadLocationException e) {
+				//fDocument.doReplace(changesBegin, changesDocumentEnd - changesBegin, getContent(changesBegin, changesTextEnd));
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			toBeUpdated = false;

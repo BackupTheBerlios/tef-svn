@@ -40,6 +40,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import sun.jdbc.odbc.OdbcDef;
+
 public class EMFModel extends AbstractModel {
 	
 	private final Map<EPackage, EFactory> fFactorys;
@@ -154,5 +156,11 @@ public class EMFModel extends AbstractModel {
 	public IType getType(String name) {
 		return getMetaElement(name);
 	}
-		
+
+	public void replaceOutermostComposite(Object resource, IModelElement oldElement, IModelElement newElement) {
+		fDomain.getResourceSet().getResource((URI)resource, false).getContents().remove(getEMFObjectForModel(oldElement));
+		fDomain.getResourceSet().getResource((URI)resource, false).getContents().add(getEMFObjectForModel(newElement));				
+	}
+	
+	
 }

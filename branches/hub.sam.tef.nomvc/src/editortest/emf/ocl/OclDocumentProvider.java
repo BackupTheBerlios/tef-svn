@@ -1,16 +1,9 @@
 package editortest.emf.ocl;
 
-import hub.sam.tef.TEFDocument;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -54,12 +47,7 @@ public class OclDocumentProvider extends EMFDocumentProvider {
 		result.add(fUmlPackage);
 		result.add(fEcorePackage);
 		return result;
-	}
-
-	@Override
-	protected IDocument createEmptyDocument()  {
-		return TEFDocument.createDocumentForModelDocument(new OclDocument());		
-	}
+	}	
 
 	private static ComposedAdapterFactory createAdaptorFactory() {
 		// Create an adapter factory that yields item providers.
@@ -87,4 +75,9 @@ public class OclDocumentProvider extends EMFDocumentProvider {
 		return EcoreEditor.getSharedEditingDomain();
 	}	
 	
+	
+	@Override
+	protected IDocument createEmptyDocument()  {
+		return new OclDocument();		
+	}
 }

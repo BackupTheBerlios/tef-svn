@@ -2,6 +2,7 @@ package hub.sam.tef.parse;
 
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
+import hub.sam.tef.treerepresentation.ISyntaxProvider;
 import hub.sam.tef.views.DocumentText;
 import hub.sam.util.trees.AbstractTree;
 
@@ -17,6 +18,7 @@ import fri.patterns.interpreter.parsergenerator.Semantic;
 import fri.patterns.interpreter.parsergenerator.Token;
 import fri.patterns.interpreter.parsergenerator.lexer.LexerBuilder;
 import fri.patterns.interpreter.parsergenerator.lexer.LexerException;
+import fri.patterns.interpreter.parsergenerator.lexer.LexerImpl;
 import fri.patterns.interpreter.parsergenerator.parsertables.LALRParserTables;
 import fri.patterns.interpreter.parsergenerator.parsertables.ParserBuildException;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
@@ -29,6 +31,8 @@ public class ParserInterface {
 	private final Syntax fSyntax;
 	private final Map<String, Template> templatesForNonTerminals = new HashMap<String, Template>();
 	private Parser fParser = null;
+	
+	private int lastOffset = -1;
 
 	public ParserInterface(Template template) {
 		super();
@@ -79,6 +83,7 @@ public class ParserInterface {
 			Parser parser = getParser();
 			parser.getLexer().setInput(content.trim());						
 			ok = parser.parse(semantic);	// start parsing with a print-semantic			
+			lastOffset = ((LexerImpl)parser.getLexer()).getOffset();
 			return ok;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,6 +117,10 @@ public class ParserInterface {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public int getLastOffset() {
+		return lastOffset;
 	}
 
 	@Override

@@ -8,7 +8,6 @@ import editortest.emf.model.EMFMetaModelElement;
 import editortest.emf.ocl.templates.OperationCallExp1Template.MySyntaxProvider;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.ElementTemplateSemantics;
 import hub.sam.tef.templates.OptionalTemplate;
@@ -18,6 +17,7 @@ import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
+import hub.sam.tef.treerepresentation.ISyntaxProvider;
 
 public class OperationCallExp2Template extends ElementTemplate {
 

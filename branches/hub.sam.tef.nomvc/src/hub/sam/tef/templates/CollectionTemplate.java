@@ -26,8 +26,8 @@ import hub.sam.tef.controllers.RetifyCursorPositionModelEventListener;
 import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.parse.IASTBasedModelUpdater;
-import hub.sam.tef.parse.ISyntaxProvider;
+import hub.sam.tef.parse.ISemanticProvider;
+import hub.sam.tef.treerepresentation.ISyntaxProvider;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
@@ -245,9 +245,11 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
-		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
+		if (ISyntaxProvider.class == adapter) {
 			return (T)new CollectionTemplateSemantics(this);
 		} else if (ITreeRepresentationProvider.class == adapter) {
+			return (T)new CollectionTemplateSemantics(this);
+		} else if (ISemanticProvider.class == adapter) {
 			return (T)new CollectionTemplateSemantics(this);
 		} else {
 			return super.getAdapter(adapter);			

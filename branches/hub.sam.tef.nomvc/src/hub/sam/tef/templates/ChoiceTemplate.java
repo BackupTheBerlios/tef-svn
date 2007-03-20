@@ -24,14 +24,11 @@ import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.parse.IASTBasedModelUpdater;
-import hub.sam.tef.parse.ISyntaxProvider;
-import hub.sam.tef.parse.ModelUpdateConfiguration;
-import hub.sam.tef.parse.TextBasedAST;
-import hub.sam.tef.parse.TextBasedUpdatedAST;
+import hub.sam.tef.parse.ISemanticProvider;
+import hub.sam.tef.treerepresentation.ISyntaxProvider;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.treerepresentation.ModelTreeContents;
-import hub.sam.tef.treerepresentation.SyntaxTreeContent;
+import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 import hub.sam.tef.views.CompoundText;
@@ -175,34 +172,21 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 		
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
-		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
+		if (ISyntaxProvider.class == adapter) {
 			return (T)new ModelUpdater(this);
-		} else if (ITreeRepresentationProvider.class == adapter) {
+		} else if (ITreeRepresentationProvider.class == adapter) {			
 			return (T)new TreeRepresentationProvider();
+		} else if (ISemanticProvider.class == adapter) {
+			return (T)new SemanticProvider();
 		} else {
 			return super.getAdapter(adapter);
 		}
 	}
 
-	class ModelUpdater extends ValueTemplateSemantics implements IASTBasedModelUpdater, ISyntaxProvider {
+	class ModelUpdater extends ValueTemplateSemantics implements ISyntaxProvider {
 				
 		protected ModelUpdater(ValueTemplate template) {
 			super(template);		
-		}
-
-		public void executeModelUpdate(ModelUpdateConfiguration configuration) {	
-			TreeRepresentation childNode = configuration.getAst().getChildNodes().get(0);
-			boolean successful = false;
-			for(ValueTemplate alternatives: fAlternativeTemplates) {
-				if (alternatives.getAdapter(ISyntaxProvider.class).getNonTerminal().equals(childNode.getElement().getSymbol())) {
-					alternatives.getAdapter(IASTBasedModelUpdater.class).
-							executeModelUpdate(configuration.createDelegateConfiguration(childNode));
-					successful = true;
-				}
-			}
-			if (!successful) {
-				throw new RuntimeException("assert");
-			}
 		}
 
 		public String[][] getRules() {
@@ -212,37 +196,18 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 				result[i++] = new String[] { getNonTerminal(), choice.getAdapter(ISyntaxProvider.class).getNonTerminal() };
 			}
 			return result;					
-		}
-		
-		public boolean tryToReuse() {
-			return true;
-		}				
-
-		public TextBasedAST createAST(TextBasedAST parent, IModelElement model, Text text) {
-			if (text.getElement(Template.class) != null) {
-				if (!text.getElement(Template.class).equals(ChoiceTemplate.this)) {
-					throw new RuntimeException("assert");
-				}
-				TextBasedAST result = new TextBasedAST(text);
-				parent.addChild(result);
-				parent = result;
-				Text childText = ((CompoundText)text).getTexts().get(0);
-				return childText.getElement(Template.class).getAdapter(ISyntaxProvider.class).createAST(parent, model, childText);
-			} else {
-				return null;
-			}
 		}			
 	}
 	
 	class TreeRepresentationProvider implements ITreeRepresentationProvider {
-		public Object createTreeRepresentation(String notused, Object model) {			
+		public TreeRepresentationLeaf createTreeRepresentation(IModelElement owner, String notused, Object model, boolean isComposite) {			
 			ModelTreeContents contents = new ModelTreeContents(ChoiceTemplate.this, (IModelElement)model);
 			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
 
 			for (ValueTemplate alternative: fAlternativeTemplates) {
 				if (alternative.isTemplateFor(model)) {
 					treeRepresentation.addContent(alternative.getAdapter(ITreeRepresentationProvider.class).
-							createTreeRepresentation(null, model));
+							createTreeRepresentation(owner, notused, model, true));
 																			
 					return treeRepresentation;
 				}
@@ -250,32 +215,21 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 			throw new RuntimeException("assert");
 		}
 
-		public void updateTreeRepresentation(TreeRepresentation treeRepresentation, String property, Object model) {
-			ModelTreeContents contents = new ModelTreeContents(ChoiceTemplate.this, (IModelElement)model);
-			treeRepresentation.setElement(contents);
-
-			for (ValueTemplate alternative: fAlternativeTemplates) {
-				if (alternative.isTemplateFor(model)) {
-					alternative.getAdapter(ITreeRepresentationProvider.class).
-							updateTreeRepresentation(treeRepresentation.getChildNodes().get(0), property, model);
-					return;
-				}
-			}
-			throw new RuntimeException("assert");			
-		}
-
-		public boolean compare(TreeRepresentationLeaf treeRepresentation, String property, Object model) {
-			if (treeRepresentation.getElement().getTemplate() != ChoiceTemplate.this) {
-				return false;
-			} else {
-				for (ValueTemplate alternative: fAlternativeTemplates) {
-					if (alternative.isTemplateFor(model)) {
-						return alternative.getAdapter(ITreeRepresentationProvider.class).
-								compare(treeRepresentation.getChildNodes().get(0), property, model);						
-					}
-				}
-				throw new RuntimeException("assert");
-			}
-		}					
+		public Object createModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {			
+			TreeRepresentationLeaf childTree = tree.getChildNodes().get(0);			
+			IModelElement result = (IModelElement) childTree.getElement().getTemplate().getAdapter(ITreeRepresentationProvider.class).
+					createModel(owner, property, childTree, isComposite);
+			tree.setElement(new ModelTreeContents(tree.getElement().getTemplate(), result));
+			return result;
+		}			
+	}
+		
+	class SemanticProvider implements ISemanticProvider {
+		
+		public void checkAndResolve(TreeRepresentation representation, SemanticsContext context) {		
+			TreeRepresentation nextNode = ((TreeRepresentation)representation).getChildNodes().get(0);
+			nextNode.getElement().getTemplate().getAdapter(ISemanticProvider.class).
+					checkAndResolve(nextNode, context);
+		}		
 	}
 }

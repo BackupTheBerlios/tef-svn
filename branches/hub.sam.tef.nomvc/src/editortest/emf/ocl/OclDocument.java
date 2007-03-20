@@ -1,21 +1,17 @@
 package editortest.emf.ocl;
 
-import hub.sam.tef.TEFModelDocument;
+import org.eclipse.jface.text.IDocument;
+
+import hub.sam.tef.TEFDocument;
 import hub.sam.tef.controllers.IAnnotationModelProvider;
 import hub.sam.tef.controllers.ICursorPostionProvider;
-import hub.sam.tef.models.ICollection;
-import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.views.DocumentText;
-import hub.sam.tef.views.FixText;
-import editortest.emf.model.EMFModel;
-import editortest.emf.model.EMFModelElement;
-import editortest.emf.model.EMFSequence;
+import editortest.emf.expressions.ExpressionDocument;
 import editortest.emf.ocl.templates.ConstraintTemplate;
 
-public class OclDocument extends TEFModelDocument {
+public class OclDocument extends TEFDocument {
 
+	/*
 	@Override
 	public void initializeDocument(DocumentText result) {				
 		ICollection<IModelElement> outermostComposites = getModel().getOutermostComposites(getResource());
@@ -34,12 +30,11 @@ public class OclDocument extends TEFModelDocument {
 			result.addText(((ElementTemplate)getTopLevelTemplate()).getView(topLevelExpression, null));
 		}						
 	}
+	*/
 
 	@Override
 	public Template createTopLevelTemplate(IAnnotationModelProvider annotationModelProvider, ICursorPostionProvider cursorPositionProvider) {
-		return new ConstraintTemplate(annotationModelProvider,
-				cursorPositionProvider, this, getModel().getMetaElement("Constraint"));
+		return new ConstraintTemplate(annotationModelProvider, cursorPositionProvider, getModelRepresentationProvider(), getModel().getMetaElement("Constraint"));
 	}
-	
-	
+
 }

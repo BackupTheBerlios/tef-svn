@@ -24,14 +24,11 @@ import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.ModelEventListener;
 import hub.sam.tef.models.extensions.InternalModelElement;
-import hub.sam.tef.parse.IASTBasedModelUpdater;
-import hub.sam.tef.parse.ISyntaxProvider;
-import hub.sam.tef.parse.ModelUpdateConfiguration;
-import hub.sam.tef.parse.TextBasedAST;
-import hub.sam.tef.parse.TextBasedUpdatedAST;
+import hub.sam.tef.parse.ISemanticProvider;
+import hub.sam.tef.treerepresentation.ISyntaxProvider;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.treerepresentation.ModelTreeContents;
-import hub.sam.tef.treerepresentation.SyntaxTreeContent;
+import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 import hub.sam.tef.views.CompoundText;
@@ -134,7 +131,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		final Text text = fIdentifierTemplate.getView(value, null);
 		if (value instanceof InternalModelElement) {			
 			text.addTextStatusListener(new ITextStatusListener() {
-				private final ErrorAnnotation fError = new ErrorAnnotation(text);
+				private final ErrorAnnotation fError = null; //new ErrorAnnotation(text);
 				public void hidden() {					
 					fError.removeFromAnnotationModel(getAnnotationModelProvider());					
 				}
@@ -187,25 +184,21 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
-		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
-			return (T)new ModelUpdater();
+		if (ISyntaxProvider.class == adapter) {
+			return (T)new SyntaxProvider();
 		} else if (ITreeRepresentationProvider.class == adapter) {
 			return (T)new TreeRepresentationProvider();
+		} else if (ISemanticProvider.class == adapter) {
+			return (T)new SemanticProvider();
 		} else{
 			return super.getAdapter(adapter);
 		}
 	}
 	
-	class ModelUpdater extends ValueTemplateSemantics implements IASTBasedModelUpdater, ISyntaxProvider {					
+	class SyntaxProvider extends ValueTemplateSemantics implements ISyntaxProvider {					
 		
-		public ModelUpdater() {
+		public SyntaxProvider() {
 			super(ReferenceTemplate.this);		
-		}
-
-		public void executeModelUpdate(ModelUpdateConfiguration configuration) {
-			TreeRepresentation childNode = configuration.getAst().getChildNodes().get(0);		
-			fIdentifierTemplate.getAdapter(IASTBasedModelUpdater.class).
-					executeModelUpdate(configuration.createReferenceConfiguration(childNode));
 		}
 		
 		public String getNonTerminal() {
@@ -214,58 +207,32 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 
 		public String[][] getRules() {
 			return new String[][] {{ getNonTerminal(), fIdentifierTemplate.getAdapter(ISyntaxProvider.class).getNonTerminal() }};
-		}		
-		
-		public boolean tryToReuse() {
-			// reuse of references, cause changes in the element instead of the reference
-			return false;
-		}
-
-		public TextBasedAST createAST(TextBasedAST parent,  IModelElement model, Text text) {
-			if (!ReferenceTemplate.this.equals(text.getElement(Template.class))) {
-				throw new RuntimeException("assert");
-			}
-			TextBasedAST result = new TextBasedAST(text);
-			System.out.println("$$" + getNonTerminal());
-			System.out.print(result.getSymbol());
-			parent.addChild(result);
-			parent = result;
-			fIdentifierTemplate.getAdapter(ISyntaxProvider.class).createAST(parent, model, ((CompoundText)text).getTexts().get(0));
-			return null;
 		}			
 	}
 	
 	class TreeRepresentationProvider implements ITreeRepresentationProvider {
-
-		public Object createTreeRepresentation(String notused, Object model) {
+		public TreeRepresentationLeaf createTreeRepresentation(IModelElement owner, String notused, Object model, boolean isComposite) {
 			ModelTreeContents contents = new ModelTreeContents(ReferenceTemplate.this, (IModelElement)model);
 			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
 			
 			treeRepresentation.addContent(fIdentifierTemplate.getAdapter(ITreeRepresentationProvider.class).
-					createTreeRepresentation(null, model));						
+					createTreeRepresentation(owner, notused, model, false));						
 			
 			return treeRepresentation;
 		}
 
-		public void updateTreeRepresentation(TreeRepresentation treeRepresentation, String property, Object model) {
-			ModelTreeContents contents = new ModelTreeContents(ReferenceTemplate.this, (IModelElement)model);
-			treeRepresentation.setElement(contents);
-						
-			if (!fIdentifierTemplate.getAdapter(ITreeRepresentationProvider.class).
-					compare(treeRepresentation.getChildNodes().get(0), property, model)) {
-				// create a new mock-object for the valid reference have become invalid due to model changes
-				getAdapter(IASTBasedModelUpdater.class).
-						executeModelUpdate(new ModelUpdateConfiguration((TreeRepresentation)
-								treeRepresentation, 
-								((ModelTreeContents)treeRepresentation.getParent().getElement()).getModelElement(), property, true));
-			}
-			fIdentifierTemplate.getAdapter(ITreeRepresentationProvider.class).
-					updateTreeRepresentation(treeRepresentation.getChildNodes().get(0), property, model);								
-		}
-
-		public boolean compare(TreeRepresentationLeaf treeRepresentation, String property, Object model) {
-			// TODO Auto-generated method stub
-			return false;
-		}								
+		public Object createModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {			
+			
+			IModelElement result =  (IModelElement)fIdentifierTemplate.getAdapter(ITreeRepresentationProvider.class).
+					createModel(owner, property, ((TreeRepresentation)tree).getChildNodes().get(0), false);			
+			tree.setElement(new ModelTreeContents(ReferenceTemplate.this, result));
+			return result;
+		}	
+	}
+	
+	class SemanticProvider implements ISemanticProvider {		
+		public void checkAndResolve(TreeRepresentation representation, SemanticsContext context) {			
+			fIdentifierTemplate.getAdapter(ISemanticProvider.class).checkAndResolve(representation.getChildNodes().get(0), context);
+		}		
 	}
 }

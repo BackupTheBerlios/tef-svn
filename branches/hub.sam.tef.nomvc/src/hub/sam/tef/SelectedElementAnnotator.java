@@ -16,18 +16,13 @@
  */
 package hub.sam.tef;
 
-import hub.sam.tef.controllers.ComputeSelectionVisitor;
 import hub.sam.tef.views.Text;
 
-import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-
 
 /**
  * This class is responsible for marking the selected element. There is one
@@ -45,6 +40,7 @@ public class SelectedElementAnnotator implements ISelectionChangedListener {
 
 
 	public void update(ISourceViewer fSourceViewer) {
+		/* TODO has to be rebuild for TreeRepresentations
 		int offset = fSourceViewer.getTextWidget().getCaretOffset();
 		
 		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(offset);
@@ -72,6 +68,7 @@ public class SelectedElementAnnotator implements ISelectionChangedListener {
 			}
 		} else {
 			model.removeAnnotation(fObjectMarker);
-		}						
+		}	
+		*/					
 	}
 }

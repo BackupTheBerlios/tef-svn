@@ -16,10 +16,13 @@
  */
 package hub.sam.tef;
 
-import hub.sam.tef.controllers.ComputeSelectionVisitor;
-import hub.sam.tef.models.AbstractModelElement;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.views.Text;
+import hub.sam.tef.treerepresentation.ITreeContents;
+import hub.sam.tef.treerepresentation.IndexTreeRepresentationSelector;
+import hub.sam.tef.treerepresentation.ModelTreeContents;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.util.trees.IChildSelector;
+import hub.sam.util.trees.TreeIterator;
 
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Position;
@@ -29,6 +32,8 @@ import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+
+import editortest.emf.model.IOccurence;
 
 
 /**
@@ -45,18 +50,18 @@ public class OccurencesAnnotator implements ISelectionChangedListener {
 	}
 
 	public void update(ISourceViewer fSourceViewer) {		
-		int cursorPosition = fSourceViewer.getTextWidget().getCaretOffset();		
+		int cursorPosition = fSourceViewer.getTextWidget().getCaretOffset();	
 		
-		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(cursorPosition);
-		((TEFDocument)fSourceViewer.getDocument()).getModelDocument().getDocumentText().process(visitor, cursorPosition);
-		Text selectedText = visitor.getCursorPositionText();
+		IChildSelector<TreeRepresentation> selector = new IndexTreeRepresentationSelector(cursorPosition, 0);		
+		TreeRepresentation selectedTreeNode = TreeIterator.select(selector, ((TEFDocument)fSourceViewer.getDocument()).getModelRepresentation());		
 		IAnnotationModel model = fSourceViewer.getAnnotationModel();
 		
 		IModelElement modelElement = null;
-		while(selectedText != null && modelElement == null) {
-			modelElement = selectedText.getElement(AbstractModelElement.class);
-			selectedText = selectedText.getContainer();			
+		ITreeContents selectedTreeContents = selectedTreeNode.getElement();
+		if (selectedTreeContents instanceof ModelTreeContents) {
+			modelElement = ((ModelTreeContents)selectedTreeContents).getModelElement();
 		}
+		
 		if (modelElement != null && modelElement.equals(currentMarkedModelElement)) {			
 			return;
 		} 
@@ -65,7 +70,7 @@ public class OccurencesAnnotator implements ISelectionChangedListener {
 		currentMarkedModelElement = modelElement;		
 				
 		if (modelElement != null) {
-			Text[] occurences =  modelElement.getRegisteredOccureces();			
+			IOccurence[] occurences =  modelElement.getRegisteredOccureces();			
 			IRegion[] occurencePositions = new IRegion[occurences.length];
 			for (int i = 0; i < occurences.length; i++) {
 				occurencePositions[i] = new Region(occurences[i].getAbsolutOffset(0), occurences[i].getLength());

@@ -23,11 +23,9 @@ import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.controllers.TextEvent;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.parse.IASTBasedModelUpdater;
-import hub.sam.tef.parse.ISyntaxProvider;
-import hub.sam.tef.parse.ModelUpdateConfiguration;
-import hub.sam.tef.parse.TextBasedAST;
+import hub.sam.tef.treerepresentation.ISyntaxProvider;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
+import hub.sam.tef.treerepresentation.PrimitiveTreeRepresentation;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 import hub.sam.tef.views.CompoundText;
@@ -117,12 +115,17 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 	@Override
 	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {	
 		return null;
-	}	
+	}		
 	
 	@Override
+	protected Object getObjectValueFromStringValue(String value) {
+		return fFlagKeyword.equals(value);
+	}
+
+	@Override
 	public <T> T getAdapter(Class<T> adapter) {
-		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
-			return (T)new ModelUpdater();
+		if (ISyntaxProvider.class == adapter) {
+			return (T)new SyntaxProvider();
 		} else if (ITreeRepresentationProvider.class == adapter) {
 			return (T)new TreeRepresentationProvider();
 		} else {
@@ -130,52 +133,28 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 		}
 	}
 	
-	class ModelUpdater implements IASTBasedModelUpdater, ISyntaxProvider {		
-		public void executeModelUpdate(ModelUpdateConfiguration configuration) {
-			if (configuration.getPrimitiveValue().equals(fFlagKeyword)) {
-			executeASTSemanticsWithConvertedValue(true, configuration.getOwner(), configuration.getProperty(), 
-					configuration.isCollection(), configuration.isOldNode());
-			} else {
-				throw new RuntimeException("assert");
-			}
-		}
-
-		public TextBasedAST createAST(TextBasedAST parent,  IModelElement model, Text text) {
-			return null;
-		}
-
+	class SyntaxProvider implements ISyntaxProvider {		
 		public String getNonTerminal() {
 			return "'" + fFlagKeyword + "'";
 		}
 
 		public String[][] getRules() {		
 			return new String[][] {};
-		}	
-		
-		public boolean tryToReuse() {
-			return false;
-		}				
+		}		
 	}
 	
 	class TreeRepresentationProvider implements ITreeRepresentationProvider {
-		public Object createTreeRepresentation(String property, Object model) {
+		public TreeRepresentationLeaf createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite) {
 			if ((Boolean)model) {
-				return fFlagKeyword + " ";				
+				return new PrimitiveTreeRepresentation(fFlagKeyword + " ");				
 			} else {
-				return "";
+				return new PrimitiveTreeRepresentation("");
 			}
 		}
 
-		public void updateTreeRepresentation(TreeRepresentation treeRepresentation, String property, Object model) {
-			// empty
-		}
-
-		public boolean compare(TreeRepresentationLeaf treeRepresentation, String property, Object model) {
-			if ((Boolean)model) {
-				return fFlagKeyword.equals(treeRepresentation.getContent());
-			} else {
-				return treeRepresentation.getContent().equals("");
-			}
-		}							
+		public Object createModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {
+			return FlagTemplate.super.getAdapter(ITreeRepresentationProvider.class).
+					createModel(owner, property, tree, true);
+		}		
 	}
 }

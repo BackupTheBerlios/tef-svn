@@ -17,7 +17,6 @@
 package hub.sam.tef;
 
 import hub.sam.tef.controllers.Proposal;
-import hub.sam.tef.controllers.ProposalVisitor;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -25,24 +24,26 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 
-
 public class TEFCompletionProposal implements ICompletionProposal {
 	
 	private final Proposal fContextInformation;
 	private final int fDocumentOffset;	
-	//private int cursorPosition;	
 
 	public TEFCompletionProposal(final Proposal contextInformation, final int documentOffset, int cursorPosition) {
 		super();
 		fContextInformation = contextInformation;
 		fDocumentOffset = documentOffset;
-		//this.cursorPosition = cursorPosition;
 	}
-
+	
+	/**
+	 * TODO a new content assist strategy
+	 */
 	public void apply(IDocument document) {
+		/*
 		TEFDocument tefDocument = (TEFDocument)document;							 	
 		ProposalVisitor visitor = new ProposalVisitor(fDocumentOffset, fContextInformation);
 		tefDocument.getModelDocument().getDocumentText().process(visitor, fDocumentOffset);
+		*/
 		//cursorPosition = 0;
 	}
 
@@ -63,7 +64,6 @@ public class TEFCompletionProposal implements ICompletionProposal {
 	}
 
 	public Point getSelection(IDocument document) { 
-		//return new Point(cursorPosition, 0);
 		return null;
 	}
 }

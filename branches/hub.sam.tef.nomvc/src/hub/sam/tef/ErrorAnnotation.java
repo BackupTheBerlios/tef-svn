@@ -5,10 +5,14 @@ import hub.sam.tef.views.Text;
 
 import org.eclipse.jface.text.source.Annotation;
 
+import editortest.emf.model.IOccurence;
+
 public class ErrorAnnotation extends TEFAnnotation {
 
-	public ErrorAnnotation(final Text text) {
-		super(new Annotation("hub.sam.tef.error", false, "An error..."), text);
+	public static final String TEF_ERROR = "hub.sam.tef.error";
+	
+	public ErrorAnnotation(final IOccurence position) {
+		super(new Annotation(TEF_ERROR, false, "An error..."), position);
 	}
 
 	public void addToAnnotationModel(IAnnotationModelProvider model) {

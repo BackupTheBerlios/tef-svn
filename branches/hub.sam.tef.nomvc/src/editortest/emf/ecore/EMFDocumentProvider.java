@@ -44,7 +44,7 @@ public abstract class EMFDocumentProvider extends TEFDocumentProvider {
 	protected abstract EditingDomain getEditingDomain();
 		
 	protected void setDocumentContent(IDocument document, IModel model, Object resource) throws CoreException {		
-		((TEFDocument)document).getModelDocument().setContent(model, resource);		
+		((TEFDocument)document).setInitialModelContent(model, resource);		
 	}
 	
 	private IModel loadModel(Resource resource, EditingDomain domain) {

@@ -1,6 +1,6 @@
 package hub.sam.tef.templates;
 
-import hub.sam.tef.parse.ISyntaxProvider;
+import hub.sam.tef.treerepresentation.ISyntaxProvider;
 
 public abstract class ValueTemplateSemantics implements ISyntaxProvider {
 

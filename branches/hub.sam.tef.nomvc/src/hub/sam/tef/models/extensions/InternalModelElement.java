@@ -3,12 +3,13 @@ package hub.sam.tef.models.extensions;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelChangeListener;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.views.Text;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+
+import editortest.emf.model.IOccurence;
 
 public class InternalModelElement implements IModelElement {
 
@@ -29,8 +30,8 @@ public class InternalModelElement implements IModelElement {
 		return fMetaModel;
 	}
 
-	public Text[] getRegisteredOccureces() {
-		return new Text[0];
+	public IOccurence[] getRegisteredOccureces() {
+		return new IOccurence[0];
 	}
 
 	public Object getValue(String property) {
@@ -44,7 +45,7 @@ public class InternalModelElement implements IModelElement {
 		}
 	}
 
-	public void registerOccurence(Text text) {
+	public void registerOccurence(IOccurence occurence) {
 		// empty
 	}
 

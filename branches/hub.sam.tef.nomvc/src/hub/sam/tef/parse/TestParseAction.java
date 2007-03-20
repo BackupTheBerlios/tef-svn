@@ -1,11 +1,6 @@
 package hub.sam.tef.parse;
 
-import hub.sam.tef.TEFEditor;
-import hub.sam.tef.TEFModelDocument;
-import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.templates.Template;
 import hub.sam.tef.treerepresentation.IRepresentationChangedListener;
-import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
 
 import org.eclipse.jface.action.IAction;
@@ -22,6 +17,7 @@ public class TestParseAction implements IEditorActionDelegate {
 	}
 
 	public void run(IAction action) {
+		/*
 		TEFModelDocument document = ((TEFEditor)editor).getDocument().getModelDocument();
 		Template topLevelTemplate = document.getTopLevelTemplate();
 		IModelElement model = document.getDocumentText().getTexts().get(0).getElement(IModelElement.class);
@@ -29,9 +25,12 @@ public class TestParseAction implements IEditorActionDelegate {
 				createTreeRepresentation(null, model);
 		representation.print(System.out);
 		final String oldContent = representation.getContent();
+		representation.print(System.out);
 		System.out.println(oldContent);
 		representation.addRepresentationChangedListener(new RepresentationChangedListener(oldContent, representation));			
 		//new ParserInterface(document.getTopLevelTemplate()).test(document.getDocumentText());
+		 *
+		 */
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {

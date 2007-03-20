@@ -122,5 +122,11 @@ public class MofModel implements IModel {
 	public IType getType(String name) {
 		// TODO
 		return null;
-	}			
+	}
+
+	public void replaceOutermostComposite(Object resource, IModelElement oldElement, IModelElement newElement) {
+		// TODO Auto-generated method stub
+		
+	}		
+		
 }

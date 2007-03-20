@@ -18,7 +18,6 @@ package hub.sam.tef;
 
 import hub.sam.tef.controllers.IProposalHandler.ProposalKind;
 
-import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
@@ -35,7 +34,7 @@ public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 	private final ContentAssistant fChangeContentAssistant;
 	private final ContentAssistant fInsertContentAssistant;
 	private final ITextDoubleClickStrategy fDoubleClickStrategy;
-	private final IAutoEditStrategy fAutoEditStrategy;
+	//private final IAutoEditStrategy fAutoEditStrategy;
 	private final IReconciler fReconciler = new TEFReconciler();
 			
 	public TEFSourceViewerConfiguration() {
@@ -48,7 +47,7 @@ public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 				new TEFCompletionProcessor(ProposalKind.insert), IDocument.DEFAULT_CONTENT_TYPE);
 		
 		this.fDoubleClickStrategy = new TEFDoubleClickStrategy();
-		this.fAutoEditStrategy = new TEFAutoEditStrategy();
+		//this.fAutoEditStrategy = new TEFAutoEditStrategy();
 	}
 
 	@Override
@@ -64,12 +63,15 @@ public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 	public ITextDoubleClickStrategy getDoubleClickStrategy(ISourceViewer sourceViewer, String contentType) {
 		return fDoubleClickStrategy;
 	}
-
+	
+	/* not needed anymore ?
 	@Override
 	public IAutoEditStrategy[] getAutoEditStrategies(ISourceViewer sourceViewer, String contentType) {
 		return new IAutoEditStrategy[] { fAutoEditStrategy };
 	}
+	*/
 
+	/*
 	@Override
 	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {
 		PresentationReconciler reconciler = new PresentationReconciler();
@@ -79,6 +81,7 @@ public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 		reconciler.setRepairer(damageRepair, IDocument.DEFAULT_CONTENT_TYPE);
 		return reconciler;		
 	}
+	*/
 	
 	@Override
 	public IReconciler getReconciler(ISourceViewer sourceViewer) {

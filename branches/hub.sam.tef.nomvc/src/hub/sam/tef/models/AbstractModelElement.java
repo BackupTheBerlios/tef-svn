@@ -17,40 +17,28 @@
 package hub.sam.tef.models;
 
 import hub.sam.tef.models.extensions.ModelElementExtension;
-import hub.sam.tef.views.ITextStatusListener;
-import hub.sam.tef.views.Text;
+import hub.sam.tef.treerepresentation.IDisposbaleStatusListener;
 import hub.sam.util.container.MultiMap;
+import editortest.emf.model.IOccurence;
 
 public abstract class AbstractModelElement extends ModelElementExtension {
 	
-	private static final MultiMap<Object, Text> fOccurences = new MultiMap<Object, Text>();		
+	private static final MultiMap<Object, IOccurence> fOccurences = new MultiMap<Object, IOccurence>();		
 	
 	public AbstractModelElement(Object id) {
 		super(id);
 	}
 
-	public final void registerOccurence(final Text text) {
-		text.addTextStatusListener(new ITextStatusListener() {
-			public void hidden() {				
-				fOccurences.get(AbstractModelElement.this).remove(text);				
-			}
-
-			public void shown() {
-				fOccurences.get(AbstractModelElement.this).add(text);				
-			}
-
+	public final void registerOccurence(final IOccurence occurence) {
+		fOccurences.get(this).add(occurence);
+		occurence.addDisposableStatusListener(new IDisposbaleStatusListener() {
 			public void disposed() {
-				hidden();
-			}						
-			
+				fOccurences.get(this).remove(occurence);			
+			}			
 		});
-		text.setElement(AbstractModelElement.class, this);
-		if (!text.isHidden()) {					
-			fOccurences.get(this).add(text);
-		}
 	}
 
-	public final Text[] getRegisteredOccureces() {
-		return (Text[])fOccurences.get(this).toArray(new Text[] {});
+	public final IOccurence[] getRegisteredOccureces() {
+		return (IOccurence[])fOccurences.get(this).toArray(new IOccurence[] {});
 	}
 }

@@ -16,9 +16,7 @@
  */
 package hub.sam.tef;
 
-import hub.sam.tef.controllers.ComputeCursorPositionVisitor;
 import hub.sam.tef.controllers.ICursorPostionProvider;
-import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.Text;
 
 import java.util.ResourceBundle;
@@ -36,14 +34,16 @@ import org.eclipse.ui.texteditor.TextOperationAction;
 
 public abstract class TEFEditor extends TextEditor implements ICursorPostionProvider {
 	
-
-	
+	@Deprecated
 	public static final String INSERT_ELEMENT = "tef.insertElement";
+	@Deprecated
 	public static final String DELETE_ELEMENT = "tef.deleteElement";
 	
+	/*
 	private int cursorDrift = 0;
 	private int currentCursortPosition = 0;
 	private boolean duringCursorPositionChange = false;
+	*/
 	
 	private ErrorAnnotator fErrorAnnotator = null;
 		
@@ -79,11 +79,11 @@ public abstract class TEFEditor extends TextEditor implements ICursorPostionProv
 	public final void createPartControl(Composite parent) {		
 		super.createPartControl(parent);
 		fErrorAnnotator = new ErrorAnnotator((IAnnotationModelExtension)getSourceViewer().getAnnotationModel());
-		((TEFDocument)getSourceViewer().getDocument()).getModelDocument().configure(fErrorAnnotator, this);
+		((TEFDocument)getSourceViewer().getDocument()).configure(getSourceViewer().getAnnotationModel(),
+				fErrorAnnotator, this);
 		OccurencesAnnotator occurenceAnnotator = new OccurencesAnnotator();
 		SelectedElementAnnotator selectedElementAnnotator = new SelectedElementAnnotator();
-		
-		
+				
 		this.getSelectionProvider().addSelectionChangedListener(occurenceAnnotator);
 		this.getSelectionProvider().addSelectionChangedListener(selectedElementAnnotator);
 		this.getSelectionProvider().addSelectionChangedListener(fErrorAnnotator);	
@@ -98,13 +98,15 @@ public abstract class TEFEditor extends TextEditor implements ICursorPostionProv
 		action.setActionDefinitionId(actionId);
 		setAction("ContentAssistProposal", action);
 		
+		/*
 		IAction insertElement = createElementInsertAction();
 		insertElement.setActionDefinitionId(INSERT_ELEMENT);
 		setAction(INSERT_ELEMENT, insertElement);
 		
 		IAction deleteElement = createDeleteElementAction();
 		deleteElement.setActionDefinitionId(DELETE_ELEMENT);
-		setAction(DELETE_ELEMENT, deleteElement);		
+		setAction(DELETE_ELEMENT, deleteElement);
+		*/		
 	}		
 	
 	private IAction createContentAssistAction() {
@@ -113,18 +115,33 @@ public abstract class TEFEditor extends TextEditor implements ICursorPostionProv
 				this, ISourceViewer.CONTENTASSIST_PROPOSALS);
 	}
 	
+	@Deprecated
 	private IAction createElementInsertAction() {
 		ResourceBundle resourceBundle = EditorTestPlugin.getDefault().getResourceBundle();
 		return new TextOperationAction(resourceBundle, "InsertElement", this, 
 				TEFSourceViewer.INSERT_ELEMENT);
 	}
 	
+	@Deprecated
 	private IAction createDeleteElementAction() {
 		ResourceBundle resourceBundle = EditorTestPlugin.getDefault().getResourceBundle();
 		return new TextOperationAction(resourceBundle, "DeleteElement", this, 
 				TEFSourceViewer.DELETE_ELEMENT);
-	}	
+	}
 	
+	
+	/**
+	 * Overidden to also change the selection on simple cursor movements. This
+	 * is done, because occurence marker are reacting to selection changes.
+	 */
+	@Override
+	protected void handleCursorPositionChanged() {
+		selectAndReveal(getSourceViewer().getTextWidget().getCaretOffset(), 0);
+		super.handleCursorPositionChanged();
+	}
+
+	/** 
+	 * is not needed anymore, is it?
 	@Override
 	protected final void handleCursorPositionChanged() {
 		if (((TEFDocument)getSourceViewer().getDocument()).isInTEFMode()) {		
@@ -150,6 +167,7 @@ public abstract class TEFEditor extends TextEditor implements ICursorPostionProv
 		}
 	}
 
+
 	private int getValidCursorPosition(int newCursorPos, DocumentText document) {
 		ComputeCursorPositionVisitor cursorVisitor = new ComputeCursorPositionVisitor(
 				newCursorPos, newCursorPos > currentCursortPosition, true);
@@ -162,8 +180,14 @@ public abstract class TEFEditor extends TextEditor implements ICursorPostionProv
 	public final void addCarretDrift(int drift) {
 		this.cursorDrift += drift;
 	}
+	 */
 
 	public void setNewCursorPosition(Text text, int offset) {
 		((TEFSourceViewer)getSourceViewer()).setNewCursorPosition(text, offset);
 	}
+
+	public void addCarretDrift(int value) {
+		// TODO Auto-generated method stub	
+	}	
+	
 }

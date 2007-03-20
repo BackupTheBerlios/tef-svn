@@ -16,16 +16,13 @@
  */
 package hub.sam.tef.templates;
 
-import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.parse.ISyntaxProvider;
-import hub.sam.tef.parse.TextBasedAST;
+import hub.sam.tef.treerepresentation.ISyntaxProvider;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
 
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
-
 
 /**
  * Terminal templates create simple fix views. Can be used for
@@ -98,12 +95,4 @@ public class TerminalTemplate extends Template implements ISyntaxProvider {
 	public String[][] getRules() {
 		return new String[][] {};
 	}
-	
-	public boolean tryToReuse() {
-		return false;
-	}				
-
-	public TextBasedAST createAST(TextBasedAST parent,  IModelElement model, Text text) {	
-		return null;
-	}		
 }

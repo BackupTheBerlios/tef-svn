@@ -23,14 +23,14 @@ import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 
-
+@Deprecated
 public class TEFAutoEditStrategy implements IAutoEditStrategy {
 
 	public void customizeDocumentCommand(IDocument document,
 			DocumentCommand command) {
 		TextEvent textAdd = new TextEvent(command.offset, command.offset + command.length, command.text);
 		VerifyEventVisitor visitor = new VerifyEventVisitor(textAdd);
-		((TEFDocument)document).getModelDocument().getDocumentText().process(visitor, textAdd.getBegin());
+		//((TEFDocument)document).getModelDocument().getDocumentText().process(visitor, textAdd.getBegin());
 		boolean accept = visitor.getResult();
 		command.doit = true;
 		if (accept) {			

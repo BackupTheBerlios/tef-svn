@@ -27,6 +27,7 @@ import java.util.Vector;
  * its children. A CompoundText represents the contents of all its children. It
  * hasn't a content of its own.
  */
+@Deprecated
 public class CompoundText extends Text {
 
 	private final List<Text> texts = new Vector<Text>();

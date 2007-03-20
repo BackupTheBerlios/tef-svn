@@ -1,12 +1,12 @@
 package hub.sam.tef.treerepresentation;
 
+import hub.sam.tef.models.IModelElement;
+
 
 public interface ITreeRepresentationProvider {
 	
-	public Object createTreeRepresentation(String property, Object model);
+	public TreeRepresentationLeaf createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite);
 	
-	public void updateTreeRepresentation(TreeRepresentation treeRepresentation, String property, Object model);
+	public Object createModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite);
 	
-	public boolean compare(TreeRepresentationLeaf treeRepresentation, String property, Object model);
-
 }

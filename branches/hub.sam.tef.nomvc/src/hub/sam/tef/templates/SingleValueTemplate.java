@@ -18,17 +18,15 @@ package hub.sam.tef.templates;
 
 import com.sun.corba.se.impl.io.FVDCodeBaseImpl;
 
-import sun.rmi.runtime.GetThreadPoolAction;
 import hub.sam.tef.controllers.AbstractRequestHandler;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.controllers.RetifyCursorPositionModelEventListener;
 import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.parse.IASTBasedModelUpdater;
-import hub.sam.tef.parse.ISyntaxProvider;
-import hub.sam.tef.parse.ModelUpdateConfiguration;
-import hub.sam.tef.parse.TextBasedAST;
+import hub.sam.tef.parse.ISemanticProvider;
+import hub.sam.tef.treerepresentation.ISyntaxProvider;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
+import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 import hub.sam.tef.views.Text;
@@ -98,56 +96,45 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 	
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
-		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
-			return (T)new ModelUpdater();
+		if (ISyntaxProvider.class == adapter) {
+			return (T)new SyntaxProvider();
 		} else if (ITreeRepresentationProvider.class == adapter) {
 			return (T)new TreeRepresentationProvider();
+		} else if (ISemanticProvider.class == adapter) {
+			return (T)new SemanticProvider();
 		} else {
 			return super.getAdapter(adapter);
 		}
 	}
 	
 	class TreeRepresentationProvider implements ITreeRepresentationProvider {
-		public Object createTreeRepresentation(String property, Object model) {
+		public TreeRepresentationLeaf createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite) {
 			return getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
-					createTreeRepresentation(null, ((IModelElement)model).getValue(property));			
+					createTreeRepresentation(null, null, ((IModelElement)model).getValue(property), true);			
 		}
 
-		public void updateTreeRepresentation(TreeRepresentation treeRepresentation, String property, Object model) {
-			getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
-					updateTreeRepresentation(treeRepresentation, property, ((IModelElement)model).getValue(property));
-		}
-
-		public boolean compare(TreeRepresentationLeaf treeRepresentation, String property, Object model) {
+		public Object createModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {
 			return getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
-					compare(treeRepresentation, property, ((IModelElement)model).getValue(property));
-		}			
-				
+					createModel(owner, property, tree, true);
+		}							
 	}
 
-	class ModelUpdater implements IASTBasedModelUpdater, ISyntaxProvider {	
-		public void executeModelUpdate(ModelUpdateConfiguration configuration) {
-			getValueTemplate().getAdapter(IASTBasedModelUpdater.class).
-					executeModelUpdate(configuration);
-		}
-
-		public TextBasedAST createAST(TextBasedAST parent,  IModelElement model, Text text) {
-			System.out.println("$$" + getProperty());
-			getValueTemplate().getAdapter(ISyntaxProvider.class).createAST(parent, model, text);
-			return null;
-		}
-
+	class SyntaxProvider implements ISyntaxProvider {			
 		public String getNonTerminal() {
 			return getValueTemplate().getAdapter(ISyntaxProvider.class).getNonTerminal();
 		}
 
 		public String[][] getRules() {
 			return new String[][] {};
-		}
-
-		public boolean tryToReuse() {
-			return true;
-		}				
+		}					
+	}
+	
+	class SemanticProvider implements ISemanticProvider {
+		
+		public void checkAndResolve(TreeRepresentation representation, SemanticsContext context) {		
+			getValueTemplate().getAdapter(ISemanticProvider.class).
+					checkAndResolve(representation, context);		
+		}		
 	}
 		
 }

@@ -30,7 +30,13 @@ public abstract class TreeRepresentationLeaf extends AbstractTree<TreeRepresenta
 	}
 	
 	public final void setElement(ITreeContents contents) {
+		if (fElement != null && fElement instanceof IDisposable) {
+			((IDisposable)fElement).dispose();
+		}
 		fElement = contents;
+		if (this instanceof TreeRepresentation) {
+			contents.setTreeRepresentation((TreeRepresentation)this);
+		}
 	}
 	
 	public abstract int getLength();

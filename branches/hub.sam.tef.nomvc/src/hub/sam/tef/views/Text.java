@@ -43,6 +43,7 @@ import java.util.Vector;
  * elements can be added, setted and retrieved from a text (@link
  * {@link IContainer}).
  */
+@Deprecated
 public abstract class Text extends AbstractContainer { 
 	
 	private int length = -1;	

@@ -57,6 +57,7 @@ public class PresentationDamagerRepairer implements IPresentationDamager, IPrese
 	}
 		
 	public void createPresentation(TextPresentation presentation, final ITypedRegion damage) {
+		/* TODO has to be rebuild for TreeRepresentation
 		if (fDocument.isInTEFMode()) {
 			presentation.setDefaultStyleRange(new StyleRange(damage.getOffset(), damage.getLength(), null, null));		
 			FirstTextAtOffsetVisitor visitor = new FirstTextAtOffsetVisitor(damage.getOffset());	
@@ -90,6 +91,7 @@ public class PresentationDamagerRepairer implements IPresentationDamager, IPrese
 				}
 			}
 		}
+		*/
 	}
 
 	public IRegion getDamageRegion(ITypedRegion partition, DocumentEvent event, boolean documentPartitioningChanged) {		

@@ -16,7 +16,7 @@
  */
 package hub.sam.tef.models;
 
-import hub.sam.tef.views.Text;
+import editortest.emf.model.IOccurence;
 
 public interface IModelElement {
 
@@ -28,7 +28,7 @@ public interface IModelElement {
 	
 	public IMetaModelElement getMetaElement();
 	
-	public void registerOccurence(Text text);
+	public void registerOccurence(IOccurence occurence);
 	
-	public Text[] getRegisteredOccureces();
+	public IOccurence[] getRegisteredOccureces();
 }

@@ -16,6 +16,16 @@
  */
 package hub.sam.tef;
 
+import hub.sam.tef.controllers.IAnnotationModelProvider;
+import hub.sam.tef.controllers.ICursorPostionProvider;
+import hub.sam.tef.controllers.IModelRepresentationProvider;
+import hub.sam.tef.models.IModel;
+import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.parse.SyntaxError;
+import hub.sam.tef.templates.LayoutManager;
+import hub.sam.tef.templates.Template;
+import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.views.DocumentText;
 import hub.sam.util.strings.Change;
 import hub.sam.util.strings.Changes;
@@ -23,6 +33,9 @@ import hub.sam.util.strings.Changes;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.jface.text.source.IAnnotationModelExtension;
 
 /**
  * This class represent TEF documents as eclipse text documents
@@ -47,69 +60,24 @@ import org.eclipse.jface.text.IDocument;
  * This document is a document per editor. This is completly wrong. It should be separated from
  * a concrete editor instance.
  */
-public class TEFDocument extends Document {	
+public abstract class TEFDocument extends Document implements IModelProvider, ITemplateProvider {	
+	private Changes changes = new Changes();	
+	private IModel model = null;
+	private Object resource = null;
+	private Template topLevelTemplate = null;
 	
-	public static IDocument createDocumentForModelDocument(TEFModelDocument modelDocument) {
-		return new TEFDocument(modelDocument);
-	}
+	private IAnnotationModel fAnnotationModel = null;
+	private IAnnotationModelProvider fAnnotationModelProvider = null;
+	private ICursorPostionProvider fCursorPositionProvider = null;
+	private TreeRepresentation treeRepresentation = null;
+	private SyntaxError syntaxError = null;
 	
-	private final TEFModelDocument fModelDocument;
+	private boolean empty = true;	
+	private boolean changed = false;
 	
-	private StringBuffer content = null;	
-	private Changes changes = null;	
-	private boolean inTEFMode = true;
-	
-	private boolean disturbed = true;
-	
-	private TEFDocument(TEFModelDocument modelDocument) {
-		this.fModelDocument = modelDocument;
-		modelDocument.setEclipseDocument(this);
-	}
-	
-	/**
-	 * Overriding the normal eclipse replace methods. This method is used to
-	 * propagate user changes to the document to this document. We say this
-	 * method handles changes "from above", in contradiction to changes "from
-	 * below", which are handles in {@link #doReplace(int, int, String)}.
-	 * 
-	 * For TEF Phase 1: The changes are put into TextEvent which are processed
-	 * through the DocumentText.
-	 * 
-	 * For TEF Phase 2: Like Phase 1, but if the TextEvent isn't handled: User
-	 * changes (key strokes, paste, etc.) are not forwarded to the DocumentText.
-	 * They are stored and displayed (as a variation to the DocumentText
-	 * content). They are incorporated into the DocumentText when the document
-	 * is reconciled. There are two methods
-	 * 
-	 * a) The document is switched in text-editing mode. All TEF features are
-	 * disabled, the content is edited like in a normal text editor.
-	 * 
-	 * b) It is remembered what areas of the text are changes (only text) and
-	 * what are still TEF areas. Events targeted for TEF-areas will still be
-	 * guided to the according text objects. This way changes to field with
-	 * primitive data, which are normally changed by user input, are still
-	 * changes as in phase one, and changes that modify the document structure
-	 * are handled by a parser through reconciliation.
-	 * 
-	 * PROBLEM (only in b): these user change events are modified to empty
-	 * changes by the TEFAutoEditStrategy before they arrive here. The reason
-	 * is: Eclipse will execute the command in the displayed text (that leads to
-	 * cursor movement and text flickering, but is only wrong for TEF Phase 1);
-	 * it thinks the changes are already approved and uses this method only to
-	 * inform the document about it.
-	 * 
-	 * SOLUTION (only in b): disable TEFAutoEditStrategies for Phase 2 editors,
-	 * because all Text changes should be displayed by eclipse anyway (at this
-	 * point phase 2 is even simpler).
-	 */
 	@Override
 	public final void replace(int pos, int length, String text) throws BadLocationException {
-		postReconcilitation();
-		if (inTEFMode) {
-			fModelDocument.replace(pos, length, text);
-		} else {
-			eclipseReplace(pos, length, text);
-		}
+		eclipseReplace(pos, length, text);
 	}
 	
 	/**
@@ -121,86 +89,108 @@ public class TEFDocument extends Document {
 		super.replace(pos, length, text);
 	}
 	
-	public final void switchModes(boolean toTEF)  {
-		if (toTEF != inTEFMode) {
-			if (toTEF) {
-				try {
-					super.replace(0, content.length(), fModelDocument.getContent());
-				} catch (BadLocationException e) {
-					throw new RuntimeException(e);
-				}
-				content = null;		
-				changes = null;
-				System.out.println("Switched to TEF");
-			} else {
-				changes = new Changes();
-				content = new StringBuffer(fModelDocument.getContent());
-				System.out.println("Switched to eclipse");
-			}
-			inTEFMode = toTEF;
-		} 
-	}
-	
 	private synchronized final void eclipseReplace(int pos, int length, String text) throws BadLocationException {
-		disturbed = true;
-		content.replace(pos, pos + length, text);
 		changes.addChange(new Change(pos, length, text));
+		changed = true;
 		super.replace(pos, length, text);
-	}
-		
-	class Replace {
-		int pos; int length; String text;
-		public Replace(int pos, int length, String text) {
-			super();
-			this.pos = pos;
-			this.length = length;
-			this.text = text;
-		}		
-	}
-	
-	public boolean isInTEFMode()  {
-		return inTEFMode;
-	}
-	
-	public String getContent() {
-		if (inTEFMode) {
-			return fModelDocument.getContent();
-		} else {
-			return content.toString();
-		}
 	}
 	
 	public Changes getChanges() {
 		return this.changes;
 	}
 	
-	public TEFModelDocument getModelDocument() {
-		return fModelDocument;
+	public IModelRepresentationProvider getModelRepresentationProvider() {
+		final IModel model = this.model;
+		return new IModelRepresentationProvider() {
+			public LayoutManager getLayoutManager() {
+				return null;
+			}
+
+			public IModel getModel() {
+				return model;
+			}			
+		};
 	}
-	
-	public synchronized void startReconciliation() {
-		disturbed = false;
+
+	public IModel getModel() {
+		return model;
 	}
-	
-	public synchronized boolean stopReconciliation() {
-		if (!disturbed) {					
-			return true;
-		} else {
-			return false;
-		}
+
+	public IModelElement getTopLevelElement() {
+		return (IModelElement)getModel().getOutermostCompositesOfEditedResource().iterator().next();
 	}
-	
-	public synchronized void postReconcilitation() {
-		if (!disturbed) {
-			switchModes(true);
+
+	public void setInitialModelContent(IModel model, Object resource) {
+		this.model = model;
+		this.resource = resource;
+		this.changed = false;
+		treeRepresentation = (TreeRepresentation)getTopLevelTemplate().getAdapter(ITreeRepresentationProvider.class).createTreeRepresentation(null, 
+				null, getTopLevelElement(), true);
+		if (empty) {
 			try {
-				super.replace(0, getLength(), "");
+				doReplace(0, get().length(), treeRepresentation.getContent());
 			} catch (BadLocationException ex) {
 				throw new RuntimeException(ex);
 			}
-			content = new StringBuffer();			
-			this.fModelDocument.initializeContent();			
-			disturbed = true;
+			empty = false;
+		}	
+		removeSyntaxError();
+	}
+	
+	public void setModelContent(IModelElement topLevelElement, TreeRepresentation tree) {
+		treeRepresentation.dispose();
+		treeRepresentation = tree;
+		model.replaceOutermostComposite(resource, getModelContent(), topLevelElement);
+	}
+	
+	public IModelElement getModelContent() {
+		return getTopLevelElement();
+	}
+	
+	public TreeRepresentation getModelRepresentation() {
+		return treeRepresentation;
+	}
+	
+	public Object getModelResource() {
+		return resource;
+	}
+	
+	protected void configure(IAnnotationModel annotationModel, 
+			IAnnotationModelProvider annotationModelProvider, ICursorPostionProvider cursorPostionProvider) {
+		this.fAnnotationModelProvider = annotationModelProvider;
+		this.fCursorPositionProvider = cursorPostionProvider;
+		this.fAnnotationModel = annotationModel;
+	}
+	
+	protected abstract Template createTopLevelTemplate(IAnnotationModelProvider annotationProvider, 
+			ICursorPostionProvider cursorPositionProvider);
+	
+
+	public final Template getTopLevelTemplate() {
+		if (topLevelTemplate == null) {
+			topLevelTemplate = createTopLevelTemplate(fAnnotationModelProvider, fCursorPositionProvider);
+		}
+		return topLevelTemplate;
+	}
+	
+	public IAnnotationModelProvider getAnnotationModelProvider() {
+		return fAnnotationModelProvider;
+	}
+	
+	public boolean needsReconciling() {
+		return changed;
+	}
+	
+	public void setSyntaxError(SyntaxError error, int offset) {
+		fAnnotationModel.addAnnotation(error, new Position(offset, 1));
+		this.syntaxError = error;
+	}
+	
+	private void removeSyntaxError() {
+		if (syntaxError != null) {
+			fAnnotationModel.removeAnnotation(syntaxError);
+			syntaxError = null;
 		}
 	}
+			
 }

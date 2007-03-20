@@ -1,9 +1,10 @@
 package hub.sam.tef.templates;
 
-import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.IType;
+import hub.sam.tef.parse.ISemanticProvider;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
+import hub.sam.tef.treerepresentation.PrimitiveTreeRepresentation;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 
@@ -11,18 +12,6 @@ public abstract class PrimitiveValueTemplate<ModelType> extends ValueTemplate<Mo
 
 	public PrimitiveValueTemplate(Template template, IType type) {
 		super(template, type);
-	}
-
-	protected final void executeASTSemanticsWithConvertedValue(Object convertedValue, IModelElement owner, String property, boolean isCollection, boolean isOld) {
-		if (isCollection) {
-			if (!isOld || ((ICollection)owner.getValue(property)).contains(convertedValue)) {			
-				getModel().getCommandFactory().add(owner, property, convertedValue).execute();
-			}
-		} else {
-			if (!convertedValue.equals(owner.getValue(property))) {
-				getModel().getCommandFactory().set(owner, property, convertedValue).execute();
-			}
-		}
 	}
 		
 	@Override
@@ -33,19 +22,18 @@ public abstract class PrimitiveValueTemplate<ModelType> extends ValueTemplate<Mo
 			return super.getAdapter(adapter);
 		}
 	}
+	
+	protected abstract Object getObjectValueFromStringValue(String value);
 
 	class TreeRepresentationProvider implements ITreeRepresentationProvider {
-		public Object createTreeRepresentation(String property, Object model) {
-			return (model == null) ? "<null>" : model;
+		public TreeRepresentationLeaf createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite) {
+			return new PrimitiveTreeRepresentation((model == null) ? "<null>" : model);
 		}
 
-		public void updateTreeRepresentation(TreeRepresentation treeRepresentation, String property, Object model) {
-			// empty			
-		}
-
-		public boolean compare(TreeRepresentationLeaf treeRepresentation, String property, Object model) {
-			return treeRepresentation.getContent().equals(model.toString());
-		}				
-		
+		public Object createModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {
+			getModel().getCommandFactory().set(owner, property, 
+					getObjectValueFromStringValue(((PrimitiveTreeRepresentation)tree).getContent())).execute();
+			return null;
+		}	
 	}
 }

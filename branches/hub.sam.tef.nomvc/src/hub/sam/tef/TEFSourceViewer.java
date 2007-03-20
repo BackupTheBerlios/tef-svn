@@ -17,8 +17,7 @@
 package hub.sam.tef;
 
 import hub.sam.tef.controllers.ComputeCursorPositionVisitor;
-import hub.sam.tef.controllers.ComputeSelectionVisitor;
-import hub.sam.tef.controllers.IDeleteEventHandler;
+import hub.sam.tef.controllers.ICursorPostionProvider;
 import hub.sam.tef.views.Text;
 
 import org.eclipse.jface.text.DocumentEvent;
@@ -34,12 +33,18 @@ import org.eclipse.swt.widgets.Composite;
 // this may change with future eclipse versions
 public class TEFSourceViewer extends SourceViewer {
 	
+	@Deprecated
 	public static final int INSERT_ELEMENT = SourceViewer.QUICK_ASSIST + 1;
+	@Deprecated
 	public static final int DELETE_ELEMENT = SourceViewer.QUICK_ASSIST + 2;
 	
+	@Deprecated
 	private IContentAssistant fInsertElementAssist;
+	@Deprecated
 	private Text newCursorPositionText = null;
+	@Deprecated
 	private int newCursorPositionOffset = -1;
+	@Deprecated
 	private IDocumentListener fDocumentListener = null;
 	
 	public TEFSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
@@ -85,17 +90,11 @@ public class TEFSourceViewer extends SourceViewer {
 	}	
 	
 	private void doInsertAction() {
-		fInsertElementAssist.showPossibleCompletions();
+		// deprecated
 	}
 	
 	private void doDeleteAction() {
-		int offset = getTextWidget().getCaretOffset();
-		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(offset);
-		((TEFDocument)getDocument()).getModelDocument().getDocumentText().process(visitor, offset);
-		Text selectedText = visitor.getResult();
-		if (selectedText != null) {
-			selectedText.getAllElements(IDeleteEventHandler.class).iterator().next().handleEvent(selectedText);
-		}
+		// deprecated
 	}
 	
 	/**
@@ -106,6 +105,7 @@ public class TEFSourceViewer extends SourceViewer {
 	 *            The cursor postion as offset relative to the beginning of the
 	 *            document.
 	 */
+	@Deprecated
 	public void setNewCursorPosition(Text cursorPositionText, int cursorPositionOffset) {
 		this.newCursorPositionText = cursorPositionText;
 		this.newCursorPositionOffset = cursorPositionOffset;

@@ -10,19 +10,14 @@ import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 public class TEFReconciler extends AbstractReconciler {
 
 	private final IReconcilingStrategy fParserBasedReconcilingStrategy = new ParserBasedReconcilingStrategy();	
-	
-	private TEFDocument document = null;
 
 	@Override
 	protected void process(DirtyRegion dirtyRegion) {
-		if (!document.isInTEFMode()) {
-			fParserBasedReconcilingStrategy.reconcile(dirtyRegion, null);
-		}
+		fParserBasedReconcilingStrategy.reconcile(dirtyRegion, null);		
 	}
 
 	@Override
-	protected void reconcilerDocumentChanged(IDocument newDocument) {
-		document = (TEFDocument)newDocument;
+	protected void reconcilerDocumentChanged(IDocument newDocument) {		
 		fParserBasedReconcilingStrategy.setDocument(newDocument);
 	}
 

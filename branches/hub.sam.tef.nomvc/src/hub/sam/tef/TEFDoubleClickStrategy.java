@@ -16,18 +16,19 @@
  */
 package hub.sam.tef;
 
-import hub.sam.tef.controllers.ComputeSelectionVisitor;
-import hub.sam.tef.views.Text;
-
-import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.Region;
 
 
 public class TEFDoubleClickStrategy implements 
 		ITextDoubleClickStrategy {
+
+	public void doubleClicked(ITextViewer viewer) {
+		// TODO Auto-generated method stub		
+	}
 	
+	/**
+	 * TODO has to be reworked for TreeRepresentations	 
 	public void doubleClicked(ITextViewer viewer) {
 		int offset = viewer.getSelectedRange().x;
 		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(offset);
@@ -39,4 +40,6 @@ public class TEFDoubleClickStrategy implements
 			viewer.setSelectedRange(region.getOffset(), region.getLength());
 		}
 	}
+	*/
+		
 }

@@ -66,12 +66,14 @@ public abstract class ValueTemplate<ModelType> extends Template {
 	 *            changes by the user.
 	 * @return The created view.
 	 */
+	@Deprecated
 	protected abstract Text createView(ModelType model, IValueChangeListener<ModelType> changeListener);
 	
 	/**
 	 * Returns the created view for the given model. It adds additional objects to the view. For example it
 	 * puts the used template into the view.
 	 */
+	@Deprecated
 	public final Text getView(ModelType model, IValueChangeListener<ModelType> changeListener) {
 		Text result = createView(model, changeListener);		
 		if (result.getElement(Template.class) == null) {
@@ -98,6 +100,7 @@ public abstract class ValueTemplate<ModelType> extends Template {
 	 *     
 	 * @return The updated view.
 	 */
+	@Deprecated
 	public void updateView(Text view, ModelType value) {
 		//emtpy
 	}

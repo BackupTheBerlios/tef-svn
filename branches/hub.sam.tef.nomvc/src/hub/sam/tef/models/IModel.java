@@ -36,4 +36,6 @@ public interface IModel {
 	public ICollection getOutermostComposites(Object resource);
 	
 	public ICollection getOutermostCompositesOfEditedResource();
+	
+	public void replaceOutermostComposite(Object resource, IModelElement oldElement, IModelElement newElement);
 }

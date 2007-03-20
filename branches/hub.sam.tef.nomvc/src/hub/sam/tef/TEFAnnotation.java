@@ -1,19 +1,21 @@
 package hub.sam.tef;
 
-import hub.sam.tef.views.Text;
-
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
+
+import editortest.emf.model.IOccurence;
 
 public class TEFAnnotation {
 
 	private final Annotation annotation;
-	private final Text fText;
+	private final IOccurence fOccurence;
+	private Position position = null;
 	
-	public TEFAnnotation(final Annotation annotation, final Text position) {
+	public TEFAnnotation(final Annotation annotation, final IOccurence occurence) {
 		super();
 		this.annotation = annotation;
-		this.fText = position;
+		this.fOccurence = occurence;
+		this.position = new Position(fOccurence.getAbsolutOffset(0), fOccurence.getLength());
 	}
 	
 	public Annotation getAnnotation() {
@@ -21,13 +23,16 @@ public class TEFAnnotation {
 	}
 	
 	public Position getPosition() {
-		return new Position(fText.getAbsolutOffset(0), fText.getLength());
+		if (fOccurence.isActive()) {
+			position = new Position(fOccurence.getAbsolutOffset(0), fOccurence.getLength());
+		}
+		return position;
 	}
 	
 	@Override
 	public boolean equals(Object arg0) {
 		if (arg0 instanceof ErrorAnnotation) {
-			return fText.equals(((TEFAnnotation)arg0).fText) && annotation.getType().equals(((TEFAnnotation)arg0).annotation.getType());
+			return fOccurence.equals(((TEFAnnotation)arg0).fOccurence) && annotation.getType().equals(((TEFAnnotation)arg0).annotation.getType());
 		} else {
 			return false;
 		}
@@ -35,6 +40,6 @@ public class TEFAnnotation {
 
 	@Override
 	public int hashCode() {
-		return fText.hashCode();
+		return fOccurence.hashCode();
 	}
 }
