@@ -25,4 +25,13 @@ public abstract class AbstractModel implements IModel {
 		return getOutermostComposites(editedResource);
 	}		
 	
+	public void replaceOutermostComposite(Object resource, IModelElement oldElement, IModelElement newElement) {
+		getCommandFactory().remove(getOutermostComposites(resource), oldElement).execute();		
+		getCommandFactory().add(getOutermostComposites(resource), newElement).execute();						
+	}
+
+	public Iterable<IModelElement> getElementExceptEditedResource(IMetaModelElement metaElement) {
+		return getElements(metaElement, editedResource);
+	}
+		
 }

@@ -1,12 +1,10 @@
 package hub.sam.tef;
 
-import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 
-import editortest.emf.model.IOccurence;
+public class TEFAnnotation extends Annotation {
 
-public class TEFAnnotation {
-
+	/*
 	private final Annotation annotation;
 	private final IOccurence fOccurence;
 	private Position position = null;
@@ -42,4 +40,5 @@ public class TEFAnnotation {
 	public int hashCode() {
 		return fOccurence.hashCode();
 	}
+	*/
 }

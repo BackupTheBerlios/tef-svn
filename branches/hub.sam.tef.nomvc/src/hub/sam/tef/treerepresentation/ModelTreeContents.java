@@ -1,7 +1,6 @@
 package hub.sam.tef.treerepresentation;
 
 import editortest.emf.model.IOccurence;
-import hub.sam.mopa.trees.TreeNode;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.Template;
 

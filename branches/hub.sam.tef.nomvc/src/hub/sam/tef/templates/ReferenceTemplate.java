@@ -68,6 +68,10 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		this.fIdentifierTemplate = getElementTemplate();
 	}	
 	
+	public IMetaModelElement getTypeModel() {
+		return fTypeModel;
+	}
+	
 	protected abstract ElementTemplate getElementTemplate();
 	
 	@Override
@@ -127,17 +131,18 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		}	
 	}
 
+	
 	private void createValueView(Text view, IModelElement value, final IValueChangeListener<IModelElement> changeListener) {
 		final Text text = fIdentifierTemplate.getView(value, null);
 		if (value instanceof InternalModelElement) {			
 			text.addTextStatusListener(new ITextStatusListener() {
 				private final ErrorAnnotation fError = null; //new ErrorAnnotation(text);
 				public void hidden() {					
-					fError.removeFromAnnotationModel(getAnnotationModelProvider());					
+	//				fError.removeFromAnnotationModel(getAnnotationModelProvider());					
 				}
 
 				public void shown() {
-					fError.addToAnnotationModel(getAnnotationModelProvider());
+	//				fError.addToAnnotationModel(getAnnotationModelProvider());
 				}
 
 				public void disposed() {
@@ -221,18 +226,24 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 			return treeRepresentation;
 		}
 
-		public Object createModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {			
-			
+		public Object createCompositeModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {				
 			IModelElement result =  (IModelElement)fIdentifierTemplate.getAdapter(ITreeRepresentationProvider.class).
-					createModel(owner, property, ((TreeRepresentation)tree).getChildNodes().get(0), false);			
+					createCompositeModel(owner, property, ((TreeRepresentation)tree).getChildNodes().get(0), false);			
 			tree.setElement(new ModelTreeContents(ReferenceTemplate.this, result));
 			return result;
-		}	
+		}
+
+		public Object createReferenceModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite, SemanticsContext context) {
+			IModelElement result = (IModelElement)fIdentifierTemplate.getAdapter(ITreeRepresentationProvider.class).
+					createReferenceModel(owner, property, ((TreeRepresentation)tree).getChildNodes().get(0), false, context);						
+			return result;
+		}			
+		
 	}
 	
 	class SemanticProvider implements ISemanticProvider {		
-		public void checkAndResolve(TreeRepresentation representation, SemanticsContext context) {			
-			fIdentifierTemplate.getAdapter(ISemanticProvider.class).checkAndResolve(representation.getChildNodes().get(0), context);
+		public void check(TreeRepresentation representation, SemanticsContext context) {			
+			fIdentifierTemplate.getAdapter(ISemanticProvider.class).check(representation.getChildNodes().get(0), context);
 		}		
 	}
 }

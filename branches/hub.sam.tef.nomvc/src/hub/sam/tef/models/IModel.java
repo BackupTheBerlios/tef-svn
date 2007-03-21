@@ -20,6 +20,10 @@ public interface IModel {
 	
 	public Iterable<IModelElement> getElements(IMetaModelElement metaElement);
 	
+	public Iterable<IModelElement> getElements(IMetaModelElement metaElement, Object resourceFilter);
+	
+	public Iterable<IModelElement> getElementExceptEditedResource(IMetaModelElement metaElement);
+	
 	public ICommandFactory getCommandFactory();
 	
 	/**

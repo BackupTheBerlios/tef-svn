@@ -113,10 +113,15 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 					createTreeRepresentation(null, null, ((IModelElement)model).getValue(property), true);			
 		}
 
-		public Object createModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {
+		public Object createCompositeModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {
 			return getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
-					createModel(owner, property, tree, true);
-		}							
+					createCompositeModel(owner, property, tree, true);
+		}
+
+		public Object createReferenceModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite, SemanticsContext context) {
+			return getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
+					createReferenceModel(owner, property, tree, true, context);
+		}					
 	}
 
 	class SyntaxProvider implements ISyntaxProvider {			
@@ -131,9 +136,9 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 	
 	class SemanticProvider implements ISemanticProvider {
 		
-		public void checkAndResolve(TreeRepresentation representation, SemanticsContext context) {		
+		public void check(TreeRepresentation representation, SemanticsContext context) {		
 			getValueTemplate().getAdapter(ISemanticProvider.class).
-					checkAndResolve(representation, context);		
+					check(representation, context);		
 		}		
 	}
 		

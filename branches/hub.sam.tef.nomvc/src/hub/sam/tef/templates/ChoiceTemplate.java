@@ -215,21 +215,28 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 			throw new RuntimeException("assert");
 		}
 
-		public Object createModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {			
+		public Object createCompositeModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {			
 			TreeRepresentationLeaf childTree = tree.getChildNodes().get(0);			
 			IModelElement result = (IModelElement) childTree.getElement().getTemplate().getAdapter(ITreeRepresentationProvider.class).
-					createModel(owner, property, childTree, isComposite);
+					createCompositeModel(owner, property, childTree, isComposite);
 			tree.setElement(new ModelTreeContents(tree.getElement().getTemplate(), result));
 			return result;
-		}			
+		}
+
+		public Object createReferenceModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite, SemanticsContext context) {
+			TreeRepresentationLeaf childTree = tree.getChildNodes().get(0);			
+			IModelElement result = (IModelElement) childTree.getElement().getTemplate().getAdapter(ITreeRepresentationProvider.class).
+					createReferenceModel(owner, property, childTree, isComposite, context);			
+			return result;
+		}				
 	}
 		
 	class SemanticProvider implements ISemanticProvider {
 		
-		public void checkAndResolve(TreeRepresentation representation, SemanticsContext context) {		
+		public void check(TreeRepresentation representation, SemanticsContext context) {		
 			TreeRepresentation nextNode = ((TreeRepresentation)representation).getChildNodes().get(0);
 			nextNode.getElement().getTemplate().getAdapter(ISemanticProvider.class).
-					checkAndResolve(nextNode, context);
+					check(nextNode, context);
 		}		
 	}
 }

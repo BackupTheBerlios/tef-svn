@@ -17,6 +17,7 @@
 package editortest.mof.model;
 
 import hub.sam.tef.models.AbstractModelElement;
+import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelChangeListener;
 
@@ -75,4 +76,11 @@ public class MofModelElementImpl extends AbstractModelElement {
 	public int hashCode() {
 		return fObject.hashCode();
 	}
+
+	public ICollection getComponents() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

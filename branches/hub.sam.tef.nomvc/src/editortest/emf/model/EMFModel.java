@@ -39,8 +39,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
-
-import sun.jdbc.odbc.OdbcDef;
+import org.eclipse.ui.internal.ReopenEditorMenu;
 
 public class EMFModel extends AbstractModel {
 	
@@ -57,7 +56,7 @@ public class EMFModel extends AbstractModel {
 		fResource = resource;
 		fPackage = new Vector<EPackage>();
 		fPackage.add(thePackage);				
-		fDomain = editingDomain;
+		fDomain = editingDomain;		
 	}
 	
 	public EMFModel(final Iterable<EFactory> factories, final Iterable<EPackage> packages,
@@ -89,20 +88,33 @@ public class EMFModel extends AbstractModel {
 	}
 
 	public Iterable<IModelElement> getElements(IMetaModelElement metaElement) {
-		// TODO performance !!!
-		EList result = new BasicEList();		
-		Iterator iterator = fDomain.getResourceSet().getAllContents();
-		
-		while (iterator.hasNext()) {
-			Object next = iterator.next();
-			if (next instanceof EObject) {
-				EObject nextObject = (EObject)next;
-				
-				if (((EClass)((EMFMetaModelElement)metaElement).getEMFObject()).getInstanceClass().
-						isAssignableFrom(nextObject.eClass().getInstanceClass())) {
-					result.add(nextObject);	
-				}				
+		return getElements(metaElement, null);
+	}	
+
+	public Iterable<IModelElement> getElements(IMetaModelElement metaElement, Object resourceFilter) {
+		// TODO performance !!!		
+		Collection<Resource> filteredResources = new Vector<Resource>();
+		for (Object resource: fDomain.getResourceSet().getResources()) {
+			if (resourceFilter == null || !((Resource)resource).getURI().equals((URI)resourceFilter)) {
+				filteredResources.add((Resource)resource);				
 			}
+		}
+		
+		EList result = new BasicEList();		
+		for (Resource resource: filteredResources) {
+			Iterator iterator = resource.getAllContents();
+			
+			while (iterator.hasNext()) {
+				Object next = iterator.next();
+				if (next instanceof EObject) {
+					EObject nextObject = (EObject)next;
+					
+					if (((EClass)((EMFMetaModelElement)metaElement).getEMFObject()).getInstanceClass().
+							isAssignableFrom(nextObject.eClass().getInstanceClass())) {
+						result.add(nextObject);	
+					}				
+				}
+			}			
 		}
 		return new EMFSequence(result);
 	}
@@ -156,11 +168,5 @@ public class EMFModel extends AbstractModel {
 	public IType getType(String name) {
 		return getMetaElement(name);
 	}
-
-	public void replaceOutermostComposite(Object resource, IModelElement oldElement, IModelElement newElement) {
-		fDomain.getResourceSet().getResource((URI)resource, false).getContents().remove(getEMFObjectForModel(oldElement));
-		fDomain.getResourceSet().getResource((URI)resource, false).getContents().add(getEMFObjectForModel(newElement));				
-	}
-	
 	
 }

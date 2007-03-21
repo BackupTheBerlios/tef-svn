@@ -5,6 +5,6 @@ import hub.sam.tef.treerepresentation.TreeRepresentation;
 
 public interface ISemanticProvider {
 
-	public void checkAndResolve(TreeRepresentation representation, SemanticsContext context); 
+	public void check(TreeRepresentation representation, SemanticsContext context); 
 			
 }

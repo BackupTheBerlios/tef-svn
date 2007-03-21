@@ -86,14 +86,26 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, ITreeRepres
 		return result;		
 	}		
 	
-	public Object createModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {		
+	public Object createCompositeModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {		
 		TreeRepresentation nextTree = getTailNode((TreeRepresentation)tree);
 		if (nextTree != null) {
 			nextTree.setElement(new ModelTreeContents(fTemplate, owner));
-			createModel(owner, property, nextTree, isComposite);
+			createCompositeModel(owner, property, nextTree, isComposite);
 		}
 		fTemplate.getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
-		createModel(owner, property, getValueNode((TreeRepresentation)tree), true);
+		createCompositeModel(owner, property, getValueNode((TreeRepresentation)tree), true);
+		return null;
+	}
+	
+	
+
+	public Object createReferenceModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite, SemanticsContext context) {
+		TreeRepresentation nextTree = getTailNode((TreeRepresentation)tree);
+		if (nextTree != null) {		
+			createReferenceModel(owner, property, nextTree, isComposite, context);
+		}
+		fTemplate.getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
+				createReferenceModel(owner, property, getValueNode((TreeRepresentation)tree), true, context);
 		return null;
 	}
 
@@ -126,10 +138,10 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, ITreeRepres
 	}
 
 	
-	public void checkAndResolve(TreeRepresentation representation, SemanticsContext context) {	
+	public void check(TreeRepresentation representation, SemanticsContext context) {	
 		List<TreeRepresentation> allValueNodes = collectAllValueNodes((TreeRepresentation)representation, new Vector<TreeRepresentation>());				
 		for (TreeRepresentation valueNode: allValueNodes) {
-			fTemplate.getValueTemplate().getAdapter(ISemanticProvider.class).checkAndResolve(valueNode, context);
+			fTemplate.getValueTemplate().getAdapter(ISemanticProvider.class).check(valueNode, context);
 		}
 	}	
 }

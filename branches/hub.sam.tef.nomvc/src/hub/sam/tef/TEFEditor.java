@@ -38,14 +38,6 @@ public abstract class TEFEditor extends TextEditor implements ICursorPostionProv
 	public static final String INSERT_ELEMENT = "tef.insertElement";
 	@Deprecated
 	public static final String DELETE_ELEMENT = "tef.deleteElement";
-	
-	/*
-	private int cursorDrift = 0;
-	private int currentCursortPosition = 0;
-	private boolean duringCursorPositionChange = false;
-	*/
-	
-	private ErrorAnnotator fErrorAnnotator = null;
 		
 	public TEFEditor() {
 		super();				
@@ -77,16 +69,8 @@ public abstract class TEFEditor extends TextEditor implements ICursorPostionProv
 	
 	@Override
 	public final void createPartControl(Composite parent) {		
-		super.createPartControl(parent);
-		fErrorAnnotator = new ErrorAnnotator((IAnnotationModelExtension)getSourceViewer().getAnnotationModel());
-		((TEFDocument)getSourceViewer().getDocument()).configure(getSourceViewer().getAnnotationModel(),
-				fErrorAnnotator, this);
-		OccurencesAnnotator occurenceAnnotator = new OccurencesAnnotator();
-		SelectedElementAnnotator selectedElementAnnotator = new SelectedElementAnnotator();
-				
-		this.getSelectionProvider().addSelectionChangedListener(occurenceAnnotator);
-		this.getSelectionProvider().addSelectionChangedListener(selectedElementAnnotator);
-		this.getSelectionProvider().addSelectionChangedListener(fErrorAnnotator);	
+		super.createPartControl(parent);		
+		new TEFOccurencesUpdater(this);					
 	}
 
 	@Override

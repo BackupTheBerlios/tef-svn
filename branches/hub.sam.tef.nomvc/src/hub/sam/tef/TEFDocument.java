@@ -24,18 +24,29 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.SyntaxError;
 import hub.sam.tef.templates.LayoutManager;
 import hub.sam.tef.templates.Template;
+import hub.sam.tef.treerepresentation.ITreeContents;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
+import hub.sam.tef.treerepresentation.IndexTreeRepresentationSelector;
+import hub.sam.tef.treerepresentation.ModelTreeContents;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.views.DocumentText;
 import hub.sam.util.strings.Change;
 import hub.sam.util.strings.Changes;
+import hub.sam.util.trees.IChildSelector;
+import hub.sam.util.trees.TreeIterator;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.source.IAnnotationModel;
-import org.eclipse.jface.text.source.IAnnotationModelExtension;
+import org.eclipse.jface.text.source.Annotation;
+import org.eclipse.jface.text.source.ISourceViewer;
+
+import editortest.emf.model.IOccurence;
 
 /**
  * This class represent TEF documents as eclipse text documents
@@ -63,14 +74,10 @@ import org.eclipse.jface.text.source.IAnnotationModelExtension;
 public abstract class TEFDocument extends Document implements IModelProvider, ITemplateProvider {	
 	private Changes changes = new Changes();	
 	private IModel model = null;
-	private Object resource = null;
+	private Object resource = null;	
 	private Template topLevelTemplate = null;
 	
-	private IAnnotationModel fAnnotationModel = null;
-	private IAnnotationModelProvider fAnnotationModelProvider = null;
-	private ICursorPostionProvider fCursorPositionProvider = null;
-	private TreeRepresentation treeRepresentation = null;
-	private SyntaxError syntaxError = null;
+	private DocumentModel documentModel = null;
 	
 	private boolean empty = true;	
 	private boolean changed = false;
@@ -124,7 +131,7 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 		this.model = model;
 		this.resource = resource;
 		this.changed = false;
-		treeRepresentation = (TreeRepresentation)getTopLevelTemplate().getAdapter(ITreeRepresentationProvider.class).createTreeRepresentation(null, 
+		TreeRepresentation treeRepresentation = (TreeRepresentation)getTopLevelTemplate().getAdapter(ITreeRepresentationProvider.class).createTreeRepresentation(null, 
 				null, getTopLevelElement(), true);
 		if (empty) {
 			try {
@@ -134,13 +141,13 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 			}
 			empty = false;
 		}	
-		removeSyntaxError();
+		this.documentModel = new DocumentModel(getTopLevelElement(), treeRepresentation);
 	}
 	
-	public void setModelContent(IModelElement topLevelElement, TreeRepresentation tree) {
-		treeRepresentation.dispose();
-		treeRepresentation = tree;
-		model.replaceOutermostComposite(resource, getModelContent(), topLevelElement);
+	synchronized public void setModelContent(DocumentModel documentModel) {
+		this.documentModel.dispose();		
+		model.replaceOutermostComposite(resource, getModelContent(), documentModel.getTopLevelModelElement());
+		this.documentModel = documentModel;
 	}
 	
 	public IModelElement getModelContent() {
@@ -148,18 +155,11 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 	}
 	
 	public TreeRepresentation getModelRepresentation() {
-		return treeRepresentation;
+		return documentModel.getTreeRepresentation();
 	}
 	
 	public Object getModelResource() {
 		return resource;
-	}
-	
-	protected void configure(IAnnotationModel annotationModel, 
-			IAnnotationModelProvider annotationModelProvider, ICursorPostionProvider cursorPostionProvider) {
-		this.fAnnotationModelProvider = annotationModelProvider;
-		this.fCursorPositionProvider = cursorPostionProvider;
-		this.fAnnotationModel = annotationModel;
 	}
 	
 	protected abstract Template createTopLevelTemplate(IAnnotationModelProvider annotationProvider, 
@@ -168,29 +168,36 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 
 	public final Template getTopLevelTemplate() {
 		if (topLevelTemplate == null) {
-			topLevelTemplate = createTopLevelTemplate(fAnnotationModelProvider, fCursorPositionProvider);
+			topLevelTemplate = createTopLevelTemplate(null, null);
 		}
 		return topLevelTemplate;
-	}
-	
-	public IAnnotationModelProvider getAnnotationModelProvider() {
-		return fAnnotationModelProvider;
 	}
 	
 	public boolean needsReconciling() {
 		return changed;
 	}
 	
-	public void setSyntaxError(SyntaxError error, int offset) {
-		fAnnotationModel.addAnnotation(error, new Position(offset, 1));
-		this.syntaxError = error;
-	}
-	
-	private void removeSyntaxError() {
-		if (syntaxError != null) {
-			fAnnotationModel.removeAnnotation(syntaxError);
-			syntaxError = null;
+	synchronized public Map<Annotation, Position> createNewOccurenceAnnotations(ISourceViewer viewer) {										
+		int cursorPosition = viewer.getTextWidget().getCaretOffset();			
+		IChildSelector<TreeRepresentation> selector = new IndexTreeRepresentationSelector(cursorPosition, 0);		
+		TreeRepresentation selectedTreeNode = TreeIterator.select(selector, getModelRepresentation());				
+		
+		IModelElement modelElement = null;
+		ITreeContents selectedTreeContents = selectedTreeNode.getElement();
+		if (selectedTreeContents instanceof ModelTreeContents) {
+			modelElement = ((ModelTreeContents)selectedTreeContents).getModelElement();
 		}
-	}
+		
+		Map<Annotation, Position> result = new HashMap<Annotation, Position>();
+		if (modelElement == null) {			
+			return result;
+		}  else {			
+			Collection<Position> positions =  documentModel.getOccurences(modelElement);					
+			for(Position position: positions) {
+				result.put(new Annotation("testeditor.occurencesmarker", false, "A OCCURENCE"), position);
+			}
+			return result;
+		}
+	}	
 			
 }

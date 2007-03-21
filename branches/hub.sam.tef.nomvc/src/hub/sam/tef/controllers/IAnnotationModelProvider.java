@@ -1,10 +1,10 @@
 package hub.sam.tef.controllers;
 
-import hub.sam.tef.TEFAnnotation;
+import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.source.Annotation;
 
 public interface IAnnotationModelProvider {
 	
-	public void addAnnotation(TEFAnnotation annotation);
+	public void addAnnotation(Annotation annotation, Position position);
 	
-	public void removeAnnotation(TEFAnnotation annotation);
 }

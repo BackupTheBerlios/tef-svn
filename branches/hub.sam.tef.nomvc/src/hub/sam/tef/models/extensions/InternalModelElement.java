@@ -1,11 +1,13 @@
 package hub.sam.tef.models.extensions;
 
+import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelChangeListener;
 import hub.sam.tef.models.IModelElement;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
@@ -45,12 +47,32 @@ public class InternalModelElement implements IModelElement {
 		}
 	}
 
-	public void registerOccurence(IOccurence occurence) {
-		// empty
-	}
-
 	public void removeChangeListener(IModelChangeListener listener) {
 		fListeners.remove(listener);
 	}
 
+	public ICollection getComponents() {
+		return new ICollection() {
+			public boolean contains(Object object) {
+				return false;
+			}
+			public int size() {
+				return 0;
+			}
+			public Iterator iterator() {
+				return new Iterator() {
+					public boolean hasNext() {
+						return false;
+					}
+					public Object next() {					
+						return null;
+					}
+					public void remove() {
+						
+					}									
+				};
+			}			
+		};
+	}
+	
 }

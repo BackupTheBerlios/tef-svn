@@ -127,6 +127,16 @@ public class MofModel implements IModel {
 	public void replaceOutermostComposite(Object resource, IModelElement oldElement, IModelElement newElement) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Iterable<IModelElement> getElementExceptEditedResource(IMetaModelElement metaElement) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Iterable<IModelElement> getElements(IMetaModelElement metaElement, Object resourceFilter) {
+		// TODO Auto-generated method stub
+		return null;
 	}		
 		
 }

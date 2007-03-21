@@ -22,12 +22,9 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
-import org.eclipse.jface.text.presentation.IPresentationReconciler;
-import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
-
 
 public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 
@@ -35,7 +32,6 @@ public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 	private final ContentAssistant fInsertContentAssistant;
 	private final ITextDoubleClickStrategy fDoubleClickStrategy;
 	//private final IAutoEditStrategy fAutoEditStrategy;
-	private final IReconciler fReconciler = new TEFReconciler();
 			
 	public TEFSourceViewerConfiguration() {
 		super();
@@ -85,6 +81,6 @@ public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 	
 	@Override
 	public IReconciler getReconciler(ISourceViewer sourceViewer) {
-		return new TEFReconciler();		
+		return new TEFReconciler(sourceViewer);		
 	}				
 }

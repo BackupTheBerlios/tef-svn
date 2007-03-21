@@ -17,6 +17,7 @@
 package editortest.emf.model;
 
 import hub.sam.tef.models.AbstractModelElement;
+import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelChangeListener;
 
@@ -99,6 +100,13 @@ public class EMFModelElement  extends AbstractModelElement {
 			fObject.eAdapters().remove(index);
 		}
 	}
+	
+   
+
+	public ICollection getComponents() {
+		return (ICollection)EMFModel.getModelForEMFObject(fObject.eContents());
+	}
+
 
 	public IMetaModelElement getMetaElement() {
 		return new EMFMetaModelElement(fObject.eClass());

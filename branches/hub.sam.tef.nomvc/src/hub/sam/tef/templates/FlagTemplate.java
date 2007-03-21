@@ -26,6 +26,7 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.treerepresentation.ISyntaxProvider;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.treerepresentation.PrimitiveTreeRepresentation;
+import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 import hub.sam.tef.views.CompoundText;
@@ -152,9 +153,13 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 			}
 		}
 
-		public Object createModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {
+		public Object createCompositeModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {
 			return FlagTemplate.super.getAdapter(ITreeRepresentationProvider.class).
-					createModel(owner, property, tree, true);
-		}		
+					createCompositeModel(owner, property, tree, true);
+		}
+
+		public Object createReferenceModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite, SemanticsContext context) {		
+			return null;
+		}				
 	}
 }

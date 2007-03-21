@@ -17,28 +17,11 @@
 package hub.sam.tef.models;
 
 import hub.sam.tef.models.extensions.ModelElementExtension;
-import hub.sam.tef.treerepresentation.IDisposbaleStatusListener;
-import hub.sam.util.container.MultiMap;
-import editortest.emf.model.IOccurence;
 
-public abstract class AbstractModelElement extends ModelElementExtension {
-	
-	private static final MultiMap<Object, IOccurence> fOccurences = new MultiMap<Object, IOccurence>();		
+public abstract class AbstractModelElement extends ModelElementExtension {		
 	
 	public AbstractModelElement(Object id) {
 		super(id);
 	}
 
-	public final void registerOccurence(final IOccurence occurence) {
-		fOccurences.get(this).add(occurence);
-		occurence.addDisposableStatusListener(new IDisposbaleStatusListener() {
-			public void disposed() {
-				fOccurences.get(this).remove(occurence);			
-			}			
-		});
-	}
-
-	public final IOccurence[] getRegisteredOccureces() {
-		return (IOccurence[])fOccurences.get(this).toArray(new IOccurence[] {});
-	}
 }

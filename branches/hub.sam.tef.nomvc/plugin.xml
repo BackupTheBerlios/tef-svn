@@ -46,7 +46,6 @@
          	name="testeditor.currentobjectmarker">
          </type>
           <type
-                markerSeverity="2"
                 markerType="hub.sam.tef.error"
                 name="hub.sam.tef.error"
                 super="org.eclipse.ui.workbench.texteditor.error"/>
