@@ -1,7 +1,6 @@
 package editortest.emf.ocl.templates;
 
-import hub.sam.tef.controllers.IAnnotationModelProvider;
-import hub.sam.tef.controllers.IModelRepresentationProvider;
+import hub.sam.tef.controllers.IDocumentModelProvider;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ElementTemplate;
@@ -11,9 +10,8 @@ import hub.sam.tef.templates.ValueTemplate;
 
 public class ConstraintTemplate  extends ElementTemplate {
 	
-	public ConstraintTemplate(IAnnotationModelProvider annotationModelProvider, 
-			IModelRepresentationProvider modelProvider, IMetaModelElement metaModel) {
-		super(annotationModelProvider, modelProvider, metaModel);	
+	public ConstraintTemplate(IDocumentModelProvider modelProvider, IMetaModelElement metaModel) {
+		super(modelProvider, metaModel);	
 	}
 
 	@Override

@@ -67,7 +67,7 @@ public class ParserBasedReconcilingStrategy implements IReconcilingStrategy, IAn
 				addAnnotation(new ErrorAnnotation(), new Position(getParserInterface().getLastOffset(), 1));
 			}
 			
-			if (fViewer != null) {
+			if (fViewer.getAnnotationModel() != null) {
 				((IAnnotationModelExtension)fViewer.getAnnotationModel()).replaceAnnotations(
 						previousAnnotations, annotations);
 				previousAnnotations = annotations.keySet().toArray(new Annotation[] {});			

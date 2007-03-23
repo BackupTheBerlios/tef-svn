@@ -16,9 +16,7 @@
  */
 package editortest.emf.ecore.templates;
 
-import hub.sam.tef.controllers.IAnnotationModelProvider;
-import hub.sam.tef.controllers.IModelRepresentationProvider;
-import hub.sam.tef.controllers.Proposal;
+import hub.sam.tef.controllers.IDocumentModelProvider;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ElementTemplate;
@@ -32,16 +30,12 @@ import hub.sam.tef.templates.ValueTemplate;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Vector;
-
-import editortest.emf.model.EMFMetaModelElement;
 
 public abstract class EModelElementTemplate extends ElementTemplate {
 
-	public EModelElementTemplate(IAnnotationModelProvider annotationModelProvider,
-			IModelRepresentationProvider modelProvider, IMetaModelElement metaModel) {
-		super(annotationModelProvider, modelProvider, metaModel);
+	public EModelElementTemplate(IDocumentModelProvider modelProvider, IMetaModelElement metaModel) {
+		super(modelProvider, metaModel);
 	}
 
 	public EModelElementTemplate(Template template, IMetaModelElement metaModel) {

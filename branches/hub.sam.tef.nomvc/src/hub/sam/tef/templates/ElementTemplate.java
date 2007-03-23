@@ -17,8 +17,7 @@
 package hub.sam.tef.templates;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
-import hub.sam.tef.controllers.IAnnotationModelProvider;
-import hub.sam.tef.controllers.IModelRepresentationProvider;
+import hub.sam.tef.controllers.IDocumentModelProvider;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
@@ -43,8 +42,8 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		fMetaModel = metaModel;
 	}	
 
-	public ElementTemplate(IAnnotationModelProvider annotationModelProvider, IModelRepresentationProvider modelProvider, IMetaModelElement metaModel) {
-		super(annotationModelProvider, modelProvider, metaModel);
+	public ElementTemplate(IDocumentModelProvider modelProvider, IMetaModelElement metaModel) {
+		super(modelProvider, metaModel);
 		fMetaModel = metaModel;
 	}
 	

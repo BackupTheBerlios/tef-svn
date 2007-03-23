@@ -17,7 +17,7 @@
 package hub.sam.tef;
 
 import hub.sam.tef.controllers.IAnnotationModelProvider;
-import hub.sam.tef.controllers.IModelRepresentationProvider;
+import hub.sam.tef.controllers.IDocumentModelProvider;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.Template;
@@ -100,9 +100,9 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 		return this.changes;
 	}
 	
-	public IModelRepresentationProvider getModelRepresentationProvider() {
+	public IDocumentModelProvider getModelProvider() {
 		final IModel model = this.model;
-		return new IModelRepresentationProvider() {
+		return new IDocumentModelProvider() {
 			public IModel getModel() {
 				return model;
 			}			

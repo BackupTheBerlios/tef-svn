@@ -16,8 +16,7 @@
  */
 package hub.sam.tef.templates;
 
-import hub.sam.tef.controllers.IAnnotationModelProvider;
-import hub.sam.tef.controllers.IModelRepresentationProvider;
+import hub.sam.tef.controllers.IDocumentModelProvider;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.IType;
@@ -35,9 +34,8 @@ public abstract class ValueTemplate<ModelType> extends Template {
 		this.fType = type;
 	}
 	
-	public ValueTemplate(IAnnotationModelProvider annotationModelProvider, 
-			IModelRepresentationProvider modelProvider, IType type) {
-		super(annotationModelProvider, modelProvider);
+	public ValueTemplate(IDocumentModelProvider modelProvider, IType type) {
+		super(modelProvider);
 		this.fType = type;
 	}
 	

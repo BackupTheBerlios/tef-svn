@@ -25,7 +25,7 @@ public class EcoreDocument extends TEFDocument {
 
 	@Override
 	public Template createTopLevelTemplate(IAnnotationModelProvider annotationModelProvider) {
-		return new EPackageTemplate(annotationModelProvider, getModelRepresentationProvider());
+		return new EPackageTemplate(getModelProvider());
 	}
 
 }
