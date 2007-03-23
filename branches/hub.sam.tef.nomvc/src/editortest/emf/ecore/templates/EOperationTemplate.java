@@ -44,7 +44,7 @@ public class EOperationTemplate extends ElementTemplate {
 	public Template[] createTemplates() {
 		return new Template[] {
 				new LayoutElementTemplate(this, LayoutManager.INDENT),				
-				new TerminalTemplate(this,  "operation ", TerminalTemplate.KEY_WORD_HIGHLIGHT),
+				new TerminalTemplate(this,  "operation", TerminalTemplate.KEY_WORD_HIGHLIGHT),
 				new SingleValueTemplate<String>(this, "eType") {
 					@Override
 					protected ValueTemplate createValueTemplate() {
@@ -70,7 +70,7 @@ public class EOperationTemplate extends ElementTemplate {
 						return new IntegerTemplate(this, 1);
 					}					
 				},
-				new TerminalTemplate(this, "] "),							
+				new TerminalTemplate(this, "]"),							
 				new SingleValueTemplate<String>(this, "name") {
 					@Override
 					protected ValueTemplate<String> createValueTemplate() {
@@ -78,7 +78,7 @@ public class EOperationTemplate extends ElementTemplate {
 					}					
 				},	
 				new TerminalTemplate(this, "("),
-				new SequenceTemplate<IModelElement>(this, "eParameters", ", ", false, true) {
+				new SequenceTemplate<IModelElement>(this, "eParameters", ",", false) {
 					@Override					
 					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new EParameterTemplate(this);						

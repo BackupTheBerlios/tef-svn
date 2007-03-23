@@ -28,7 +28,7 @@ public abstract class PrimitiveValueTemplate<ModelType> extends ValueTemplate<Mo
 
 	class TreeRepresentationProvider implements IASTProvider {
 		public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite) {
-			return new PrimitiveTreeRepresentation((model == null) ? "<null>" : model);
+			return new PrimitiveTreeRepresentation((model == null) ? "<null>" : model + " ");
 		}
 
 		public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {

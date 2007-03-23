@@ -1,5 +1,8 @@
 package hub.sam.tef.templates;
 
+import java.util.List;
+import java.util.Vector;
+
 import hub.sam.tef.ErrorAnnotation;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
@@ -40,13 +43,14 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 	 * Provides a parser rule for this element template: a sequence based on all sub-templates.
 	 */
 	public String[][] getRules() {
-		String[] result = new String[fElementTemplate.getNestedTemplates().length+1];
-		result[0] = getNonTerminal();
-		int i = 1;
+		List<String> result = new Vector<String>();
+		result.add(getNonTerminal());						
 		for(Template part: fElementTemplate.getNestedTemplates()) {
-			result[i++] = part.getAdapter(ISyntaxProvider.class).getNonTerminal();
+			if (!(part instanceof LayoutElementTemplate)) {
+				result.add(part.getAdapter(ISyntaxProvider.class).getNonTerminal());
+			}
 		}
-		return new String[][] { result };					
+		return new String[][] { result.toArray(new String[] {}) };					
 	}
 
 	public ASTNode createTreeRepresentation(IModelElement owner, String notused, Object model, boolean isComposite) {
@@ -68,7 +72,7 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 						new ModelChangeListener(result, (PropertyTemplate)subTemplate, (IModelElement)model);
 				result.registerComponentListener(changeListener);
 			} else if (subTemplate instanceof TerminalTemplate) {
-				result.addNodeObject(((TerminalTemplate)subTemplate).getTerminalText());
+				result.addNodeObject(((TerminalTemplate)subTemplate).getTerminalText() + " ");
 			} else {
 				throw new RuntimeException("assert");
 			}

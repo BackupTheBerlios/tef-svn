@@ -34,7 +34,7 @@ public class EClassTemplate extends EModelElementTemplate {
 	@Override
 	public Template[] getContentsTemplates() {
 		return new Template[] {
-				new SequenceTemplate<IModelElement>(this, "eStructuralFeatures", ";\n", true, true) {
+				new SequenceTemplate<IModelElement>(this, "eStructuralFeatures", ";", true) {
 					@Override					
 					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new ChoiceTemplate(this, getModel().getMetaElement("EStructuralFeature")) {
@@ -48,17 +48,10 @@ public class EClassTemplate extends EModelElementTemplate {
 						};						
 					}					
 				},
-				new SequenceTemplate<IModelElement>(this, "eOperations", ";\n", true, true) {
+				new SequenceTemplate<IModelElement>(this, "eOperations", ";", true) {
 					@Override					
 					protected ValueTemplate<IModelElement> createValueTemplate() {
-						return new ChoiceTemplate(this, getModel().getMetaElement("EOperation")) {
-							@Override
-							public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
-								return new ValueTemplate[] {
-										new EOperationTemplate(this)
-								};
-							}							
-						};						
+						return 	new EOperationTemplate(this);									
 					}
 				}
 		};
@@ -74,7 +67,7 @@ public class EClassTemplate extends EModelElementTemplate {
 		return new Template[] {
 			new TerminalTemplate(this, "superclass", TerminalTemplate.KEY_WORD_HIGHLIGHT),
 			new TerminalTemplate(this, ":["),
-			new SequenceTemplate<IModelElement>(this, "eSuperTypes", ", ", false) {
+			new SequenceTemplate<IModelElement>(this, "eSuperTypes", ",", false) {
 				@Override
 				protected ValueTemplate<IModelElement>createValueTemplate() {
 					return new ReferenceTemplate(this, getModel().getMetaElement("EClass")) {

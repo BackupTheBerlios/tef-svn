@@ -35,7 +35,7 @@ public class EAnnotationTemplate extends EModelElementTemplate {
 	@Override
 	public Template[] getNameTemplates(boolean withComma) {
 		return new Template[] {			
-			new TerminalTemplate(this, "source: "),
+			new TerminalTemplate(this, "source:"),
 			new SingleValueTemplate<String>(this, "source") {
 				@Override
 				protected ValueTemplate<String> createValueTemplate() {
@@ -58,9 +58,9 @@ public class EAnnotationTemplate extends EModelElementTemplate {
 	@Override
 	Template[] getReferenceTemplates() {
 		return new Template[] {
-			new TerminalTemplate(this, ", "),	
-			new TerminalTemplate(this, "references: ["),
-			new SequenceTemplate<IModelElement>(this, "references", ", ", false) {
+			new TerminalTemplate(this, ","),	
+			new TerminalTemplate(this, "references:["),
+			new SequenceTemplate<IModelElement>(this, "references", ",", false) {
 				@Override
 				protected ValueTemplate<IModelElement> createValueTemplate() {
 					return new ReferenceTemplate(this, getModel().getMetaElement("EModelElement")) {

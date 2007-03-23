@@ -32,40 +32,44 @@ public class ParserBasedReconcilingStrategy implements IReconcilingStrategy {
 
 	public void reconcile()  {				
 		if (fDocument.needsReconciling()) {
-			UpdateTreeSemantic semantic = new UpdateTreeSemantic(getParserInterface());	
-			if (getParserInterface().parse(fDocument.get(), semantic)) {
-				// the current content can be parsed (contains no syntax errors)																										
-				final ASTElementNode newAST = semantic.getCurrentResult();
-				// build a new model							
-				final IModelElement newModel = (IModelElement)fDocument.getTopLevelTemplate().getAdapter(
-						IASTProvider.class).createCompositeModel(null, null, newAST, true);
-				
-				final SemanticsContext semanticContext = new SemanticsContext(fDocument.getModelProvider(), fDocument,
-						newModel);
-				
-				fDocument.getTopLevelTemplate().getAdapter(
-						IASTProvider.class).createReferenceModel(null, null, newAST, true, semanticContext);
-				
-				// check the model and create error annotations				
-				newAST.getElement().getTemplate().getAdapter(ISemanticProvider.class).
-						check(newAST, semanticContext);								
-																				
-				// set the new content
-				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {				
-					public void run() {			
-						fDocument.setModelContent(newAST, newModel);
-					}				
-				});
-			} else {
-				fDocument.getModelProvider().getAnnotationModelProvider().
-						addAnnotation(new ErrorAnnotation(), new Position(getParserInterface().getLastOffset(), 1));
-				// set the new content
-				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {				
-					public void run() {			
-						fDocument.setModelContent(null, null);
-					}				
-				});
-			}			
+			try {
+				UpdateTreeSemantic semantic = new UpdateTreeSemantic(getParserInterface());	
+				if (getParserInterface().parse(fDocument.get(), semantic)) {
+					// the current content can be parsed (contains no syntax errors)																										
+					final ASTElementNode newAST = semantic.getCurrentResult();
+					// build a new model							
+					final IModelElement newModel = (IModelElement)fDocument.getTopLevelTemplate().getAdapter(
+							IASTProvider.class).createCompositeModel(null, null, newAST, true);
+					
+					final SemanticsContext semanticContext = new SemanticsContext(fDocument.getModelProvider(), fDocument,
+							newModel);
+					
+					fDocument.getTopLevelTemplate().getAdapter(
+							IASTProvider.class).createReferenceModel(null, null, newAST, true, semanticContext);
+					
+					// check the model and create error annotations				
+					newAST.getElement().getTemplate().getAdapter(ISemanticProvider.class).
+							check(newAST, semanticContext);								
+																					
+					// set the new content
+					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {				
+						public void run() {			
+							fDocument.setModelContent(newAST, newModel);
+						}				
+					});
+				} else {
+					fDocument.getModelProvider().getAnnotationModelProvider().
+							addAnnotation(new ErrorAnnotation(), new Position(getParserInterface().getLastOffset(), 1));
+					// set the new content
+					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {				
+						public void run() {			
+							fDocument.setModelContent(null, null);
+						}				
+					});
+				}
+			} catch (Exception ex) {
+				System.out.println("RECONCILING FAILED: " + ex.getMessage());
+			}
 		}
 	}	
 

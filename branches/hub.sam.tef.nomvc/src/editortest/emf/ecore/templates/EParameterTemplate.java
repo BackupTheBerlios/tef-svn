@@ -43,7 +43,6 @@ public class EParameterTemplate extends ElementTemplate {
 						};
 					}					
 				},	
-				new TerminalTemplate(this, " "),
 				new SingleValueTemplate<String>(this, "name") {
 					@Override
 					protected ValueTemplate<String> createValueTemplate() {

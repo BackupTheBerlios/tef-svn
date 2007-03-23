@@ -32,7 +32,7 @@ public class IteratorExpTemplate extends ElementTemplate {
 			new TerminalTemplate(this, "->"),
 			new TerminalTemplate(this, "forAll"), // TODO
 			new TerminalTemplate(this, "("),
-			new SequenceTemplate<IModelElement>(this, "iterator", ", ", false, true) {	
+			new SequenceTemplate<IModelElement>(this, "iterator", ",", false) {	
 				@Override
 				protected ValueTemplate<IModelElement> createValueTemplate() {
 					return new VariableTemplate(this);

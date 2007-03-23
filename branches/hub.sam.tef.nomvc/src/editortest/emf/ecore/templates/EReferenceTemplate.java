@@ -81,14 +81,14 @@ public class EReferenceTemplate extends ElementTemplate {
 						return new IntegerTemplate(this, 1);
 					}					
 				},
-				new TerminalTemplate(this, "] "),				
+				new TerminalTemplate(this, "]"),				
 				new SingleValueTemplate<String>(this, "name") {
 					@Override
 					protected ValueTemplate<String> createValueTemplate() {
 						return new IdentifierValueTemplate(this);
 					}					
 				},
-				new TerminalTemplate(this, " -> "),
+				new TerminalTemplate(this, "->"),
 				new SingleValueTemplate<String>(this, "eOpposite") {
 					@Override
 					protected ValueTemplate createValueTemplate() {

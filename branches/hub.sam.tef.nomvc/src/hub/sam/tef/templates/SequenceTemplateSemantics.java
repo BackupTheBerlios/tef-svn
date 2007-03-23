@@ -1,15 +1,20 @@
 package hub.sam.tef.templates;
 
+import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.treerepresentation.IASTElement;
 import hub.sam.tef.treerepresentation.ModelASTElement;
+import hub.sam.tef.treerepresentation.ModelSequenceASTNode;
 import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 import hub.sam.tef.treerepresentation.ASTNode;
+import hub.sam.tef.treerepresentation.TextASTElement;
 
+import java.awt.image.RescaleOp;
 import java.util.List;
 import java.util.Vector;
 
@@ -25,68 +30,79 @@ public class SequenceTemplateSemantics implements ISyntaxProvider, IASTProvider,
 	public String getNonTerminal() {
 		return fTemplate.getValueTemplate().getAdapter(ISyntaxProvider.class).getNonTerminal() + "_sequence";
 	}
+	
+	private String getNonOptNonTerminal() {
+		return getNonTerminal() + "_no";
+	}
 
 	public String[][] getRules() {
 		ISyntaxProvider valueSyntaxProvider = fTemplate.getValueTemplate().getAdapter(ISyntaxProvider.class);
+		List<String[]> rules = new Vector<String[]>();
 		if (fTemplate.fSeparator != null) {
 			if (fTemplate.fSeparateLast) {
-				return new String[][] {
-						new String[] { getNonTerminal(), "'" + fTemplate.fSeparator + "'" },
-						new String[] { getNonTerminal(), getNonTerminal(), "'" +fTemplate.fSeparator + "'", valueSyntaxProvider.getNonTerminal() } 
-				};
+				rules.add(new String[] { getNonOptNonTerminal() , 
+						valueSyntaxProvider.getNonTerminal(), "'" +fTemplate.fSeparator + "'" });
+			    rules.add(new String[] { getNonOptNonTerminal(), getNonOptNonTerminal(), 
+			    		valueSyntaxProvider.getNonTerminal(), "'" +fTemplate.fSeparator + "'" }); 				
 			} else {
-				return new String[][] {
-						new String[] { getNonTerminal(), valueSyntaxProvider.getNonTerminal() },
-						new String[] { getNonTerminal(), getNonTerminal(), "'" + fTemplate.fSeparator + "'", valueSyntaxProvider.getNonTerminal() } 
-				};
+				rules.add(new String[] { getNonOptNonTerminal(), valueSyntaxProvider.getNonTerminal() });
+				rules.add(new String[] { getNonOptNonTerminal(), getNonOptNonTerminal(), 
+						"'" + fTemplate.fSeparator + "'", valueSyntaxProvider.getNonTerminal() }); 
 			}
-		} else {
-			return new String[][] {
-					new String[] { getNonTerminal(), valueSyntaxProvider.getNonTerminal() },
-					new String[] { getNonTerminal(), getNonTerminal(),  valueSyntaxProvider.getNonTerminal() } 
-			};
+		} else {			
+			rules.add(new String[] { getNonOptNonTerminal(), valueSyntaxProvider.getNonTerminal() });
+			rules.add(new String[] { getNonOptNonTerminal(), 
+					getNonOptNonTerminal(),  valueSyntaxProvider.getNonTerminal() }); 					
 		}
+		rules.add(new String[] { getNonTerminal() });
+		rules.add(new String[] { getNonTerminal(), getNonOptNonTerminal() });
+		return rules.toArray(new String[][] {});
 	}	
+	
 	
 	private static final String valueKey = "VALUE_KEY";
 	private static final String tailKey = "TAIL_KEY";
+	private static final String sequenceKey = "SEQUENCE_KEY";
 	
 	public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite) {
+		ASTElementNode treeRepresentation = new ASTElementNode(
+				new ModelASTElement(fTemplate, (IModelElement)model));
+		
 		ICollection elements = (ICollection)((IModelElement)model).getValue(property);
 		int i = 0;		
 		boolean first = true;
-		ASTElementNode result = null;
-		ASTElementNode parentNode = null;
+		ASTElementNode result = treeRepresentation;
+		ASTElementNode parentNode = treeRepresentation;
 		for (Object element: elements) {			
-			ASTElementNode treeRepresentation = new ASTElementNode(
+			ASTElementNode sequence = new ASTElementNode(
 					new ModelASTElement(fTemplate, (IModelElement)model));
-			
 			if (first) {
-				result = treeRepresentation;
+				parentNode.addNodeObject(sequenceKey, sequence);
 				first = false;
 			} else {
-				parentNode.addNodeObject(tailKey, treeRepresentation);
+				parentNode.addNodeObject(tailKey, sequence);
 			}
 			
-			treeRepresentation.addNodeObject(valueKey, fTemplate.getValueTemplate().getAdapter(IASTProvider.class).
+			sequence.addNodeObject(valueKey, fTemplate.getValueTemplate().getAdapter(IASTProvider.class).
 					createTreeRepresentation(owner, null, (IModelElement)element, isComposite));
 						
 			if (fTemplate.fSeparator != null && i+1 < elements.size()) {
-				treeRepresentation.addNodeObject(fTemplate.fSeparator);
+				sequence.addNodeObject(fTemplate.fSeparator);
 			}			
 			i++;						
-			parentNode = treeRepresentation;
+			parentNode = sequence;
 		}
 		if (fTemplate.fSeparateLast && fTemplate.fSeparator != null) {			
-			ASTElementNode treeRepresentation = 
+			ASTElementNode sequence = 
 					new ASTElementNode(new ModelASTElement(fTemplate, (IModelElement)model));										
-			treeRepresentation.addNodeObject(fTemplate.fSeparator);			
-			parentNode.addNodeObject(tailKey, treeRepresentation);
+			sequence.addNodeObject(fTemplate.fSeparator);			
+			parentNode.addNodeObject(tailKey, sequence);
 		}
 		return result;		
 	}		
 	
-	public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {		
+	public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {	
+		tree = skipOptionalRule((ASTElementNode)tree, owner);
 		ASTElementNode nextTree = getTailNode((ASTElementNode)tree);
 		if (nextTree != null) {
 			nextTree.setElement(new ModelASTElement(fTemplate, owner));
@@ -100,6 +116,7 @@ public class SequenceTemplateSemantics implements ISyntaxProvider, IASTProvider,
 	
 
 	public Object createReferenceModel(IModelElement owner, String property, ASTNode tree, boolean isComposite, SemanticsContext context) {
+		tree = skipOptionalRule((ASTElementNode)tree, owner);
 		ASTElementNode nextTree = getTailNode((ASTElementNode)tree);
 		if (nextTree != null) {		
 			createReferenceModel(owner, property, nextTree, isComposite, context);
@@ -137,8 +154,26 @@ public class SequenceTemplateSemantics implements ISyntaxProvider, IASTProvider,
 		return nodes;
 	}
 
+	private ASTElementNode skipOptionalRule(ASTElementNode tree, IModelElement owner) {
+		IASTElement element = tree.getElement();
+		if (element instanceof TextASTElement) {
+			if (((TextASTElement)element).getSymbol().endsWith("_sequence")) {
+				tree.setElement(new ModelSequenceASTNode(fTemplate, owner));
+				return (ASTElementNode)tree.getFirstChild();
+			} else {
+				return tree;
+			}
+		} else {
+			if (element instanceof ModelSequenceASTNode) {
+				return (ASTElementNode)tree.getFirstChild();
+			} else {
+				return tree;
+			}
+		}		
+	}
 	
 	public void check(ASTElementNode representation, SemanticsContext context) {	
+		representation = skipOptionalRule(representation, null);
 		List<ASTElementNode> allValueNodes = collectAllValueNodes((ASTElementNode)representation, new Vector<ASTElementNode>());				
 		for (ASTElementNode valueNode: allValueNodes) {
 			fTemplate.getValueTemplate().getAdapter(ISemanticProvider.class).check(valueNode, context);

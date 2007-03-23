@@ -47,8 +47,8 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 			new LayoutElementTemplate(this, LayoutManager.INDENT),
 			new TerminalTemplate(this, "annotations"),
 			new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK),
-			new TerminalTemplate(this, ": [\n"),
-			new SequenceTemplate<IModelElement>(this, "eAnnotations", "\n", true) {
+			new TerminalTemplate(this, ":[\n"),
+			new SequenceTemplate<IModelElement>(this, "eAnnotations", null, true) {
 				@Override
 				protected ValueTemplate<IModelElement> createValueTemplate() {
 					return new EAnnotationTemplate(this);
@@ -61,15 +61,24 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 	}
 	
 	public Template[] getNameTemplates(boolean withComma) {
-		return new Template[] {
-			new SingleValueTemplate<String>(this, "name") {
-				@Override
-				protected ValueTemplate<String> createValueTemplate() {
-					return new IdentifierValueTemplate(this);
-				}					
-			},			
-			(withComma) ?  new TerminalTemplate(this, ", ") : new TerminalTemplate(this, " ")
-		};
+		return (withComma) ?
+			new Template[] {
+				new SingleValueTemplate<String>(this, "name") {
+					@Override
+					protected ValueTemplate<String> createValueTemplate() {
+						return new IdentifierValueTemplate(this);
+					}					
+				},			
+				new TerminalTemplate(this, ",")
+			} :
+			new Template[] {
+				new SingleValueTemplate<String>(this, "name") {
+					@Override
+					protected ValueTemplate<String> createValueTemplate() {
+						return new IdentifierValueTemplate(this);
+					}					
+				}			
+			};
 	}
 	
 	@Override
@@ -80,7 +89,7 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 		if (flags != null) {
 			templates.addAll(Arrays.asList(flags));
 		}
-		templates.add(new TerminalTemplate(this, getElementKeyWord() + " ", 
+		templates.add(new TerminalTemplate(this, getElementKeyWord(), 
 				TerminalTemplate.KEY_WORD_HIGHLIGHT));
 		Template[] references = getReferenceTemplates();
 		templates.addAll(Arrays.asList(getNameTemplates(references != null)));		
@@ -89,15 +98,13 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 		}
 			
 		Template[] contents = getContentsTemplates();			
-		if (showAnnotations()) {
-			templates.add(new TerminalTemplate(this, "\n"));
+		if (showAnnotations()) {			
 			templates.add(new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK));
 			templates.addAll(Arrays.asList(getAnnotationTemplates()));
 			templates.add(new LayoutElementTemplate(this, LayoutManager.END_BLOCK));
 		}
 	    		
 		if (contents != null) {
-			templates.add(new TerminalTemplate(this, "\n"));
 			templates.add(new LayoutElementTemplate(this, LayoutManager.INDENT));
 			templates.add(new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK, "{\n"));
 			templates.addAll(Arrays.asList(contents));		    

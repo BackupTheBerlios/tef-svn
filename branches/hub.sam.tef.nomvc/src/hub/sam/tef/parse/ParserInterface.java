@@ -78,7 +78,7 @@ public class ParserInterface {
 	public boolean parse(String content, Semantic semantic) {		
 		boolean ok = false;
 		try {						
-			Parser parser = getParser();
+			Parser parser = getParser();		
 			parser.getLexer().setInput(content.trim());						
 			ok = parser.parse(semantic);	// start parsing with a print-semantic			
 			lastOffset = ((LexerImpl)parser.getLexer()).getOffset();

@@ -19,16 +19,12 @@ package hub.sam.tef.templates;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
-import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
-import hub.sam.tef.templates.adaptors.Proposal;
-import hub.sam.tef.treerepresentation.ModelASTElement;
-import hub.sam.tef.treerepresentation.SemanticsContext;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 import hub.sam.tef.treerepresentation.ASTNode;
-
-import java.util.List;
-import java.util.Vector;
+import hub.sam.tef.treerepresentation.ModelASTElement;
+import hub.sam.tef.treerepresentation.SemanticsContext;
 
 
 /**

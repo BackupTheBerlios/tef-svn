@@ -43,7 +43,7 @@ public class EAttributeTemplate extends ElementTemplate {
 	public Template[] createTemplates() {
 		return new Template[] {
 				new LayoutElementTemplate(this, LayoutManager.INDENT),				
-				new TerminalTemplate(this,  "attribute ", TerminalTemplate.KEY_WORD_HIGHLIGHT),
+				new TerminalTemplate(this,  "attribute", TerminalTemplate.KEY_WORD_HIGHLIGHT),
 				new SingleValueTemplate<Boolean>(this, "derived") {
 					@Override
 					protected ValueTemplate<Boolean> createValueTemplate() {
@@ -87,7 +87,7 @@ public class EAttributeTemplate extends ElementTemplate {
 						return new IntegerTemplate(this, 1);
 					}					
 				},
-				new TerminalTemplate(this, "] "),				
+				new TerminalTemplate(this, "]"),				
 				new SingleValueTemplate<String>(this, "name") {
 					@Override
 					protected ValueTemplate<String> createValueTemplate() {

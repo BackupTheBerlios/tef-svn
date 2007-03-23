@@ -34,8 +34,7 @@ public class EDataTypeTemplate extends ElementTemplate {
 	public Template[] createTemplates() {
 		return new Template[] {			
 				new LayoutElementTemplate(this, LayoutManager.INDENT),	
-				new TerminalTemplate(this, "data type", TerminalTemplate.KEY_WORD_HIGHLIGHT),	
-				new TerminalTemplate(this, " "),
+				new TerminalTemplate(this, "data type", TerminalTemplate.KEY_WORD_HIGHLIGHT),
 				new SingleValueTemplate<String>(this, "name") {
 					@Override
 					protected ValueTemplate<String> createValueTemplate() {

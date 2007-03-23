@@ -25,21 +25,12 @@ public abstract class SequenceTemplate<ElementModelType> extends PropertyTemplat
 	
 	protected final String fSeparator;
 	protected final boolean fSeparateLast;
-	private final boolean fIsComposite;
 	
 	public SequenceTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast) {
 		super(elementTemplate, property);
 		fSeparator = separator;
 		fSeparateLast = separateLast;
-		fIsComposite = false;
 	}
-	
-	public SequenceTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast, boolean isComposite) {
-		super(elementTemplate, property);
-		fSeparator = separator;
-		fSeparateLast = separateLast;
-		fIsComposite = isComposite;		
-	}	
 		
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {

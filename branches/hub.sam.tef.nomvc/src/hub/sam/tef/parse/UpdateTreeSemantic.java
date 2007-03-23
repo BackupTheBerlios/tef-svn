@@ -28,7 +28,7 @@ public class UpdateTreeSemantic implements Semantic {
 		this.fParserInterface = parserInterface;
 	}
 	
-	public Object doSemantic(Rule rule, List parseResults, List<Range> resultRanges) {
+	public Object doSemantic(Rule rule, List parseResults, List<Range> resultRanges) {		
 		if (parseResults.size() == 0) {
 			throw new RuntimeException("assert");
 		}
@@ -53,7 +53,12 @@ public class UpdateTreeSemantic implements Semantic {
 		}	
 		
 		this.result = result;
-		return result;
+		try {
+			System.out.println(result);
+		} catch (NullPointerException ex) {
+			System.out.println("_");
+		}
+		return result;		
 	}
 	
 
