@@ -23,8 +23,10 @@ import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
+import hub.sam.tef.templates.adaptors.IPresentationOptionsProvider;
 import hub.sam.tef.treerepresentation.ISyntaxProvider;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
 
 /**
  * A special ValueTemplate used for elements, whereby elements are container for
@@ -126,6 +128,12 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 			return (T) new ElementTemplateSemantics(this);
 		} else if (ISemanticProvider.class == adapter) {
 			return (T) new ElementTemplateSemantics(this);
+		} else if (IPresentationOptionsProvider.class == adapter) {
+			return (T) new IPresentationOptionsProvider() {
+				public boolean markOccurences(TreeRepresentation treeRepresentation, int localOffset) {
+					return treeRepresentation.getContent("name") == treeRepresentation.getContent(localOffset);
+				}				
+			};
 		} else {
 			return null;
 		}

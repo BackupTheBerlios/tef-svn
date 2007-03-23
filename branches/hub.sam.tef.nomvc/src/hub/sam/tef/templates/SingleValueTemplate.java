@@ -28,7 +28,7 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 	
 	public SingleValueTemplate(ElementTemplate elementTemplate, String property) {
 		super(elementTemplate, property);
-	}
+	}	
 	
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {

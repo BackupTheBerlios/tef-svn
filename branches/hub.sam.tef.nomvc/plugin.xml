@@ -24,39 +24,34 @@
    
    <extension point="org.eclipse.ui.editors.annotationTypes">
          <type
-         	name="testeditor.occurencesmarker">
+               name="hub.sam.tef.occurence"
+               super="org.eclipse.ui.workbench.texteditor.warning">
          </type>
           <type
          	name="testeditor.currentobjectmarker">
          </type>
           <type
-                markerType="hub.sam.tef.error"
                 name="hub.sam.tef.error"
                 super="org.eclipse.ui.workbench.texteditor.error"/>
    </extension>
    <extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
          <specification
-            annotationType="testeditor.occurencesmarker"
-            label="%marker.occurences.label"
-            textPreferenceKey="occurrenceIndication"
-            textPreferenceValue="false"
-            highlightPreferenceKey="occurrenceHighlighting"
-            highlightPreferenceValue="true"
-            contributesToHeader="false"
-            overviewRulerPreferenceKey="occurrenceIndicationInOverviewRuler"
-            overviewRulerPreferenceValue="true"
-            verticalRulerPreferenceKey="occurrenceIndicationInVerticalRuler"
-            verticalRulerPreferenceValue="false"
-            colorPreferenceKey="occurrenceIndicationColor"
-            colorPreferenceValue="230,230,230"
-            presentationLayer="5"
-            showInNextPrevDropdownToolbarActionKey="showOccurrenceInNextPrevDropdownToolbarAction"
-            showInNextPrevDropdownToolbarAction="true"
-            isGoToNextNavigationTargetKey="isOccurrenceGoToNextNavigationTarget"
-	        isGoToNextNavigationTarget="false"
-            isGoToPreviousNavigationTargetKey="isOccurrenceGoToPreviousNavigationTarget"
-	        isGoToPreviousNavigationTarget="false">
+               annotationType="hub.sam.tef.occurence"
+               colorPreferenceKey="occurrenceIndicationColor"
+               colorPreferenceValue="230,230,230"
+               highlightPreferenceKey="occurrenceHighlighting"
+               highlightPreferenceValue="true"
+               includeOnPreferencePage="false"
+               label="%marker.occurences.label"
+               overviewRulerPreferenceKey="occurrenceIndicationInOverviewRuler"
+               overviewRulerPreferenceValue="true"
+               presentationLayer="5"
+               textPreferenceKey="occurrenceIndication"
+               textPreferenceValue="true"
+               textStylePreferenceValue="IBEAM"
+               verticalRulerPreferenceKey="occurrenceIndicationInVerticalRuler"
+               verticalRulerPreferenceValue="true">
 	  </specification>
 	  <specification
             annotationType="testeditor.currentobjectmarker"

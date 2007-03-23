@@ -35,10 +35,10 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 public class TEFOccurencesUpdater implements ISelectionChangedListener {
 	
 	private final TEFEditor fEditor;
-	private Annotation[] oldOccurenceAnnotations;
+	private Annotation[] oldOccurenceAnnotations = new Annotation[] {};
 	
 	public TEFOccurencesUpdater(TEFEditor editor) {
-		((IPostSelectionProvider)editor.getSelectionProvider()).addPostSelectionChangedListener(this);
+		((IPostSelectionProvider)editor.getSelectionProvider()).addSelectionChangedListener(this);
 		this.fEditor = editor;
 	}
 	
@@ -49,8 +49,9 @@ public class TEFOccurencesUpdater implements ISelectionChangedListener {
 	
 		Map<Annotation, Position> newOccurenceAnnotations = 
 				((TEFDocument)document).createNewOccurenceAnnotations(viewer);
+		
 		((IAnnotationModelExtension)annotationModel).replaceAnnotations(oldOccurenceAnnotations, 
-				newOccurenceAnnotations);
+				newOccurenceAnnotations);					
 		oldOccurenceAnnotations = newOccurenceAnnotations.keySet().toArray(new Annotation[] {});
 	}
 }

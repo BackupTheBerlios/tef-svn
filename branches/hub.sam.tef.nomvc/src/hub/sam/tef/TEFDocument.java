@@ -21,11 +21,13 @@ import hub.sam.tef.controllers.IDocumentModelProvider;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.adaptors.IPresentationOptionsProvider;
 import hub.sam.tef.treerepresentation.ITreeContents;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.treerepresentation.IndexTreeRepresentationSelector;
 import hub.sam.tef.treerepresentation.ModelTreeContents;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
 import hub.sam.util.strings.Change;
 import hub.sam.util.strings.Changes;
 import hub.sam.util.trees.IChildSelector;
@@ -169,22 +171,24 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 	synchronized public Map<Annotation, Position> createNewOccurenceAnnotations(ISourceViewer viewer) {										
 		int cursorPosition = viewer.getTextWidget().getCaretOffset();			
 		IChildSelector<TreeRepresentation> selector = new IndexTreeRepresentationSelector(cursorPosition, 0);		
-		TreeRepresentation selectedTreeNode = TreeIterator.select(selector, getModelRepresentation());				
+		TreeRepresentation selectedTreeNode = TreeIterator.select(selector, getModelRepresentation());
 		
-		IModelElement modelElement = null;
+		IModelElement modelElement = null;		
 		ITreeContents selectedTreeContents = selectedTreeNode.getElement();
+		Template template = null;
 		if (selectedTreeContents instanceof ModelTreeContents) {
 			modelElement = ((ModelTreeContents)selectedTreeContents).getModelElement();
+			template = selectedTreeContents.getTemplate();
 		}
 		
 		Map<Annotation, Position> result = new HashMap<Annotation, Position>();
-		if (modelElement == null) {			
-			return result;
-		}  else {			
+		if (modelElement != null && template.getAdapter(IPresentationOptionsProvider.class).markOccurences(selectedTreeNode, cursorPosition - selectedTreeNode.getAbsoluteOffset(0))) {					
 			Collection<Position> positions =  documentModel.getOccurences(modelElement);					
 			for(Position position: positions) {
-				result.put(new Annotation("testeditor.occurencesmarker", false, "A OCCURENCE"), position);
+				result.put(new Annotation("hub.sam.tef.occurence", false, "A OCCURENCE"), position);
 			}
+			return result;
+		} else {
 			return result;
 		}
 	}	

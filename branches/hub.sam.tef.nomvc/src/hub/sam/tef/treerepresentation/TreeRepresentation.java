@@ -128,7 +128,24 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 	}
 	
 	public TreeRepresentationLeaf getContent(Object key) {
-		return fContents.get(fContentsMap.get(key));
+		Integer index = fContentsMap.get(key); 
+		if (index == null) {
+			return null;
+		} else {
+			return fContents.get(fContentsMap.get(key));
+		}
+	}
+	
+	public TreeRepresentationLeaf getContent(int offset) {
+		int i = 0;
+		for (TreeRepresentationLeaf content: fContents) {
+			if (offset >= i && offset < i + content.getLength()) {
+				return content;
+			} else {
+				i += content.getLength();
+			}
+		}
+		return null;
 	}
 	
 	public int getLength() {

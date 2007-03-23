@@ -24,6 +24,7 @@ import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.TextPresentation;
 import org.eclipse.jface.text.presentation.IPresentationDamager;
 import org.eclipse.jface.text.presentation.IPresentationRepairer;
+import org.eclipse.swt.custom.StyleRange;
 
 /**
  * This PresentationDamager/Repairer is used to realise TEF's syntax highlighting
@@ -68,6 +69,7 @@ public class PresentationDamagerRepairer implements IPresentationDamager, IPrese
 			}
 		}
 		*/
+		presentation.addStyleRange(new StyleRange(damage.getOffset(), damage.getLength(), null, null));
 	}
 
 	public IRegion getDamageRegion(ITypedRegion partition, DocumentEvent event, boolean documentPartitioningChanged) {		

@@ -16,9 +16,10 @@
  */
 package hub.sam.tef.templates;
 
-import hub.sam.tef.controllers.IAnnotationModelProvider;
 import hub.sam.tef.controllers.IDocumentModelProvider;
 import hub.sam.tef.models.IModel;
+import hub.sam.tef.templates.adaptors.IPresentationOptionsProvider;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.util.IAdaptable;
 
 /**
@@ -67,6 +68,14 @@ public abstract class Template implements IAdaptable {
 	}
 	
 	public <T> T getAdapter(Class<T> adapter) {	
-		return null;
+		if (IPresentationOptionsProvider.class == adapter) {
+			return (T)new IPresentationOptionsProvider() {
+				public boolean markOccurences(TreeRepresentation treeRepresentation, int localOffset) {				
+					return false;
+				}					
+			};
+		} else {
+			return null;
+		}
 	}
 }
