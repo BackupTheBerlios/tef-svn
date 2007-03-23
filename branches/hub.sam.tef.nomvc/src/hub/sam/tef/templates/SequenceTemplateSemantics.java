@@ -13,11 +13,11 @@ import hub.sam.tef.treerepresentation.ASTNode;
 import java.util.List;
 import java.util.Vector;
 
-public class CollectionTemplateSemantics implements ISyntaxProvider, IASTProvider, ISemanticProvider {
+public class SequenceTemplateSemantics implements ISyntaxProvider, IASTProvider, ISemanticProvider {
 
-	private final CollectionTemplate fTemplate;
+	private final SequenceTemplate fTemplate;
 		
-	protected CollectionTemplateSemantics(final CollectionTemplate template) {
+	protected SequenceTemplateSemantics(final SequenceTemplate template) {
 		super();
 		fTemplate = template;
 	}

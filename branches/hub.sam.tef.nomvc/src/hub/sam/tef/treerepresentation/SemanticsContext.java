@@ -1,54 +1,41 @@
 package hub.sam.tef.treerepresentation;
 
-import hub.sam.tef.DocumentModel;
-import hub.sam.tef.models.IMetaModelElement;
-import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.adaptors.IAnnotationModelProvider;
-
-import java.util.Collection;
-import java.util.Vector;
+import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
+import hub.sam.tef.templates.adaptors.IIdentifierResolver;
+import hub.sam.tef.templates.adaptors.ILanguageModelProvider;
 
 import org.eclipse.jface.text.Position;
 
 public class SemanticsContext {
 
-	private final IAnnotationModelProvider fAnnotationModelProvider;	
-	private final DocumentModel fDocumentModel;
-	private final IModel fModel;
+	private final IDocumentModelProvider fDocumentModelProvider;
+	private final ILanguageModelProvider fLanguageModelProvider;
+	private final IModelElement fNewModel;
 
-	public SemanticsContext(final IAnnotationModelProvider annotationModelProvider, 
-			DocumentModel documentModel, IModel model) {
+	public SemanticsContext(final IDocumentModelProvider documentProvider, final ILanguageModelProvider languageModelProvider,
+			IModelElement newModel) {
 		super();
-		fAnnotationModelProvider = annotationModelProvider;
-		fDocumentModel = documentModel;
-		fModel = model;
+		fDocumentModelProvider = documentProvider;
+		fLanguageModelProvider = languageModelProvider;
+		fNewModel = newModel;
 	}
 
 	public IAnnotationModelProvider getAnnotationModelProvider() {
-		return fAnnotationModelProvider;
+		return fDocumentModelProvider.getAnnotationModelProvider();
 	}	
 	
 	public void addModelElementOccurence(IModelElement element, Position occurence) {
-		fDocumentModel.addModelElementOccurence(element, occurence);		
+		fDocumentModelProvider.addModelElementOccurence(element, occurence);		
+	}
+		
+	public IIdentifierResolver getIdentifierResolver() {
+		return fLanguageModelProvider.getIdentityResolver();
 	}
 	
-	public Collection<IModelElement> getValidElements(IMetaModelElement metaModelElement) {
-		Collection<IModelElement> result = new Vector<IModelElement>();
-		for (Object o: fModel.getElementExceptEditedResource(metaModelElement)) {
-			result.add((IModelElement)o);
-		}
-		collectValidElementsFromModel(fDocumentModel.getTopLevelModelElement(), metaModelElement, result);
-		return result;
+	public IModelElement getNewModel() {
+		return fNewModel;
 	}
 	
-	private void collectValidElementsFromModel(IModelElement element, IMetaModelElement metaModelElement, 
-			Collection<IModelElement> values) {
-		if (element.getMetaElement().equals(metaModelElement)) {
-			values.add(element);
-		}
-		for (Object o: element.getComponents()) {
-			collectValidElementsFromModel((IModelElement)o, metaModelElement, values);
-		}
-	}
 }

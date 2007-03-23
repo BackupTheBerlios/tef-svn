@@ -25,7 +25,7 @@
    <extension point="org.eclipse.ui.editors.annotationTypes">
          <type
                name="hub.sam.tef.occurence"
-               super="org.eclipse.ui.workbench.texteditor.warning">
+               >
          </type>
           <type
          	name="testeditor.currentobjectmarker">

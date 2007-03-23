@@ -1,6 +1,9 @@
 package hub.sam.tef.templates.adaptors;
 
+import org.eclipse.jface.text.Position;
+
 import hub.sam.tef.models.IModel;
+import hub.sam.tef.models.IModelElement;
 
 /**
  * An interface that allows implementing clients to provide all components of a TEF document model.
@@ -8,5 +11,14 @@ import hub.sam.tef.models.IModel;
  * the acutal EMF model of the document, and the annotation model.
  */
 public interface IDocumentModelProvider {
+	
 	public IModel getModel();
+	
+	public IAnnotationModelProvider getAnnotationModelProvider();
+	
+	public IModelElement getTopLevelElement();
+	
+	public String getText();
+	
+	public void addModelElementOccurence(IModelElement element, Position occurence);
 }

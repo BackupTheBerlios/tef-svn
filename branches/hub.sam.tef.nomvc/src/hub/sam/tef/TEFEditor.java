@@ -16,9 +16,12 @@
  */
 package hub.sam.tef;
 
+import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
+
 import java.util.ResourceBundle;
 
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
@@ -28,7 +31,7 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 
 
-public abstract class TEFEditor extends TextEditor {
+public abstract class TEFEditor extends TextEditor {	
 	
 	public TEFEditor() {
 		super();				
@@ -60,7 +63,9 @@ public abstract class TEFEditor extends TextEditor {
 	
 	@Override
 	public final void createPartControl(Composite parent) {		
-		super.createPartControl(parent);		
+		super.createPartControl(parent);	
+		((TEFDocument)getSourceViewer().getDocument()).configure((IAnnotationModelExtension)
+				getSourceViewer().getAnnotationModel());
 		new TEFOccurencesUpdater(this);					
 	}
 
@@ -89,6 +94,5 @@ public abstract class TEFEditor extends TextEditor {
 	protected void handleCursorPositionChanged() {
 		selectAndReveal(getSourceViewer().getTextWidget().getCaretOffset(), 0);
 		super.handleCursorPositionChanged();
-	}
-	
+	}			
 }

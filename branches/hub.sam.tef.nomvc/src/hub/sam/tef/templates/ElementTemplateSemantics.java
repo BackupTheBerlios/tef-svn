@@ -111,15 +111,9 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		if (parent != null && isComposite) {
 			result = ((ModelASTElement)tree.getElement()).getModelElement();
 		} else if (parent != null && !isComposite) {		
-			// try to resolve			
-			loop: for (IModelElement possibility: context.getValidElements(
-					((ReferenceTemplate)tree.getParent().getElement().getTemplate()).getTypeModel())) {
-				if (possibility.getValue("name") != null && 
-						possibility.getValue("name").equals(((ASTElementNode)tree).getNode("name").getContent())) {									
-					result = possibility;
-					break loop;
-				}
-			}						
+			result = context.getIdentifierResolver().resolveIdentifier(fElementTemplate.getModel(),
+					(ASTElementNode)tree, parent, context.getNewModel(),
+					((ReferenceTemplate)tree.getParent().getElement().getTemplate()).getTypeModel(), property);
 			if (result == null) {
 				result = fElementTemplate.createMockObject();
 			} else {

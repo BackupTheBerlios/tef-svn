@@ -16,13 +16,41 @@
  */
 package hub.sam.tef.templates;
 
+import hub.sam.tef.parse.ISemanticProvider;
+import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 
-public abstract class SequenceTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {	
+
+public abstract class SequenceTemplate<ElementModelType> extends PropertyTemplate<ElementModelType> {	
+	
+	protected final String fSeparator;
+	protected final boolean fSeparateLast;
+	private final boolean fIsComposite;
+	
 	public SequenceTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast) {
-		super(elementTemplate, property, separator, separateLast);
+		super(elementTemplate, property);
+		fSeparator = separator;
+		fSeparateLast = separateLast;
+		fIsComposite = false;
 	}
 	
 	public SequenceTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast, boolean isComposite) {
-		super(elementTemplate, property, separator, separateLast, isComposite);
-	}		
+		super(elementTemplate, property);
+		fSeparator = separator;
+		fSeparateLast = separateLast;
+		fIsComposite = isComposite;		
+	}	
+		
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (ISyntaxProvider.class == adapter) {
+			return (T)new SequenceTemplateSemantics(this);
+		} else if (IASTProvider.class == adapter) {
+			return (T)new SequenceTemplateSemantics(this);
+		} else if (ISemanticProvider.class == adapter) {
+			return (T)new SequenceTemplateSemantics(this);
+		} else {
+			return super.getAdapter(adapter);			
+		}
+	}
 }

@@ -19,6 +19,8 @@ package editortest.emf.ecore;
 import hub.sam.tef.TEFDocument;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.adaptors.IAnnotationModelProvider;
+import hub.sam.tef.templates.adaptors.IIdentifierResolver;
+import editortest.emf.EMFIdentifierResolver;
 import editortest.emf.ecore.templates.EPackageTemplate;
 
 public class EcoreDocument extends TEFDocument {
@@ -28,4 +30,9 @@ public class EcoreDocument extends TEFDocument {
 		return new EPackageTemplate(getModelProvider());
 	}
 
+	public IIdentifierResolver getIdentityResolver() {
+		return new EMFIdentifierResolver();
+	}
+
+	
 }

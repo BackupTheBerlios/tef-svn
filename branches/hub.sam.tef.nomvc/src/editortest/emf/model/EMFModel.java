@@ -109,8 +109,7 @@ public class EMFModel extends AbstractModel {
 				if (next instanceof EObject) {
 					EObject nextObject = (EObject)next;
 					
-					if (((EClass)((EMFMetaModelElement)metaElement).getEMFObject()).getInstanceClass().
-							isAssignableFrom(nextObject.eClass().getInstanceClass())) {
+					if (((EClass)((EMFMetaModelElement)metaElement).getEMFObject()).isSuperTypeOf(nextObject.eClass())) {														
 						result.add(nextObject);	
 					}				
 				}

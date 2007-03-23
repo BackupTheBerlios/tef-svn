@@ -1,13 +1,12 @@
 package hub.sam.tef.parse;
 
-import hub.sam.tef.DocumentModel;
 import hub.sam.tef.ErrorAnnotation;
 import hub.sam.tef.TEFDocument;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.adaptors.IASTProvider;
 import hub.sam.tef.templates.adaptors.IAnnotationModelProvider;
-import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.treerepresentation.SemanticsContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,18 +21,12 @@ import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.PlatformUI;
 
-public class ParserBasedReconcilingStrategy implements IReconcilingStrategy, IAnnotationModelProvider {
-	
-	private TEFDocument fDocument;
-	private final ISourceViewer fViewer;
+public class ParserBasedReconcilingStrategy implements IReconcilingStrategy {	
+	private TEFDocument fDocument;	
 	private ParserInterface fParserInterface;
 	
-	private Annotation[] previousAnnotations = new Annotation[] {};
-	private Map<Annotation, Position> annotations = new HashMap<Annotation, Position>();
-	
 	public ParserBasedReconcilingStrategy(final ISourceViewer viewer) {
-		super();
-		fViewer = viewer;
+		super();		
 		fDocument = (TEFDocument)viewer.getDocument();
 	}
 
@@ -47,8 +40,8 @@ public class ParserBasedReconcilingStrategy implements IReconcilingStrategy, IAn
 				final IModelElement newModel = (IModelElement)fDocument.getTopLevelTemplate().getAdapter(
 						IASTProvider.class).createCompositeModel(null, null, newAST, true);
 				
-				final DocumentModel newDocumentModel = new DocumentModel(newModel, newAST);
-				final SemanticsContext semanticContext = new SemanticsContext(this, newDocumentModel, fDocument.getModel());
+				final SemanticsContext semanticContext = new SemanticsContext(fDocument.getModelProvider(), fDocument,
+						newModel);
 				
 				fDocument.getTopLevelTemplate().getAdapter(
 						IASTProvider.class).createReferenceModel(null, null, newAST, true, semanticContext);
@@ -60,25 +53,21 @@ public class ParserBasedReconcilingStrategy implements IReconcilingStrategy, IAn
 				// set the new content
 				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {				
 					public void run() {			
-						fDocument.setModelContent(newDocumentModel);
+						fDocument.setModelContent(newAST, newModel);
 					}				
 				});
 			} else {
-				addAnnotation(new ErrorAnnotation(), new Position(getParserInterface().getLastOffset(), 1));
-			}
-			
-			if (fViewer.getAnnotationModel() != null) {
-				((IAnnotationModelExtension)fViewer.getAnnotationModel()).replaceAnnotations(
-						previousAnnotations, annotations);
-				previousAnnotations = annotations.keySet().toArray(new Annotation[] {});			
-				annotations.clear();
-			}
+				fDocument.getModelProvider().getAnnotationModelProvider().
+						addAnnotation(new ErrorAnnotation(), new Position(getParserInterface().getLastOffset(), 1));
+				// set the new content
+				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {				
+					public void run() {			
+						fDocument.setModelContent(null, null);
+					}				
+				});
+			}			
 		}
 	}	
-
-	public void addAnnotation(Annotation annotation, Position position) {
-		annotations.put(annotation, position);
-	}
 
 	public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
 		reconcile(dirtyRegion);

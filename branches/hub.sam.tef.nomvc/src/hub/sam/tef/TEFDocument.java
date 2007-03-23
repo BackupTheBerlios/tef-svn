@@ -21,6 +21,8 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.adaptors.IAnnotationModelProvider;
 import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
+import hub.sam.tef.templates.adaptors.IIdentifierResolver;
+import hub.sam.tef.templates.adaptors.ILanguageModelProvider;
 import hub.sam.tef.templates.adaptors.IPresentationOptionsProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
 import hub.sam.tef.treerepresentation.IASTElement;
@@ -42,6 +44,7 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
+import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.jface.text.source.ISourceViewer;
 
 /**
@@ -67,16 +70,13 @@ import org.eclipse.jface.text.source.ISourceViewer;
  * This document is a document per editor. This is completly wrong. It should be separated from
  * a concrete editor instance.
  */
-public abstract class TEFDocument extends Document implements IModelProvider, ITemplateProvider {	
-	private Changes changes = new Changes();	
-	private IModel model = null;
-	private Object resource = null;	
+public abstract class TEFDocument extends Document implements ILanguageModelProvider {	
+	private Changes changes = new Changes();
 	private Template topLevelTemplate = null;
 	
-	private DocumentModel documentModel = null;
-	
-	private boolean empty = true;	
+	private DocumentModel documentModel = null;		
 	private boolean changed = false;
+	private IAnnotationModelExtension annotationModel = null;
 	
 	@Override
 	public final void replace(int pos, int length, String text) throws BadLocationException {
@@ -103,60 +103,34 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 	}
 	
 	public IDocumentModelProvider getModelProvider() {
-		final IModel model = this.model;
-		return new IDocumentModelProvider() {
-			public IModel getModel() {
-				return model;
-			}			
-		};
+		return documentModel;
 	}
-
-	public IModel getModel() {
-		return model;
-	}
-
-	public IModelElement getTopLevelElement() {
-		return (IModelElement)getModel().getOutermostCompositesOfEditedResource().iterator().next();
+	
+	public void configure(IAnnotationModelExtension annotationModel) {
+		this.annotationModel = annotationModel;
+		if (documentModel != null) {
+			documentModel.setAnnotationModel(annotationModel);
+		}
 	}
 
 	public void setInitialModelContent(IModel model, Object resource) {
-		this.model = model;
-		this.resource = resource;
-		this.changed = false;
-		ASTElementNode treeRepresentation = (ASTElementNode)getTopLevelTemplate().getAdapter(IASTProvider.class).createTreeRepresentation(null, 
-				null, getTopLevelElement(), true);
-		if (empty) {
-			try {
-				doReplace(0, get().length(), treeRepresentation.getContent());
-			} catch (BadLocationException ex) {
-				throw new RuntimeException(ex);
-			}
-			empty = false;
-		}	
-		this.documentModel = new DocumentModel(getTopLevelElement(), treeRepresentation);
+		documentModel = new DocumentModel(model, resource, annotationModel, this, this);
+		documentModel.initialize();
+		try {
+			doReplace(0, get().length(), documentModel.getText());
+		} catch (BadLocationException ex) {
+			throw new RuntimeException(ex);
+		}
+		this.changed = false;					
 	}
 	
-	synchronized public void setModelContent(DocumentModel documentModel) {
-		this.documentModel.dispose();		
-		model.replaceOutermostComposite(resource, getModelContent(), documentModel.getTopLevelModelElement());
-		this.documentModel = documentModel;
-	}
-	
-	public IModelElement getModelContent() {
-		return getTopLevelElement();
-	}
-	
-	public ASTElementNode getModelRepresentation() {
-		return documentModel.getTreeRepresentation();
-	}
-	
-	public Object getModelResource() {
-		return resource;
+	synchronized public void setModelContent(ASTElementNode tree, IModelElement model) {
+		changed = tree == null;
+		documentModel.update(tree, model);
 	}
 	
 	protected abstract Template createTopLevelTemplate(IAnnotationModelProvider annotationProvider);
 	
-
 	public final Template getTopLevelTemplate() {
 		if (topLevelTemplate == null) {
 			topLevelTemplate = createTopLevelTemplate(null);
@@ -171,7 +145,7 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 	synchronized public Map<Annotation, Position> createNewOccurenceAnnotations(ISourceViewer viewer) {										
 		int cursorPosition = viewer.getTextWidget().getCaretOffset();			
 		IChildSelector<ASTElementNode> selector = new IndexASTSelector(cursorPosition, 0);		
-		ASTElementNode selectedTreeNode = TreeIterator.select(selector, getModelRepresentation());
+		ASTElementNode selectedTreeNode = TreeIterator.select(selector, documentModel.getTreeRepresentation());
 		
 		IModelElement modelElement = null;		
 		IASTElement selectedTreeContents = selectedTreeNode.getElement();
@@ -191,6 +165,5 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 		} else {
 			return result;
 		}
-	}	
-			
+	}
 }
