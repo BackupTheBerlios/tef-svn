@@ -17,8 +17,8 @@
 package editortest.emf.ecore;
 
 import hub.sam.tef.TEFDocument;
-import hub.sam.tef.controllers.IAnnotationModelProvider;
 import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.adaptors.IAnnotationModelProvider;
 import editortest.emf.ecore.templates.EPackageTemplate;
 
 public class EcoreDocument extends TEFDocument {

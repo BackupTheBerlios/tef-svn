@@ -16,7 +16,6 @@
  */
 package editortest.emf.ecore.templates;
 
-import hub.sam.tef.controllers.IDocumentModelProvider;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ElementTemplate;
@@ -27,6 +26,7 @@ import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
+import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
 
 import java.util.Arrays;
 import java.util.Collection;

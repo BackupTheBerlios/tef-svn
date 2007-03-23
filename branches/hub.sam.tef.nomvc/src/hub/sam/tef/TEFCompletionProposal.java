@@ -16,7 +16,7 @@
  */
 package hub.sam.tef;
 
-import hub.sam.tef.controllers.Proposal;
+import hub.sam.tef.templates.adaptors.Proposal;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;

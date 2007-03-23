@@ -17,8 +17,8 @@
 package hub.sam.tef.templates;
 
 import hub.sam.tef.parse.ISemanticProvider;
-import hub.sam.tef.treerepresentation.ISyntaxProvider;
-import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
+import hub.sam.tef.templates.adaptors.IASTProvider;
 
 /**
  * This is a base class for all Properties that have a collection of value to
@@ -48,7 +48,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	public <T> T getAdapter(Class<T> adapter) {
 		if (ISyntaxProvider.class == adapter) {
 			return (T)new CollectionTemplateSemantics(this);
-		} else if (ITreeRepresentationProvider.class == adapter) {
+		} else if (IASTProvider.class == adapter) {
 			return (T)new CollectionTemplateSemantics(this);
 		} else if (ISemanticProvider.class == adapter) {
 			return (T)new CollectionTemplateSemantics(this);

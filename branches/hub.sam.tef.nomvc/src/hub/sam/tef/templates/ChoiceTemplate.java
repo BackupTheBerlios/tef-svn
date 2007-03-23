@@ -16,16 +16,16 @@
  */
 package hub.sam.tef.templates;
 
-import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
-import hub.sam.tef.treerepresentation.ISyntaxProvider;
-import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
-import hub.sam.tef.treerepresentation.ModelTreeContents;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
+import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.templates.adaptors.Proposal;
+import hub.sam.tef.treerepresentation.ModelASTElement;
 import hub.sam.tef.treerepresentation.SemanticsContext;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
-import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
+import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.treerepresentation.ASTNode;
 
 import java.util.List;
 import java.util.Vector;
@@ -74,7 +74,7 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 	public <T> T getAdapter(Class<T> adapter) {
 		if (ISyntaxProvider.class == adapter) {
 			return (T)new ModelUpdater(this);
-		} else if (ITreeRepresentationProvider.class == adapter) {			
+		} else if (IASTProvider.class == adapter) {			
 			return (T)new TreeRepresentationProvider();
 		} else if (ISemanticProvider.class == adapter) {
 			return (T)new SemanticProvider();
@@ -99,14 +99,14 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 		}			
 	}
 	
-	class TreeRepresentationProvider implements ITreeRepresentationProvider {
-		public TreeRepresentationLeaf createTreeRepresentation(IModelElement owner, String notused, Object model, boolean isComposite) {			
-			ModelTreeContents contents = new ModelTreeContents(ChoiceTemplate.this, (IModelElement)model);
-			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
+	class TreeRepresentationProvider implements IASTProvider {
+		public ASTNode createTreeRepresentation(IModelElement owner, String notused, Object model, boolean isComposite) {			
+			ModelASTElement contents = new ModelASTElement(ChoiceTemplate.this, (IModelElement)model);
+			ASTElementNode treeRepresentation = new ASTElementNode(contents);
 
 			for (ValueTemplate alternative: fAlternativeTemplates) {
 				if (alternative.isTemplateFor(model)) {
-					treeRepresentation.addContent(alternative.getAdapter(ITreeRepresentationProvider.class).
+					treeRepresentation.addNodeObject(alternative.getAdapter(IASTProvider.class).
 							createTreeRepresentation(owner, notused, model, true));
 																			
 					return treeRepresentation;
@@ -115,17 +115,17 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 			throw new RuntimeException("assert");
 		}
 
-		public Object createCompositeModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {			
-			TreeRepresentationLeaf childTree = tree.getChildNodes().get(0);			
-			IModelElement result = (IModelElement) childTree.getElement().getTemplate().getAdapter(ITreeRepresentationProvider.class).
+		public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {			
+			ASTNode childTree = tree.getChildNodes().get(0);			
+			IModelElement result = (IModelElement) childTree.getElement().getTemplate().getAdapter(IASTProvider.class).
 					createCompositeModel(owner, property, childTree, isComposite);
-			tree.setElement(new ModelTreeContents(tree.getElement().getTemplate(), result));
+			tree.setElement(new ModelASTElement(tree.getElement().getTemplate(), result));
 			return result;
 		}
 
-		public Object createReferenceModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite, SemanticsContext context) {
-			TreeRepresentationLeaf childTree = tree.getChildNodes().get(0);			
-			IModelElement result = (IModelElement) childTree.getElement().getTemplate().getAdapter(ITreeRepresentationProvider.class).
+		public Object createReferenceModel(IModelElement owner, String property, ASTNode tree, boolean isComposite, SemanticsContext context) {
+			ASTNode childTree = tree.getChildNodes().get(0);			
+			IModelElement result = (IModelElement) childTree.getElement().getTemplate().getAdapter(IASTProvider.class).
 					createReferenceModel(owner, property, childTree, isComposite, context);			
 			return result;
 		}				
@@ -133,8 +133,8 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 		
 	class SemanticProvider implements ISemanticProvider {
 		
-		public void check(TreeRepresentation representation, SemanticsContext context) {		
-			TreeRepresentation nextNode = ((TreeRepresentation)representation).getChildNodes().get(0);
+		public void check(ASTElementNode representation, SemanticsContext context) {		
+			ASTElementNode nextNode = ((ASTElementNode)representation).getChildNodes().get(0);
 			nextNode.getElement().getTemplate().getAdapter(ISemanticProvider.class).
 					check(nextNode, context);
 		}		

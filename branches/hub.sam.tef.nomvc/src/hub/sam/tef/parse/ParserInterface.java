@@ -2,7 +2,7 @@ package hub.sam.tef.parse;
 
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.treerepresentation.ISyntaxProvider;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 
 import java.util.Collection;
 import java.util.HashMap;

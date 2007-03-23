@@ -3,11 +3,11 @@ package hub.sam.tef.parse;
 import hub.sam.tef.DocumentModel;
 import hub.sam.tef.ErrorAnnotation;
 import hub.sam.tef.TEFDocument;
-import hub.sam.tef.controllers.IAnnotationModelProvider;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
+import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.templates.adaptors.IAnnotationModelProvider;
 import hub.sam.tef.treerepresentation.SemanticsContext;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.ASTElementNode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,16 +42,16 @@ public class ParserBasedReconcilingStrategy implements IReconcilingStrategy, IAn
 			UpdateTreeSemantic semantic = new UpdateTreeSemantic(getParserInterface());	
 			if (getParserInterface().parse(fDocument.get(), semantic)) {
 				// the current content can be parsed (contains no syntax errors)																										
-				final TreeRepresentation newAST = semantic.getCurrentResult();
+				final ASTElementNode newAST = semantic.getCurrentResult();
 				// build a new model							
 				final IModelElement newModel = (IModelElement)fDocument.getTopLevelTemplate().getAdapter(
-						ITreeRepresentationProvider.class).createCompositeModel(null, null, newAST, true);
+						IASTProvider.class).createCompositeModel(null, null, newAST, true);
 				
 				final DocumentModel newDocumentModel = new DocumentModel(newModel, newAST);
 				final SemanticsContext semanticContext = new SemanticsContext(this, newDocumentModel, fDocument.getModel());
 				
 				fDocument.getTopLevelTemplate().getAdapter(
-						ITreeRepresentationProvider.class).createReferenceModel(null, null, newAST, true, semanticContext);
+						IASTProvider.class).createReferenceModel(null, null, newAST, true, semanticContext);
 				
 				// check the model and create error annotations				
 				newAST.getElement().getTemplate().getAdapter(ISemanticProvider.class).

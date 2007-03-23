@@ -1,5 +1,7 @@
 package hub.sam.tef.treerepresentation;
 
+import hub.sam.util.container.IDisposable;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,38 +9,38 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-public class TreeRepresentation extends TreeRepresentationLeaf {
+public class ASTElementNode extends ASTNode {
 	
-	private final Collection<IRepresentationChangedListener> fListeners = new Vector<IRepresentationChangedListener>();	
-	private final List<TreeRepresentationLeaf> fContents = new Vector<TreeRepresentationLeaf>();
+	private final Collection<IASTChangedListener> fListeners = new Vector<IASTChangedListener>();	
+	private final List<ASTNode> fContents = new Vector<ASTNode>();
 	private final Map<Object, Integer> fContentsMap = new HashMap<Object, Integer>();
 	private final Map<Object, Integer> fChildrensMap = new HashMap<Object, Integer>();
 	private final StringBuffer fStringContent = new StringBuffer("");	
 	private final Map<Integer, RepresentationChangedListener> fChangeListeners = new 	HashMap<Integer, RepresentationChangedListener>();
-	private final List<TreeRepresentation> fChildren = new Vector<TreeRepresentation>();
+	private final List<ASTElementNode> fChildren = new Vector<ASTElementNode>();
 			
 	private final Collection<IDisposable> fComponents = new Vector<IDisposable>();
 			
-	public TreeRepresentation(ITreeContents contents) {
+	public ASTElementNode(IASTElement contents) {
 		super(contents);	
-		contents.setTreeRepresentation(this);
+		contents.setAST(this);
 	}
 
-	class RepresentationChangedListener implements IRepresentationChangedListener {
-		private final TreeRepresentation node;
+	class RepresentationChangedListener implements IASTChangedListener {
+		private final ASTElementNode node;
 	
-		public RepresentationChangedListener(final TreeRepresentation node) {
+		public RepresentationChangedListener(final ASTElementNode node) {
 			super();
 			this.node = node;
 		}
 
 		public void contentChanged(int start, int length, String text) {
-			replaceStringContent(start + node.getOffsetWithInParent(0), length, text);
+			replaceContent(start + node.getOffsetWithInParent(0), length, text);
 		}		
 	}
 	
-	public void addContent(Object key, Object content) {
-		TreeRepresentationLeaf treeRepresentationContent = createTreeRepresentationContent(content);		
+	public void addNodeObject(Object key, Object content) {
+		ASTNode treeRepresentationContent = createTreeRepresentationContent(content);		
 		
 		// add conent
 		int index = fContents.size();
@@ -47,17 +49,17 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 		}		
 		fContents.add(treeRepresentationContent);				
 		
-		if (content instanceof TreeRepresentation) {
+		if (content instanceof ASTElementNode) {
 			// add listeners
-			RepresentationChangedListener listener = new RepresentationChangedListener((TreeRepresentation)content);
+			RepresentationChangedListener listener = new RepresentationChangedListener((ASTElementNode)content);
 			fChangeListeners.put(index, listener);
-			((TreeRepresentation)content).addRepresentationChangedListener(listener);
+			((ASTElementNode)content).addRepresentationChangedListener(listener);
 			
 			// add content as child
 			if (key != null) {
 				fChildrensMap.put(key, fChildren.size());
 			}
-			fChildren.add((TreeRepresentation)content);
+			fChildren.add((ASTElementNode)content);
 		}		
 		
 		// set parent/previous of content
@@ -65,28 +67,28 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 		treeRepresentationContent.previous = (fContents.size() <= 1) ? null : fContents.get(fContents.size() - 2);
 		
 		// add string content		
-		addStringContent(treeRepresentationContent.getContent());
+		addContent(treeRepresentationContent.getContent());
 		checkConsistency();
 	}
 
-	public void addContent(Object content) {
-		addContent(null, content);
+	public void addNodeObject(Object content) {
+		addNodeObject(null, content);
 	}
 	
-	private TreeRepresentationLeaf createTreeRepresentationContent(Object content) {
-		if (content instanceof TreeRepresentationLeaf) {
-			return (TreeRepresentationLeaf)content;
+	private ASTNode createTreeRepresentationContent(Object content) {
+		if (content instanceof ASTNode) {
+			return (ASTNode)content;
 		} else {
 			return new PrimitiveTreeRepresentation(content);
 		}
 	}	
 	
-	public void changeContent(Object key, Object newContentAsObject) {
+	public void changeNodeObject(Object key, Object newContentAsObject) {
 		//int startIndexOfOldContent = startIndexOf(key);
 		int index = fContentsMap.get(key);
-		TreeRepresentationLeaf oldContent = fContents.get(index);		
+		ASTNode oldContent = fContents.get(index);		
 		int startIndexOfOldContent = oldContent.getOffsetWithInParent(0);
-		TreeRepresentationLeaf newObject = createTreeRepresentationContent(newContentAsObject);
+		ASTNode newObject = createTreeRepresentationContent(newContentAsObject);
 		fContents.set(index, newObject);
 		int oldContentLength = oldContent.getLength();
 		
@@ -100,13 +102,13 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 		// replace content as child
 		Integer childIndex = fChildrensMap.get(key);
 		if (childIndex != null) {
-			if (newContentAsObject instanceof TreeRepresentation) {
-				fChildren.set(childIndex, (TreeRepresentation)newContentAsObject);
+			if (newContentAsObject instanceof ASTElementNode) {
+				fChildren.set(childIndex, (ASTElementNode)newContentAsObject);
 			} else {
 				fChildren.remove(childIndex);
 			}
 		} else {
-			if (newContentAsObject instanceof TreeRepresentation) {
+			if (newContentAsObject instanceof ASTElementNode) {
 				throw new RuntimeException("assert");
 			}
 		}
@@ -114,20 +116,20 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 		// reset the listeners
 		RepresentationChangedListener listener = fChangeListeners.get(index);
 		if (listener != null) {
-			((TreeRepresentation)oldContent).removeRepresentationChangedListener(listener);
+			((ASTElementNode)oldContent).removeRepresentationChangedListener(listener);
 		}
-		if (newContentAsObject instanceof TreeRepresentation) {
-			((TreeRepresentation)newContentAsObject).addRepresentationChangedListener(
-					new RepresentationChangedListener((TreeRepresentation)newContentAsObject));
+		if (newContentAsObject instanceof ASTElementNode) {
+			((ASTElementNode)newContentAsObject).addRepresentationChangedListener(
+					new RepresentationChangedListener((ASTElementNode)newContentAsObject));
 		} else {
 			fChangeListeners.remove(index);
 		}		
 		
 		// replace the string content
-		replaceStringContent(startIndexOfOldContent, oldContentLength, newObject.getContent());		
+		replaceContent(startIndexOfOldContent, oldContentLength, newObject.getContent());		
 	}
 	
-	public TreeRepresentationLeaf getContent(Object key) {
+	public ASTNode getNode(Object key) {
 		Integer index = fContentsMap.get(key); 
 		if (index == null) {
 			return null;
@@ -136,9 +138,9 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 		}
 	}
 	
-	public TreeRepresentationLeaf getContent(int offset) {
+	public ASTNode getNode(int offset) {
 		int i = 0;
-		for (TreeRepresentationLeaf content: fContents) {
+		for (ASTNode content: fContents) {
 			if (offset >= i && offset < i + content.getLength()) {
 				return content;
 			} else {
@@ -152,14 +154,14 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 		return fStringContent.length();
 	}
 	
-	private void replaceStringContent(int start, int length, String stringContent) {
+	private void replaceContent(int start, int length, String stringContent) {
 		fStringContent.replace(start, start + length, stringContent);		
 		//recalculateStartingIndices(contentIndex, stringContent.length() - length);		
 		checkConsistency();
 		fireContentChangedListener(start, length, stringContent);
 	}
 	
-	private void addStringContent(String content) {
+	private void addContent(String content) {
 		int oldLength = getLength();
 		fStringContent.append(content);
 		fireContentChangedListener(oldLength, 0, content);
@@ -179,9 +181,9 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 		fChangeListeners.clear();
 		getElement().dispose();
 		for (Object content: fContents) {
-			if (content instanceof TreeRepresentation) {
-				((TreeRepresentation)content).getElement().dispose();
-				((TreeRepresentation)content).dispose();
+			if (content instanceof ASTElementNode) {
+				((ASTElementNode)content).getElement().dispose();
+				((ASTElementNode)content).dispose();
 			}
 		}
 		
@@ -190,16 +192,16 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 		//fStartIndexes.clear();
 	}
 	
-	public void addRepresentationChangedListener(IRepresentationChangedListener listener) {
+	public void addRepresentationChangedListener(IASTChangedListener listener) {
 		fListeners.add(listener);
 	}
 	
-	public void removeRepresentationChangedListener(IRepresentationChangedListener listener) {
+	public void removeRepresentationChangedListener(IASTChangedListener listener) {
 		fListeners.remove(listener);
 	}
 	
 	protected void fireContentChangedListener(int start, int length, String text) {
-		for (IRepresentationChangedListener listener: fListeners) {
+		for (IASTChangedListener listener: fListeners) {
 			listener.contentChanged(start, length, text);
 		}
 	}
@@ -214,13 +216,13 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 		}
 		fComponents.clear();
 		for (Object content: fContents) {
-			if (content instanceof TreeRepresentation) {				
-				((TreeRepresentation)content).disconnect();
+			if (content instanceof ASTElementNode) {				
+				((ASTElementNode)content).disconnect();
 			}
 		}
 	}
 
-	public List<TreeRepresentation> getChildNodes() {
+	public List<ASTElementNode> getChildNodes() {
 		return Collections.unmodifiableList(fChildren);
 	}
 	
@@ -232,7 +234,7 @@ public class TreeRepresentation extends TreeRepresentationLeaf {
 		// content
 		{
 			StringBuffer required = new StringBuffer("");		
-			for (TreeRepresentationLeaf content: fContents) {				
+			for (ASTNode content: fContents) {				
 					required.append(content.getContent());				
 			}
 			if (!required.toString().equals(getContent())) {

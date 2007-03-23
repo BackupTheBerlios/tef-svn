@@ -7,7 +7,7 @@ import hub.sam.tef.templates.ReferenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.ValueTemplate;
-import hub.sam.tef.treerepresentation.ISyntaxProvider;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import editortest.emf.ecore.templates.EIdentifierTemplate;
 
 public class OperationCallExp1Template extends ElementTemplate {

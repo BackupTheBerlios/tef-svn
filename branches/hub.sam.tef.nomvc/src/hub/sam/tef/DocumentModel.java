@@ -5,17 +5,17 @@ import java.util.Collection;
 import org.eclipse.jface.text.Position;
 
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.treerepresentation.IDisposable;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.ASTElementNode;
 import hub.sam.util.MultiMap;
+import hub.sam.util.container.IDisposable;
 
 public class DocumentModel implements IDisposable {
 	
 	private IModelElement topLevelModelElement;
 	private MultiMap<IModelElement, Position> fOccurences = new MultiMap<IModelElement, Position>();
-	private TreeRepresentation treeRepresentation;
+	private ASTElementNode treeRepresentation;
 	
-	public DocumentModel(IModelElement topLevelModelElement, TreeRepresentation treeRepresentation) {
+	public DocumentModel(IModelElement topLevelModelElement, ASTElementNode treeRepresentation) {
 		super();
 		this.topLevelModelElement = topLevelModelElement;
 		this.treeRepresentation = treeRepresentation;
@@ -25,7 +25,7 @@ public class DocumentModel implements IDisposable {
 		fOccurences.put(element, occurence);		
 	}
 
-	public TreeRepresentation getTreeRepresentation() {
+	public ASTElementNode getTreeRepresentation() {
 		return treeRepresentation;
 	}
 

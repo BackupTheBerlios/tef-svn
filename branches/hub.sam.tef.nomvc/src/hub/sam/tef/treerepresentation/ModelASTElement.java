@@ -3,15 +3,17 @@ package hub.sam.tef.treerepresentation;
 import editortest.emf.model.IOccurence;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
+import hub.sam.util.container.AbstractWatchedDisposable;
 
-public class ModelTreeContents extends AbstractWatchedDisposable implements ITreeContents, IOccurence {
+public class ModelASTElement extends AbstractWatchedDisposable implements IASTElement, IOccurence {
 
 	private final IModelElement fModel;
 	private final Template fTemplate;	
 	
-	private TreeRepresentation fTreeRepresentation;
+	private ASTElementNode fTreeRepresentation;
 	
-	public ModelTreeContents(final Template template, final IModelElement fmodel) {
+	public ModelASTElement(final Template template, final IModelElement fmodel) {
 		super();
 		this.fModel = fmodel;
 		fTemplate = template;
@@ -39,7 +41,7 @@ public class ModelTreeContents extends AbstractWatchedDisposable implements ITre
 		return fTemplate;
 	}
 
-	public void setTreeRepresentation(TreeRepresentation treeNode) {
+	public void setAST(ASTElementNode treeNode) {
 		this.fTreeRepresentation = treeNode;	
 	}
 

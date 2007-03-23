@@ -1,6 +1,6 @@
 package editortest.emf.model;
 
-import hub.sam.tef.treerepresentation.IWatchedDisposable;
+import hub.sam.util.container.IWatchedDisposable;
 
 public interface IOccurence extends IWatchedDisposable {
 	

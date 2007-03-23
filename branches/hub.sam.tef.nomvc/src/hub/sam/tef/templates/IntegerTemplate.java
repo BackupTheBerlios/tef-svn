@@ -18,7 +18,7 @@ package hub.sam.tef.templates;
 
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.treerepresentation.ISyntaxProvider;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 
 public class IntegerTemplate extends PrimitiveValueTemplate<Integer>{
 	

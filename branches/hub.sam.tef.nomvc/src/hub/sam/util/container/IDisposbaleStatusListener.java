@@ -1,4 +1,4 @@
-package hub.sam.tef.treerepresentation;
+package hub.sam.util.container;
 
 public interface IDisposbaleStatusListener {
 	public void disposed();

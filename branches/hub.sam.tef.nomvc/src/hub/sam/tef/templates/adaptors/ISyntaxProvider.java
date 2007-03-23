@@ -1,4 +1,4 @@
-package hub.sam.tef.treerepresentation;
+package hub.sam.tef.templates.adaptors;
 
 public interface ISyntaxProvider {
 	

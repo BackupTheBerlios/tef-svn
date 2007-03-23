@@ -1,10 +1,10 @@
 package hub.sam.tef.treerepresentation;
 
 import hub.sam.tef.DocumentModel;
-import hub.sam.tef.controllers.IAnnotationModelProvider;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.templates.adaptors.IAnnotationModelProvider;
 
 import java.util.Collection;
 import java.util.Vector;

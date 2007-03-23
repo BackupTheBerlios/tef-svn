@@ -3,39 +3,40 @@ package hub.sam.tef.treerepresentation;
 import java.util.Collections;
 import java.util.List;
 
+import hub.sam.util.container.IDisposable;
 import hub.sam.util.trees.AbstractTree;
 
-public abstract class TreeRepresentationLeaf extends AbstractTree<TreeRepresentationLeaf, ITreeContents> {
+public abstract class ASTNode extends AbstractTree<ASTNode, IASTElement> {
 	
-	protected TreeRepresentation parent = null;
-	protected TreeRepresentationLeaf previous = null;
+	protected ASTElementNode parent = null;
+	protected ASTNode previous = null;
 	
-	private ITreeContents fElement;	
+	private IASTElement fElement;	
 	
-	protected TreeRepresentationLeaf(final ITreeContents contents) {
+	protected ASTNode(final IASTElement contents) {
 		super();
 		this.fElement = contents;
 	}
 	
-	public final TreeRepresentation getParent() {
+	public final ASTElementNode getParent() {
 		return parent;
 	}
 
-	public List<? extends TreeRepresentationLeaf> getChildNodes() {
+	public List<? extends ASTNode> getChildNodes() {
 		return Collections.EMPTY_LIST;
 	}
 
-	public final ITreeContents getElement() {
+	public final IASTElement getElement() {
 		return fElement;
 	}
 	
-	public final void setElement(ITreeContents contents) {
+	public final void setElement(IASTElement contents) {
 		if (fElement != null && fElement instanceof IDisposable) {
 			((IDisposable)fElement).dispose();
 		}
 		fElement = contents;
-		if (this instanceof TreeRepresentation) {
-			contents.setTreeRepresentation((TreeRepresentation)this);
+		if (this instanceof ASTElementNode) {
+			contents.setAST((ASTElementNode)this);
 		}
 	}
 	

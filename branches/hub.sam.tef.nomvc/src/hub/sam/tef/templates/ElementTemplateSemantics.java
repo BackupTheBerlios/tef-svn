@@ -8,17 +8,17 @@ import hub.sam.tef.models.IModelChangeListener;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
-import hub.sam.tef.treerepresentation.IDisposable;
-import hub.sam.tef.treerepresentation.ISyntaxProvider;
-import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
-import hub.sam.tef.treerepresentation.ModelTreeContents;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
+import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.treerepresentation.ModelASTElement;
 import hub.sam.tef.treerepresentation.SemanticsContext;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
-import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
+import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.treerepresentation.ASTNode;
+import hub.sam.util.container.IDisposable;
 
 import org.eclipse.jface.text.Position;
 
-public class ElementTemplateSemantics extends ValueTemplateSemantics implements ISyntaxProvider, ITreeRepresentationProvider, ISemanticProvider {
+public class ElementTemplateSemantics extends ValueTemplateSemantics implements ISyntaxProvider, IASTProvider, ISemanticProvider {
 
 	private final IModel fModel;
 	private final IMetaModelElement fMetaModelElement;
@@ -49,9 +49,9 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		return new String[][] { result };					
 	}
 
-	public TreeRepresentationLeaf createTreeRepresentation(IModelElement owner, String notused, Object model, boolean isComposite) {
-		ModelTreeContents contents = new ModelTreeContents(fElementTemplate, (IModelElement)model);
-		TreeRepresentation result = new TreeRepresentation(contents);
+	public ASTNode createTreeRepresentation(IModelElement owner, String notused, Object model, boolean isComposite) {
+		ModelASTElement contents = new ModelASTElement(fElementTemplate, (IModelElement)model);
+		ASTElementNode result = new ASTElementNode(contents);
 		if (model == null) {
 			model = fElementTemplate.createMockObject();
 			fElementTemplate.getModel().getCommandFactory().add(owner, notused, model);
@@ -62,13 +62,13 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		for (Template subTemplate: fElementTemplate.getNestedTemplates()) {
 			if (subTemplate instanceof PropertyTemplate) {
 				String property = ((PropertyTemplate)subTemplate).getProperty();
-				result.addContent(property, subTemplate.getAdapter(ITreeRepresentationProvider.class).
+				result.addNodeObject(property, subTemplate.getAdapter(IASTProvider.class).
 						createTreeRepresentation((IModelElement)model, property, model, true));
 				ModelChangeListener changeListener = 
 						new ModelChangeListener(result, (PropertyTemplate)subTemplate, (IModelElement)model);
 				result.registerComponentListener(changeListener);
 			} else if (subTemplate instanceof TerminalTemplate) {
-				result.addContent(((TerminalTemplate)subTemplate).getTerminalText());
+				result.addNodeObject(((TerminalTemplate)subTemplate).getTerminalText());
 			} else {
 				throw new RuntimeException("assert");
 			}
@@ -77,19 +77,19 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		return result;
 	}	
 
-	public Object createCompositeModel(IModelElement parent, String property, TreeRepresentationLeaf tree, boolean isComposite) {
+	public Object createCompositeModel(IModelElement parent, String property, ASTNode tree, boolean isComposite) {
 		IModelElement result = null;
 		boolean createModelForProperties = true;
 		if (parent != null && isComposite) {
 			ICommand createCommand = fModel.getCommandFactory().createChild(parent, fMetaModelElement, property);
 			createCommand.execute();
 			result = (IModelElement)createCommand.getResult().iterator().next();
-			tree.setElement(new ModelTreeContents(fElementTemplate, result));
+			tree.setElement(new ModelASTElement(fElementTemplate, result));
 		} else if (parent != null && !isComposite) {		
 			createModelForProperties = false;			
 		} else {
 			result = fModel.createElement(fMetaModelElement);
-			tree.setElement(new ModelTreeContents(fElementTemplate, result));
+			tree.setElement(new ModelASTElement(fElementTemplate, result));
 		}
 		
 		
@@ -97,25 +97,25 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 			for (Template subTemplate: fElementTemplate.getNestedTemplates()) {
 				if (subTemplate instanceof PropertyTemplate) {
 					String childProperty = ((PropertyTemplate)subTemplate).getProperty();
-					subTemplate.getAdapter(ITreeRepresentationProvider.class).
-							createCompositeModel(result, childProperty, ((TreeRepresentation)tree).getContent(childProperty), true);
+					subTemplate.getAdapter(IASTProvider.class).
+							createCompositeModel(result, childProperty, ((ASTElementNode)tree).getNode(childProperty), true);
 				}
 			}
 		}
 		return result;
 	}
 	
-	public Object createReferenceModel(IModelElement parent, String property, TreeRepresentationLeaf tree, boolean isComposite, SemanticsContext context) {
+	public Object createReferenceModel(IModelElement parent, String property, ASTNode tree, boolean isComposite, SemanticsContext context) {
 		IModelElement result = null;
 		boolean createModelForProperties = true;
 		if (parent != null && isComposite) {
-			result = ((ModelTreeContents)tree.getElement()).getModelElement();
+			result = ((ModelASTElement)tree.getElement()).getModelElement();
 		} else if (parent != null && !isComposite) {		
 			// try to resolve			
 			loop: for (IModelElement possibility: context.getValidElements(
 					((ReferenceTemplate)tree.getParent().getElement().getTemplate()).getTypeModel())) {
 				if (possibility.getValue("name") != null && 
-						possibility.getValue("name").equals(((TreeRepresentation)tree).getContent("name").getContent())) {									
+						possibility.getValue("name").equals(((ASTElementNode)tree).getNode("name").getContent())) {									
 					result = possibility;
 					break loop;
 				}
@@ -126,25 +126,25 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 				createModelForProperties = false;
 			}
 			fModel.getCommandFactory().set(parent, property, result).execute();
-			tree.setElement(new ModelTreeContents(fElementTemplate, result));
+			tree.setElement(new ModelASTElement(fElementTemplate, result));
 		} else {
-			result = ((ModelTreeContents)tree.getElement()).getModelElement();
+			result = ((ModelASTElement)tree.getElement()).getModelElement();
 		}		
 		
 		if (createModelForProperties) {
 			for (Template subTemplate: fElementTemplate.getNestedTemplates()) {
 				if (subTemplate instanceof PropertyTemplate) {
 					String childProperty = ((PropertyTemplate)subTemplate).getProperty();
-					subTemplate.getAdapter(ITreeRepresentationProvider.class).
-							createReferenceModel(result, childProperty, ((TreeRepresentation)tree).getContent(childProperty), true, context);
+					subTemplate.getAdapter(IASTProvider.class).
+							createReferenceModel(result, childProperty, ((ASTElementNode)tree).getNode(childProperty), true, context);
 				}
 			}
 		}
 		return result;
 	}
 
-	public void check(TreeRepresentation representation, SemanticsContext context) {	
-		IModelElement modelElement = ((ModelTreeContents)representation.getElement()).getModelElement();
+	public void check(ASTElementNode representation, SemanticsContext context) {	
+		IModelElement modelElement = ((ModelASTElement)representation.getElement()).getModelElement();
 		if (modelElement instanceof InternalModelElement) {			
 			context.getAnnotationModelProvider().addAnnotation(new ErrorAnnotation(),
 					new Position(representation.getAbsoluteOffset(0), representation.getLength()));
@@ -155,20 +155,20 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		
 		for (Template subTemaplte: fElementTemplate.getNestedTemplates()) {
 			if (subTemaplte instanceof PropertyTemplate) {
-				Object value = representation.getContent(((PropertyTemplate)subTemaplte).getProperty());
-				if (value instanceof TreeRepresentation) {
-					subTemaplte.getAdapter(ISemanticProvider.class).check((TreeRepresentation)value, context);
+				Object value = representation.getNode(((PropertyTemplate)subTemaplte).getProperty());
+				if (value instanceof ASTElementNode) {
+					subTemaplte.getAdapter(ISemanticProvider.class).check((ASTElementNode)value, context);
 				}
 			}
 		}
 	}
 
 	class ModelChangeListener implements IModelChangeListener, IDisposable {
-		private final TreeRepresentation fRepresentation;
+		private final ASTElementNode fRepresentation;
 		private final PropertyTemplate fTemplate;
 		private final IModelElement fModel;				
 		
-		public ModelChangeListener(final TreeRepresentation representation, final PropertyTemplate template, final IModelElement model) {
+		public ModelChangeListener(final ASTElementNode representation, final PropertyTemplate template, final IModelElement model) {
 			super();
 			fRepresentation = representation;
 			fTemplate = template;
@@ -187,7 +187,7 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		public void propertyChanged(Object element, String changedProperty) {
 			String property = fTemplate.getProperty();
 			if (changedProperty.equals(property)) {
-				fRepresentation.changeContent(property, fTemplate.getAdapter(ITreeRepresentationProvider.class).
+				fRepresentation.changeNodeObject(property, fTemplate.getAdapter(IASTProvider.class).
 						createTreeRepresentation(null, property, fModel, true));
 			}
 		}		

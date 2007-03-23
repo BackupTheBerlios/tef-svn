@@ -1,10 +1,10 @@
 package hub.sam.tef.parse;
 
 import hub.sam.tef.treerepresentation.SemanticsContext;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.ASTElementNode;
 
 public interface ISemanticProvider {
 
-	public void check(TreeRepresentation representation, SemanticsContext context); 
+	public void check(ASTElementNode representation, SemanticsContext context); 
 			
 }

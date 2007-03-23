@@ -1,4 +1,4 @@
-package hub.sam.tef.treerepresentation;
+package hub.sam.util.container;
 
 public interface IDisposable {
 	public void dispose();

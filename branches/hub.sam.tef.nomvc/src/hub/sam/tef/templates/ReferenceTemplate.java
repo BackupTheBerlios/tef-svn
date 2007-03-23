@@ -20,12 +20,12 @@ import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
-import hub.sam.tef.treerepresentation.ISyntaxProvider;
-import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
-import hub.sam.tef.treerepresentation.ModelTreeContents;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
+import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.treerepresentation.ModelASTElement;
 import hub.sam.tef.treerepresentation.SemanticsContext;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
-import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
+import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.treerepresentation.ASTNode;
 
 
 public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {		
@@ -60,7 +60,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	public <T> T getAdapter(Class<T> adapter) {
 		if (ISyntaxProvider.class == adapter) {
 			return (T)new SyntaxProvider();
-		} else if (ITreeRepresentationProvider.class == adapter) {
+		} else if (IASTProvider.class == adapter) {
 			return (T)new TreeRepresentationProvider();
 		} else if (ISemanticProvider.class == adapter) {
 			return (T)new SemanticProvider();
@@ -84,34 +84,34 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		}			
 	}
 	
-	class TreeRepresentationProvider implements ITreeRepresentationProvider {
-		public TreeRepresentationLeaf createTreeRepresentation(IModelElement owner, String notused, Object model, boolean isComposite) {
-			ModelTreeContents contents = new ModelTreeContents(ReferenceTemplate.this, (IModelElement)model);
-			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
+	class TreeRepresentationProvider implements IASTProvider {
+		public ASTNode createTreeRepresentation(IModelElement owner, String notused, Object model, boolean isComposite) {
+			ModelASTElement contents = new ModelASTElement(ReferenceTemplate.this, (IModelElement)model);
+			ASTElementNode treeRepresentation = new ASTElementNode(contents);
 			
-			treeRepresentation.addContent(fIdentifierTemplate.getAdapter(ITreeRepresentationProvider.class).
+			treeRepresentation.addNodeObject(fIdentifierTemplate.getAdapter(IASTProvider.class).
 					createTreeRepresentation(owner, notused, model, false));						
 			
 			return treeRepresentation;
 		}
 
-		public Object createCompositeModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {				
-			IModelElement result =  (IModelElement)fIdentifierTemplate.getAdapter(ITreeRepresentationProvider.class).
-					createCompositeModel(owner, property, ((TreeRepresentation)tree).getChildNodes().get(0), false);			
-			tree.setElement(new ModelTreeContents(ReferenceTemplate.this, result));
+		public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {				
+			IModelElement result =  (IModelElement)fIdentifierTemplate.getAdapter(IASTProvider.class).
+					createCompositeModel(owner, property, ((ASTElementNode)tree).getChildNodes().get(0), false);			
+			tree.setElement(new ModelASTElement(ReferenceTemplate.this, result));
 			return result;
 		}
 
-		public Object createReferenceModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite, SemanticsContext context) {
-			IModelElement result = (IModelElement)fIdentifierTemplate.getAdapter(ITreeRepresentationProvider.class).
-					createReferenceModel(owner, property, ((TreeRepresentation)tree).getChildNodes().get(0), false, context);						
+		public Object createReferenceModel(IModelElement owner, String property, ASTNode tree, boolean isComposite, SemanticsContext context) {
+			IModelElement result = (IModelElement)fIdentifierTemplate.getAdapter(IASTProvider.class).
+					createReferenceModel(owner, property, ((ASTElementNode)tree).getChildNodes().get(0), false, context);						
 			return result;
 		}			
 		
 	}
 	
 	class SemanticProvider implements ISemanticProvider {		
-		public void check(TreeRepresentation representation, SemanticsContext context) {			
+		public void check(ASTElementNode representation, SemanticsContext context) {			
 			fIdentifierTemplate.getAdapter(ISemanticProvider.class).check(representation.getChildNodes().get(0), context);
 		}		
 	}

@@ -1,6 +1,5 @@
 package editortest.emf.ocl.templates;
 
-import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.SequenceTemplate;
@@ -8,6 +7,7 @@ import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
+import hub.sam.tef.templates.adaptors.Proposal;
 
 import java.util.Arrays;
 import java.util.List;

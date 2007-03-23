@@ -38,7 +38,7 @@ public class TEFOccurencesUpdater implements ISelectionChangedListener {
 	private Annotation[] oldOccurenceAnnotations = new Annotation[] {};
 	
 	public TEFOccurencesUpdater(TEFEditor editor) {
-		((IPostSelectionProvider)editor.getSelectionProvider()).addSelectionChangedListener(this);
+		((IPostSelectionProvider)editor.getSelectionProvider()).addPostSelectionChangedListener(this);
 		this.fEditor = editor;
 	}
 	

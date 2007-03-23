@@ -18,11 +18,11 @@ package hub.sam.tef.templates;
 
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.treerepresentation.ISyntaxProvider;
-import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
+import hub.sam.tef.templates.adaptors.IASTProvider;
 import hub.sam.tef.treerepresentation.PrimitiveTreeRepresentation;
 import hub.sam.tef.treerepresentation.SemanticsContext;
-import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
+import hub.sam.tef.treerepresentation.ASTNode;
 
 
 public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
@@ -52,7 +52,7 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 	public <T> T getAdapter(Class<T> adapter) {
 		if (ISyntaxProvider.class == adapter) {
 			return (T)new SyntaxProvider();
-		} else if (ITreeRepresentationProvider.class == adapter) {
+		} else if (IASTProvider.class == adapter) {
 			return (T)new TreeRepresentationProvider();
 		} else {
 			return super.getAdapter(adapter);
@@ -69,8 +69,8 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 		}		
 	}
 	
-	class TreeRepresentationProvider implements ITreeRepresentationProvider {
-		public TreeRepresentationLeaf createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite) {
+	class TreeRepresentationProvider implements IASTProvider {
+		public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite) {
 			if ((Boolean)model) {
 				return new PrimitiveTreeRepresentation(fFlagKeyword + " ");				
 			} else {
@@ -78,12 +78,12 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 			}
 		}
 
-		public Object createCompositeModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {
-			return FlagTemplate.super.getAdapter(ITreeRepresentationProvider.class).
+		public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {
+			return FlagTemplate.super.getAdapter(IASTProvider.class).
 					createCompositeModel(owner, property, tree, true);
 		}
 
-		public Object createReferenceModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite, SemanticsContext context) {		
+		public Object createReferenceModel(IModelElement owner, String property, ASTNode tree, boolean isComposite, SemanticsContext context) {		
 			return null;
 		}				
 	}

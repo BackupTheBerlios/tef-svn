@@ -1,8 +1,10 @@
 package hub.sam.tef.treerepresentation;
 
 import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
+import hub.sam.util.container.IDisposable;
 
-public interface ITreeContents extends IDisposable {
+public interface IASTElement extends IDisposable {
 	
 	public String getSymbol();
 
@@ -10,5 +12,5 @@ public interface ITreeContents extends IDisposable {
 	
 	public Template getTemplate();
 	
-	public void setTreeRepresentation(TreeRepresentation treeNode);
+	public void setAST(ASTElementNode treeNode);
 }

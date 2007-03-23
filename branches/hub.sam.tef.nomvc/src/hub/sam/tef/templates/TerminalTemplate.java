@@ -16,7 +16,7 @@
  */
 package hub.sam.tef.templates;
 
-import hub.sam.tef.treerepresentation.ISyntaxProvider;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;

@@ -18,11 +18,11 @@ package hub.sam.tef.templates;
 
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
-import hub.sam.tef.treerepresentation.ISyntaxProvider;
-import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
+import hub.sam.tef.templates.adaptors.IASTProvider;
 import hub.sam.tef.treerepresentation.SemanticsContext;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
-import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
+import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.treerepresentation.ASTNode;
 
 public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<ModelType> {
 	
@@ -34,7 +34,7 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 	public <T> T getAdapter(Class<T> adapter) {
 		if (ISyntaxProvider.class == adapter) {
 			return (T)new SyntaxProvider();
-		} else if (ITreeRepresentationProvider.class == adapter) {
+		} else if (IASTProvider.class == adapter) {
 			return (T)new TreeRepresentationProvider();
 		} else if (ISemanticProvider.class == adapter) {
 			return (T)new SemanticProvider();
@@ -43,19 +43,19 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		}
 	}
 	
-	class TreeRepresentationProvider implements ITreeRepresentationProvider {
-		public TreeRepresentationLeaf createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite) {
-			return getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
+	class TreeRepresentationProvider implements IASTProvider {
+		public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite) {
+			return getValueTemplate().getAdapter(IASTProvider.class).
 					createTreeRepresentation(null, null, ((IModelElement)model).getValue(property), true);			
 		}
 
-		public Object createCompositeModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite) {
-			return getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
+		public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {
+			return getValueTemplate().getAdapter(IASTProvider.class).
 					createCompositeModel(owner, property, tree, true);
 		}
 
-		public Object createReferenceModel(IModelElement owner, String property, TreeRepresentationLeaf tree, boolean isComposite, SemanticsContext context) {
-			return getValueTemplate().getAdapter(ITreeRepresentationProvider.class).
+		public Object createReferenceModel(IModelElement owner, String property, ASTNode tree, boolean isComposite, SemanticsContext context) {
+			return getValueTemplate().getAdapter(IASTProvider.class).
 					createReferenceModel(owner, property, tree, true, context);
 		}					
 	}
@@ -72,7 +72,7 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 	
 	class SemanticProvider implements ISemanticProvider {
 		
-		public void check(TreeRepresentation representation, SemanticsContext context) {		
+		public void check(ASTElementNode representation, SemanticsContext context) {		
 			getValueTemplate().getAdapter(ISemanticProvider.class).
 					check(representation, context);		
 		}		

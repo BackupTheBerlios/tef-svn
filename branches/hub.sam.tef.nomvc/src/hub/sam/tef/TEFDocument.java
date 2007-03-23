@@ -16,18 +16,18 @@
  */
 package hub.sam.tef;
 
-import hub.sam.tef.controllers.IAnnotationModelProvider;
-import hub.sam.tef.controllers.IDocumentModelProvider;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.adaptors.IAnnotationModelProvider;
+import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
 import hub.sam.tef.templates.adaptors.IPresentationOptionsProvider;
-import hub.sam.tef.treerepresentation.ITreeContents;
-import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
-import hub.sam.tef.treerepresentation.IndexTreeRepresentationSelector;
-import hub.sam.tef.treerepresentation.ModelTreeContents;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
-import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
+import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.treerepresentation.IASTElement;
+import hub.sam.tef.treerepresentation.IndexASTSelector;
+import hub.sam.tef.treerepresentation.ModelASTElement;
+import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.treerepresentation.ASTNode;
 import hub.sam.util.strings.Change;
 import hub.sam.util.strings.Changes;
 import hub.sam.util.trees.IChildSelector;
@@ -123,7 +123,7 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 		this.model = model;
 		this.resource = resource;
 		this.changed = false;
-		TreeRepresentation treeRepresentation = (TreeRepresentation)getTopLevelTemplate().getAdapter(ITreeRepresentationProvider.class).createTreeRepresentation(null, 
+		ASTElementNode treeRepresentation = (ASTElementNode)getTopLevelTemplate().getAdapter(IASTProvider.class).createTreeRepresentation(null, 
 				null, getTopLevelElement(), true);
 		if (empty) {
 			try {
@@ -146,7 +146,7 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 		return getTopLevelElement();
 	}
 	
-	public TreeRepresentation getModelRepresentation() {
+	public ASTElementNode getModelRepresentation() {
 		return documentModel.getTreeRepresentation();
 	}
 	
@@ -170,14 +170,14 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 	
 	synchronized public Map<Annotation, Position> createNewOccurenceAnnotations(ISourceViewer viewer) {										
 		int cursorPosition = viewer.getTextWidget().getCaretOffset();			
-		IChildSelector<TreeRepresentation> selector = new IndexTreeRepresentationSelector(cursorPosition, 0);		
-		TreeRepresentation selectedTreeNode = TreeIterator.select(selector, getModelRepresentation());
+		IChildSelector<ASTElementNode> selector = new IndexASTSelector(cursorPosition, 0);		
+		ASTElementNode selectedTreeNode = TreeIterator.select(selector, getModelRepresentation());
 		
 		IModelElement modelElement = null;		
-		ITreeContents selectedTreeContents = selectedTreeNode.getElement();
+		IASTElement selectedTreeContents = selectedTreeNode.getElement();
 		Template template = null;
-		if (selectedTreeContents instanceof ModelTreeContents) {
-			modelElement = ((ModelTreeContents)selectedTreeContents).getModelElement();
+		if (selectedTreeContents instanceof ModelASTElement) {
+			modelElement = ((ModelASTElement)selectedTreeContents).getModelElement();
 			template = selectedTreeContents.getTemplate();
 		}
 		

@@ -2,8 +2,8 @@ package hub.sam.tef.parse;
 
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.treerepresentation.SyntaxTreeContent;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.TextASTElement;
+import hub.sam.tef.treerepresentation.ASTElementNode;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import fri.patterns.interpreter.parsergenerator.syntax.Rule;
  */
 public class UpdateTreeSemantic implements Semantic {
 
-	private TreeRepresentation result;
+	private ASTElementNode result;
 	private final ParserInterface fParserInterface;
 	
 	public UpdateTreeSemantic(ParserInterface parserInterface) {		
@@ -34,20 +34,20 @@ public class UpdateTreeSemantic implements Semantic {
 		}
 		int i = 0;
 		Template template = fParserInterface.getTemplateForNonTerminal(rule.getNonterminal()); 
-		TreeRepresentation result = new TreeRepresentation(new SyntaxTreeContent(rule, template));
+		ASTElementNode result = new ASTElementNode(new TextASTElement(rule, template));
 				
 		for(Object parseResult: parseResults) {
 			 // TODO whitespaces
 			if (template instanceof ElementTemplate) {
 				String property = ((ElementTemplate)template).getPropertyForRuleAndPosition(rule, i);
 				if (property != null) {
-					result.addContent(property, parseResult);
+					result.addNodeObject(property, parseResult);
 				} else {
 					// its a terminal
-					result.addContent(parseResult);
+					result.addNodeObject(parseResult);
 				}
 			} else {			
-				result.addContent(parseResult);
+				result.addNodeObject(parseResult);
 			}
 			i++;
 		}	
@@ -59,10 +59,10 @@ public class UpdateTreeSemantic implements Semantic {
 
 	public Object doSemanticForErrorRecovery(String recoverSymbol) {
 		Template template = fParserInterface.getTemplateForNonTerminal(recoverSymbol);
-		return new TreeRepresentation(new SyntaxTreeContent(null, template));
+		return new ASTElementNode(new TextASTElement(null, template));
 	}
 	
-	public TreeRepresentation getCurrentResult() {
+	public ASTElementNode getCurrentResult() {
 		return result;
 	}
 }

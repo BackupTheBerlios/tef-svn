@@ -1,6 +1,6 @@
 package hub.sam.tef.treerepresentation;
 
-public class PrimitiveTreeRepresentation extends TreeRepresentationLeaf {
+public class PrimitiveTreeRepresentation extends ASTNode {
 
 	private Object fPrimitive;
 

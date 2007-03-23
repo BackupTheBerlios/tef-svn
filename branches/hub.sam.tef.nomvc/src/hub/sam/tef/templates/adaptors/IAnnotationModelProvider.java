@@ -1,4 +1,4 @@
-package hub.sam.tef.controllers;
+package hub.sam.tef.templates.adaptors;
 
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;

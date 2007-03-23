@@ -16,12 +16,12 @@
  */
 package editortest.emf.ecore.templates;
 
-import hub.sam.tef.controllers.IDocumentModelProvider;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ChoiceTemplate;
 import hub.sam.tef.templates.SequenceTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.ValueTemplate;
+import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
 
 public class EPackageTemplate extends EModelElementTemplate {
 	

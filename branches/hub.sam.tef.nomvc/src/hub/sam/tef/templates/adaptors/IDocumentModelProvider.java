@@ -1,4 +1,4 @@
-package hub.sam.tef.controllers;
+package hub.sam.tef.templates.adaptors;
 
 import hub.sam.tef.models.IModel;
 

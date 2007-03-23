@@ -1,7 +1,7 @@
 package hub.sam.tef.parse;
 
-import hub.sam.tef.treerepresentation.IRepresentationChangedListener;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.IASTChangedListener;
+import hub.sam.tef.treerepresentation.ASTElementNode;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -24,11 +24,11 @@ public class TestParseAction implements IEditorActionDelegate {
 		action.setEnabled(true); // always on
 	}
 	
-	class RepresentationChangedListener implements IRepresentationChangedListener {
+	class RepresentationChangedListener implements IASTChangedListener {
 		private String content;
-		private final TreeRepresentation representation;
+		private final ASTElementNode representation;
 		
-		public RepresentationChangedListener(String content, final TreeRepresentation representation) {
+		public RepresentationChangedListener(String content, final ASTElementNode representation) {
 			super();
 			this.content = content;
 			this.representation = representation;

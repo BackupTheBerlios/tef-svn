@@ -1,6 +1,6 @@
 package hub.sam.util.trees;
 
-import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.ASTElementNode;
 
 import java.io.PrintStream;
 import java.util.List;

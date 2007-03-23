@@ -1,6 +1,6 @@
 package hub.sam.tef.templates.adaptors;
 
-import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.treerepresentation.ASTElementNode;
 
 public interface IPresentationOptionsProvider {
 	/**
@@ -8,5 +8,5 @@ public interface IPresentationOptionsProvider {
 	 * @param treeRepresentation The tree representation with the cursor on
 	 * @param localOffset The cursor position relative tp the tree representation
 	 */
-	public boolean markOccurences(TreeRepresentation treeRepresentation, int localOffset);
+	public boolean markOccurences(ASTElementNode treeRepresentation, int localOffset);
 }

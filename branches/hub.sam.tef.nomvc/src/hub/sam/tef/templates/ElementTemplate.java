@@ -17,16 +17,16 @@
 package hub.sam.tef.templates;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
-import hub.sam.tef.controllers.IDocumentModelProvider;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
+import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
 import hub.sam.tef.templates.adaptors.IPresentationOptionsProvider;
-import hub.sam.tef.treerepresentation.ISyntaxProvider;
-import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
-import hub.sam.tef.treerepresentation.TreeRepresentation;
+import hub.sam.tef.templates.adaptors.ISyntaxProvider;
+import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.treerepresentation.ASTElementNode;
 
 /**
  * A special ValueTemplate used for elements, whereby elements are container for
@@ -124,14 +124,14 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	public <T> T getAdapter(Class<T> adapter) {
 		if (ISyntaxProvider.class == adapter) {
 			return (T) new ElementTemplateSemantics(this);
-		} else if (ITreeRepresentationProvider.class == adapter) {
+		} else if (IASTProvider.class == adapter) {
 			return (T) new ElementTemplateSemantics(this);
 		} else if (ISemanticProvider.class == adapter) {
 			return (T) new ElementTemplateSemantics(this);
 		} else if (IPresentationOptionsProvider.class == adapter) {
 			return (T) new IPresentationOptionsProvider() {
-				public boolean markOccurences(TreeRepresentation treeRepresentation, int localOffset) {
-					return treeRepresentation.getContent("name") == treeRepresentation.getContent(localOffset);
+				public boolean markOccurences(ASTElementNode treeRepresentation, int localOffset) {
+					return treeRepresentation.getNode("name") == treeRepresentation.getNode(localOffset);
 				}				
 			};
 		} else {
