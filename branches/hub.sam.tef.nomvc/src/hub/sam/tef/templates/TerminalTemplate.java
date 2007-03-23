@@ -17,8 +17,6 @@
 package hub.sam.tef.templates;
 
 import hub.sam.tef.treerepresentation.ISyntaxProvider;
-import hub.sam.tef.views.FixText;
-import hub.sam.tef.views.Text;
 
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;
@@ -56,24 +54,6 @@ public class TerminalTemplate extends Template implements ISyntaxProvider {
 		fTerminalText = terminalText;
 		fHighlight = highlight;
 	}
-
-	protected Text createView() {
-		Text result =  new FixText(fTerminalText);
-		if (fHighlight != null) {
-			result.setElement(TextAttribute.class, fHighlight);
-		}
-		return result;
-	}
-	
-	/**
-	 * Returns the created view for the given model. It adds additional objects to the view. For example it
-	 * puts the used template into the view.
-	 */
-	public final Text getView() {
-		Text result = createView();
-		result.setElement(Template.class, this);
-		return result;
-	}	
 
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {

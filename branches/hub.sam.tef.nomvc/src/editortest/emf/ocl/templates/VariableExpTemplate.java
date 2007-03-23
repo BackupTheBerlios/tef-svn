@@ -1,17 +1,11 @@
 package editortest.emf.ocl.templates;
 
-import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.ReferenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.ValueTemplate;
-
-import java.util.Arrays;
-import java.util.List;
-
-import editortest.emf.model.EMFMetaModelElement;
 
 public class VariableExpTemplate extends ElementTemplate {
 
@@ -25,7 +19,7 @@ public class VariableExpTemplate extends ElementTemplate {
 				new SingleValueTemplate<IModelElement>(this, "referredVariable") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {						
-						return new ReferenceTemplate(this, getModel().getMetaElement("Variable"), null) {
+						return new ReferenceTemplate(this, getModel().getMetaElement("Variable")) {
 							@Override
 							protected ElementTemplate getElementTemplate() {
 								return new VariableTemplate(this);
@@ -34,14 +28,5 @@ public class VariableExpTemplate extends ElementTemplate {
 					}				
 				}
 			};
-		}
-
-		@Override
-		public List<Proposal> getProposals() {
-			return Arrays.asList(new Proposal[] { 
-					new Proposal(((EMFMetaModelElement)getMetaElement()).getEMFObject().getName() + " ...", null, 0)
-			});
-		}
-
-	
+		}			
 }

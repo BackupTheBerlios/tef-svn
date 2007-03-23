@@ -1,20 +1,14 @@
 package editortest.emf.ocl.templates;
 
-import java.util.Arrays;
-import java.util.List;
-
-import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.ElementTemplateSemantics;
-import hub.sam.tef.templates.OptionalTemplate;
 import hub.sam.tef.templates.ReferenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.treerepresentation.ISyntaxProvider;
 import editortest.emf.ecore.templates.EIdentifierTemplate;
-import editortest.emf.model.EMFMetaModelElement;
 
 public class OperationCallExp1Template extends ElementTemplate {
 
@@ -34,7 +28,7 @@ public class OperationCallExp1Template extends ElementTemplate {
 				new SingleValueTemplate<IModelElement>(this, "referredOperation") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {						
-						return new ReferenceTemplate(this, getModel().getMetaElement("EOperation"), null) {
+						return new ReferenceTemplate(this, getModel().getMetaElement("EOperation")) {
 							@Override
 							protected ElementTemplate getElementTemplate() {
 								return new EIdentifierTemplate(this);
@@ -50,13 +44,6 @@ public class OperationCallExp1Template extends ElementTemplate {
 				},
 		};
 	}	
-	
-	@Override
-	public List<Proposal> getProposals() {
-		return Arrays.asList(new Proposal[] { 
-				new Proposal(((EMFMetaModelElement)getMetaElement()).getEMFObject().getName() + " ..." + "[1]", null, 0)
-		});
-	}
 	
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {

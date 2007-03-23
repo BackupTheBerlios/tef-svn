@@ -5,22 +5,6 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            name="Sample TEF Editor"
-            extensions="mof"
-            icon="icons/sample.gif"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            class="editortest.mof.editor.MofEditor"
-            id="editortest.mof.MofEditor">
-      </editor>
-      <editor
-            class="editortest.emf.expressions.ExpressionEditor"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            default="true"
-            extensions="expressions"
-            icon="icons/full/obj16/ExpressionsModelFile.gif"
-            id="tef.emf.expressions.editor"
-            name="TEF Expressions Editor"/>
-      <editor
             class="editortest.emf.ecore.EcoreEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             default="false"
@@ -97,32 +81,6 @@
 	        isGoToPreviousNavigationTarget="false">
 	  </specification>
    </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            categoryId="org.eclipse.ui.category.textEditor"
-            description="%command.insertElement.description"
-            id="tef.insertElement"
-            name="%command.insertElement.name"/>
-      <command
-            categoryId="org.eclipse.ui.category.textEditor"
-            description="%command.deleteElement.description"
-            id="tef.deleteElement"
-            name="%command.deleteElement.name"/>
-   </extension>
-   <extension
-         point="org.eclipse.ui.bindings">
-      <key
-            commandId="tef.insertElement"
-            contextId="org.eclipse.ui.textEditorScope"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+INSERT"/>
-      <key
-            commandId="tef.deleteElement"
-            contextId="org.eclipse.ui.textEditorScope"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="SHIFT+CTRL+DELETE"/>
-   </extension>
    
   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
     <factory 
@@ -153,16 +111,6 @@
     </wizard>
   </extension>
 
-  <extension point = "org.eclipse.ui.editors">
-    <editor
-        id = "editortest.emf.expressions.emfmodel.presentation.ExpressionsEditorID"
-        name = "%_UI_ExpressionsEditor_label"
-        icon = "icons/full/obj16/ExpressionsModelFile.gif"
-        extensions = "expressions"
-        class = "editortest.emf.expressions.emfmodel.presentation.ExpressionsEditor" 
-        contributorClass="editortest.emf.expressions.emfmodel.presentation.ExpressionsActionBarContributor" >
-    </editor>
-  </extension>
   <extension
         point="org.eclipse.ui.popupMenus">
      <viewerContribution

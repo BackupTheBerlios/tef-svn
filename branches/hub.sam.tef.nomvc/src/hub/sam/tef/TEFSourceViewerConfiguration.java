@@ -16,12 +16,12 @@
  */
 package hub.sam.tef;
 
-import hub.sam.tef.controllers.IProposalHandler.ProposalKind;
-
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
+import org.eclipse.jface.text.presentation.IPresentationReconciler;
+import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
@@ -37,13 +37,12 @@ public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 		super();
 		this.fChangeContentAssistant = new ContentAssistant();		
 		fChangeContentAssistant.setContentAssistProcessor(
-				new TEFCompletionProcessor(ProposalKind.change), IDocument.DEFAULT_CONTENT_TYPE);
+				new TEFCompletionProcessor(), IDocument.DEFAULT_CONTENT_TYPE);
 		this.fInsertContentAssistant = new ContentAssistant();
 		fInsertContentAssistant.setContentAssistProcessor(
-				new TEFCompletionProcessor(ProposalKind.insert), IDocument.DEFAULT_CONTENT_TYPE);
+				new TEFCompletionProcessor(), IDocument.DEFAULT_CONTENT_TYPE);
 		
 		this.fDoubleClickStrategy = new TEFDoubleClickStrategy();
-		//this.fAutoEditStrategy = new TEFAutoEditStrategy();
 	}
 
 	@Override
@@ -60,14 +59,6 @@ public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 		return fDoubleClickStrategy;
 	}
 	
-	/* not needed anymore ?
-	@Override
-	public IAutoEditStrategy[] getAutoEditStrategies(ISourceViewer sourceViewer, String contentType) {
-		return new IAutoEditStrategy[] { fAutoEditStrategy };
-	}
-	*/
-
-	/*
 	@Override
 	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {
 		PresentationReconciler reconciler = new PresentationReconciler();
@@ -77,7 +68,6 @@ public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 		reconciler.setRepairer(damageRepair, IDocument.DEFAULT_CONTENT_TYPE);
 		return reconciler;		
 	}
-	*/
 	
 	@Override
 	public IReconciler getReconciler(ISourceViewer sourceViewer) {

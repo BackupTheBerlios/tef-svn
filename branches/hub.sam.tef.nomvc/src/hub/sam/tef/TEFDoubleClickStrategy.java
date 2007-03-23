@@ -21,15 +21,10 @@ import org.eclipse.jface.text.ITextViewer;
 
 
 public class TEFDoubleClickStrategy implements 
-		ITextDoubleClickStrategy {
-
+		ITextDoubleClickStrategy {	
+			
 	public void doubleClicked(ITextViewer viewer) {
-		// TODO Auto-generated method stub		
-	}
-	
-	/**
-	 * TODO has to be reworked for TreeRepresentations	 
-	public void doubleClicked(ITextViewer viewer) {
+		/* has to be rebuild for tree representations
 		int offset = viewer.getSelectedRange().x;
 		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(offset);
 		((TEFDocument)viewer.getDocument()).getModelDocument().getDocumentText().process(visitor, offset);
@@ -39,7 +34,6 @@ public class TEFDoubleClickStrategy implements
 		if (region != null && region.getLength() > 0) {
 			viewer.setSelectedRange(region.getOffset(), region.getLength());
 		}
-	}
-	*/
-		
+		*/
+	}	
 }

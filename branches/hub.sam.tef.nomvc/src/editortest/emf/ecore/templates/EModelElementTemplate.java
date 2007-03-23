@@ -17,7 +17,6 @@
 package editortest.emf.ecore.templates;
 
 import hub.sam.tef.controllers.IAnnotationModelProvider;
-import hub.sam.tef.controllers.ICursorPostionProvider;
 import hub.sam.tef.controllers.IModelRepresentationProvider;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.IMetaModelElement;
@@ -27,11 +26,9 @@ import hub.sam.tef.templates.LayoutElementTemplate;
 import hub.sam.tef.templates.LayoutManager;
 import hub.sam.tef.templates.SequenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
-import hub.sam.tef.templates.StringTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
-import hub.sam.tef.views.DocumentText;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,9 +39,9 @@ import editortest.emf.model.EMFMetaModelElement;
 
 public abstract class EModelElementTemplate extends ElementTemplate {
 
-	public EModelElementTemplate(IAnnotationModelProvider annotationModelProvider, 
-			ICursorPostionProvider cursorPositionProvider, IModelRepresentationProvider modelProvider, IMetaModelElement metaModel) {
-		super(annotationModelProvider, cursorPositionProvider, modelProvider, metaModel);
+	public EModelElementTemplate(IAnnotationModelProvider annotationModelProvider,
+			IModelRepresentationProvider modelProvider, IMetaModelElement metaModel) {
+		super(annotationModelProvider, modelProvider, metaModel);
 	}
 
 	public EModelElementTemplate(Template template, IMetaModelElement metaModel) {
@@ -124,13 +121,6 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 	
 	protected boolean showAnnotations() {
 		return false;
-	}
-	
-	@Override
-	public List<Proposal> getProposals() {
-		return Arrays.asList(new Proposal[] { 
-				new Proposal(((EMFMetaModelElement)getMetaElement()).getEMFObject().getName() + " ...", null, 0)
-		});
 	}
 	
 	protected static Template[] concat(Template[][] ts) {		

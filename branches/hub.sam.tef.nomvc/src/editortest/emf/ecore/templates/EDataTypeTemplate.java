@@ -16,20 +16,13 @@
  */
 package editortest.emf.ecore.templates;
 
-import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.LayoutElementTemplate;
 import hub.sam.tef.templates.LayoutManager;
-import hub.sam.tef.templates.ReferenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
-
-import java.util.Arrays;
-import java.util.List;
-
-import editortest.emf.model.EMFMetaModelElement;
 
 public class EDataTypeTemplate extends ElementTemplate {
 
@@ -51,13 +44,6 @@ public class EDataTypeTemplate extends ElementTemplate {
 				},
 				new TerminalTemplate(this, ";")
 		};
-	}
-	
-	@Override
-	public List<Proposal> getProposals() {
-		return Arrays.asList(new Proposal[] { 
-				new Proposal(((EMFMetaModelElement)getMetaElement()).getEMFObject().getName() + " ...", null, 0)
-		});
 	}
 
 	@Override

@@ -17,16 +17,10 @@
 package hub.sam.tef.templates;
 
 import hub.sam.tef.controllers.IAnnotationModelProvider;
-import hub.sam.tef.controllers.ICursorPostionProvider;
 import hub.sam.tef.controllers.IModelRepresentationProvider;
-import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.IType;
-import hub.sam.tef.views.Text;
-
-import java.util.Collections;
-import java.util.List;
 
 
 /**
@@ -42,8 +36,8 @@ public abstract class ValueTemplate<ModelType> extends Template {
 	}
 	
 	public ValueTemplate(IAnnotationModelProvider annotationModelProvider, 
-			ICursorPostionProvider cursorPositionProvider, IModelRepresentationProvider modelProvider, IType type) {
-		super(annotationModelProvider, cursorPositionProvider, modelProvider);
+			IModelRepresentationProvider modelProvider, IType type) {
+		super(annotationModelProvider, modelProvider);
 		this.fType = type;
 	}
 	
@@ -53,70 +47,8 @@ public abstract class ValueTemplate<ModelType> extends Template {
 		return fType;
 	}
 	
-	/**
-	 * Creates a view for the models that should be displayed as described by
-	 * this template. It also installes a given changeListener. This listener is
-	 * expected to be notified when a user event to the created view should lead
-	 * to a change in the model.
-	 * 
-	 * @param model
-	 *            The model, e.g. the value.
-	 * @param changeListener
-	 *            A change listener that has to be notified when the value is
-	 *            changes by the user.
-	 * @return The created view.
-	 */
-	@Deprecated
-	protected abstract Text createView(ModelType model, IValueChangeListener<ModelType> changeListener);
-	
-	/**
-	 * Returns the created view for the given model. It adds additional objects to the view. For example it
-	 * puts the used template into the view.
-	 */
-	@Deprecated
-	public final Text getView(ModelType model, IValueChangeListener<ModelType> changeListener) {
-		Text result = createView(model, changeListener);		
-		if (result.getElement(Template.class) == null) {
-			result.setElement(Template.class, this);
-		}
-		if (model instanceof IModelElement) {
-			result.setElement(IModelElement.class, (IModelElement)model);
-		}
-		return result;
-	}
-	
-	public boolean isTemplateFor(ModelType model) {
+		public boolean isTemplateFor(ModelType model) {
 		return true;
-	}
-	
-	/**
-	 * This method takes a view created for an old value and changes it to fit
-	 * the new value. This method is used after a model change event occured.
-	 * 
-	 * @param view
-	 *            The view representing the old model.
-	 * @param value
-	 *            The new model for the given view.
-	 *     
-	 * @return The updated view.
-	 */
-	@Deprecated
-	public void updateView(Text view, ModelType value) {
-		//emtpy
-	}
-	
-	/**
-	 * Returns content assist proposals for editing the value.
-	 * 
-	 * @return A list of proposals.
-	 */
-	public List<Proposal> getProposals() {
-		return Collections.EMPTY_LIST;
-	}
-	
-	public ICommand getCommandForProposal(Proposal proposal, IModelElement owner, 
-			String property, int index) {
-		return null;
 	}
 
 	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {

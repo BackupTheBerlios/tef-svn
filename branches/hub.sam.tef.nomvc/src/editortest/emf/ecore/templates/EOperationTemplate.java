@@ -48,7 +48,7 @@ public class EOperationTemplate extends ElementTemplate {
 				new SingleValueTemplate<String>(this, "eType") {
 					@Override
 					protected ValueTemplate createValueTemplate() {
-						return new ReferenceTemplate(this, getModel().getMetaElement("EClassifier"), null) {
+						return new ReferenceTemplate(this, getModel().getMetaElement("EClassifier")) {
 							@Override
 							protected ElementTemplate getElementTemplate() {
 								return new EIdentifierTemplate(this);
@@ -86,12 +86,5 @@ public class EOperationTemplate extends ElementTemplate {
 				},
 				new TerminalTemplate(this, ")"),
 		};
-	}
-	
-	@Override
-	public List<Proposal> getProposals() {
-		return Arrays.asList(new Proposal[] { 
-				new Proposal(((EMFMetaModelElement)getMetaElement()).getEMFObject().getName() + " ...", null, 0)
-		});
 	}
 }

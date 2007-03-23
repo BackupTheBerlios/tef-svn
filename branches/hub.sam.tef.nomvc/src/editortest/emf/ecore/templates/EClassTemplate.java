@@ -77,7 +77,7 @@ public class EClassTemplate extends EModelElementTemplate {
 			new SequenceTemplate<IModelElement>(this, "eSuperTypes", ", ", false) {
 				@Override
 				protected ValueTemplate<IModelElement>createValueTemplate() {
-					return new ReferenceTemplate(this, getModel().getMetaElement("EClass"), null) {
+					return new ReferenceTemplate(this, getModel().getMetaElement("EClass")) {
 						@Override
 						protected ElementTemplate getElementTemplate() {
 							return new EIdentifierTemplate(this);

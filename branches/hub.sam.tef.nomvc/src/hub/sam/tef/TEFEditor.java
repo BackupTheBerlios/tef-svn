@@ -16,13 +16,9 @@
  */
 package hub.sam.tef;
 
-import hub.sam.tef.controllers.ICursorPostionProvider;
-import hub.sam.tef.views.Text;
-
 import java.util.ResourceBundle;
 
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
@@ -32,13 +28,8 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 
 
-public abstract class TEFEditor extends TextEditor implements ICursorPostionProvider {
+public abstract class TEFEditor extends TextEditor {
 	
-	@Deprecated
-	public static final String INSERT_ELEMENT = "tef.insertElement";
-	@Deprecated
-	public static final String DELETE_ELEMENT = "tef.deleteElement";
-		
 	public TEFEditor() {
 		super();				
 		setSourceViewerConfiguration(createSourceViewerConfiguration());
@@ -55,7 +46,7 @@ public abstract class TEFEditor extends TextEditor implements ICursorPostionProv
 		fAnnotationAccess= getAnnotationAccess();
 		fOverviewRuler= createOverviewRuler(getSharedColors());
 
-		ISourceViewer viewer= new TEFSourceViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(), styles);
+		ISourceViewer viewer= super.createSourceViewer(parent, ruler, styles);
 		// ensure decoration support has been created and configured.
 		getSourceViewerDecorationSupport(viewer);
 		return viewer;
@@ -81,36 +72,12 @@ public abstract class TEFEditor extends TextEditor implements ICursorPostionProv
 		String actionId = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
 		action.setActionDefinitionId(actionId);
 		setAction("ContentAssistProposal", action);
-		
-		/*
-		IAction insertElement = createElementInsertAction();
-		insertElement.setActionDefinitionId(INSERT_ELEMENT);
-		setAction(INSERT_ELEMENT, insertElement);
-		
-		IAction deleteElement = createDeleteElementAction();
-		deleteElement.setActionDefinitionId(DELETE_ELEMENT);
-		setAction(DELETE_ELEMENT, deleteElement);
-		*/		
 	}		
 	
 	private IAction createContentAssistAction() {
 		ResourceBundle resourceBundle = EditorTestPlugin.getDefault().getResourceBundle();
 		return new TextOperationAction(resourceBundle, "ContentAssistProposal", 
 				this, ISourceViewer.CONTENTASSIST_PROPOSALS);
-	}
-	
-	@Deprecated
-	private IAction createElementInsertAction() {
-		ResourceBundle resourceBundle = EditorTestPlugin.getDefault().getResourceBundle();
-		return new TextOperationAction(resourceBundle, "InsertElement", this, 
-				TEFSourceViewer.INSERT_ELEMENT);
-	}
-	
-	@Deprecated
-	private IAction createDeleteElementAction() {
-		ResourceBundle resourceBundle = EditorTestPlugin.getDefault().getResourceBundle();
-		return new TextOperationAction(resourceBundle, "DeleteElement", this, 
-				TEFSourceViewer.DELETE_ELEMENT);
 	}
 	
 	
@@ -123,55 +90,5 @@ public abstract class TEFEditor extends TextEditor implements ICursorPostionProv
 		selectAndReveal(getSourceViewer().getTextWidget().getCaretOffset(), 0);
 		super.handleCursorPositionChanged();
 	}
-
-	/** 
-	 * is not needed anymore, is it?
-	@Override
-	protected final void handleCursorPositionChanged() {
-		if (((TEFDocument)getSourceViewer().getDocument()).isInTEFMode()) {		
-			if (duringCursorPositionChange) {
-				return;
-			} else {
-				duringCursorPositionChange = true;
-				ISourceViewer viewer = getSourceViewer();
-				currentCursortPosition += cursorDrift;
-				int actualCursorPostion = viewer.getTextWidget().getCaretOffset()+ cursorDrift;
-				DocumentText document = ((TEFDocument)viewer.getDocument()).getModelDocument().getDocumentText();
-				if (currentCursortPosition != actualCursorPostion) {
-					int newCursorPos = getValidCursorPosition(actualCursorPostion, document);		
-					currentCursortPosition = newCursorPos;
-					cursorDrift = 0;	
-					selectAndReveal(newCursorPos, 0);					
-					super.handleCursorPositionChanged();			
-				}
-				duringCursorPositionChange = false;
-			}
-		} else {
-			super.handleCursorPositionChanged();
-		}
-	}
-
-
-	private int getValidCursorPosition(int newCursorPos, DocumentText document) {
-		ComputeCursorPositionVisitor cursorVisitor = new ComputeCursorPositionVisitor(
-				newCursorPos, newCursorPos > currentCursortPosition, true);
-		document.process(cursorVisitor, newCursorPos);
-		newCursorPos = cursorVisitor.getResult();		
-		return newCursorPos;
-	}
-
-	
-	public final void addCarretDrift(int drift) {
-		this.cursorDrift += drift;
-	}
-	 */
-
-	public void setNewCursorPosition(Text text, int offset) {
-		((TEFSourceViewer)getSourceViewer()).setNewCursorPosition(text, offset);
-	}
-
-	public void addCarretDrift(int value) {
-		// TODO Auto-generated method stub	
-	}	
 	
 }

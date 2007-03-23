@@ -3,8 +3,6 @@ package hub.sam.tef.parse;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.treerepresentation.ISyntaxProvider;
-import hub.sam.tef.views.DocumentText;
-import hub.sam.util.trees.AbstractTree;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -91,32 +89,8 @@ public class ParserInterface {
 		}
 	}
 	
-	public void printGrammar(DocumentText text) {
+	public void printGrammar() {
 		System.out.println(fSyntax.toString());
-	}
-	
-	public void test(DocumentText text) {
-		Parser parser;
-		boolean ok = false;
-		try {			
-			System.out.println(fSyntax.toString());
-			
-			SyntaxSeparation separation = new SyntaxSeparation(fSyntax);	// separate lexer and parser syntax
-			LexerBuilder builder = new LexerBuilder(separation.getLexerSyntax(), separation.getIgnoredSymbols());	// build a Lexer
-			Lexer lexer = builder.getLexer();
-									
-			ParserTables parserTables = new LALRParserTables(separation.getParserSyntax());			
-			parser = new Parser(parserTables);			
-			parser.setLexer(lexer);
-			parser.getLexer().setInput(text.getContent());						
-			//ok = parser.parse(new ParseAlongTreeSemantic(TextBasedAST.createASTTree(text)));	// start parsing with a print-semantic
-			
-			System.out.println("Parse return "+ok+", result: "+parser.getResult());		
-			//System.out.println(AbstractTree.dumpTree(TextBasedAST.createASTTree(text)));
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public int getLastOffset() {

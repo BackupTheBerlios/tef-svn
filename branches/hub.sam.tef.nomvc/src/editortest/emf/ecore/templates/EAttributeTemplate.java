@@ -65,7 +65,7 @@ public class EAttributeTemplate extends ElementTemplate {
 				new SingleValueTemplate<String>(this, "eType") {
 					@Override
 					protected ValueTemplate createValueTemplate() {
-						return new ReferenceTemplate(this, getModel().getMetaElement("EDataType"), null) {
+						return new ReferenceTemplate(this, getModel().getMetaElement("EDataType")) {
 							@Override
 							protected ElementTemplate getElementTemplate() {
 								return new EIdentifierTemplate(this);
@@ -96,12 +96,4 @@ public class EAttributeTemplate extends ElementTemplate {
 				}
 		};
 	}
-	
-	@Override
-	public List<Proposal> getProposals() {
-		return Arrays.asList(new Proposal[] { 
-				new Proposal(((EMFMetaModelElement)getMetaElement()).getEMFObject().getName() + " ...", null, 0)
-		});
-	}
-
 }

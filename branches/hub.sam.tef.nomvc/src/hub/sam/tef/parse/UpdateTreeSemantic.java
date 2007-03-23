@@ -56,6 +56,12 @@ public class UpdateTreeSemantic implements Semantic {
 		return result;
 	}
 	
+
+	public Object doSemanticForErrorRecovery(String recoverSymbol) {
+		Template template = fParserInterface.getTemplateForNonTerminal(recoverSymbol);
+		return new TreeRepresentation(new SyntaxTreeContent(null, template));
+	}
+	
 	public TreeRepresentation getCurrentResult() {
 		return result;
 	}

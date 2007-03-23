@@ -16,8 +16,6 @@
  */
 package hub.sam.tef.templates;
 
-import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.views.Text;
 
 /**
  * A PropertyTemplate determins how a property is to be displayed. A property is usually a
@@ -55,27 +53,5 @@ public abstract class PropertyTemplate<ModelType> extends Template {
 	@Override
 	public final Template[] getNestedTemplates() {	
 		return new Template[] { getValueTemplate() };
-	}
-
-	/**
-	 * This method is used to create a new view for this property and its
-	 * values.
-	 * 
-	 * @param model
-	 *            The model of the element that this property is a part of.
-	 * @return The view representing the property and its values.
-	 */
-	protected abstract Text createView(IModelElement model);
-	
-	/**
-	 * Returns the created view for the given model. It adds additional objects to the view. For example it
-	 * puts the used template into the view.
-	 */
-	public final Text getView(IModelElement model) {
-		Text result = createView(model);
-		if (result.getElement(Template.class) == null) {
-			result.setElement(Template.class, this);
-		}
-		return result;
 	}
 }

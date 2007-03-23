@@ -17,20 +17,7 @@ public class TestParseAction implements IEditorActionDelegate {
 	}
 
 	public void run(IAction action) {
-		/*
-		TEFModelDocument document = ((TEFEditor)editor).getDocument().getModelDocument();
-		Template topLevelTemplate = document.getTopLevelTemplate();
-		IModelElement model = document.getDocumentText().getTexts().get(0).getElement(IModelElement.class);
-		TreeRepresentation representation = (TreeRepresentation)topLevelTemplate.getAdapter(ITreeRepresentationProvider.class).
-				createTreeRepresentation(null, model);
-		representation.print(System.out);
-		final String oldContent = representation.getContent();
-		representation.print(System.out);
-		System.out.println(oldContent);
-		representation.addRepresentationChangedListener(new RepresentationChangedListener(oldContent, representation));			
-		//new ParserInterface(document.getTopLevelTemplate()).test(document.getDocumentText());
-		 *
-		 */
+		// emtpy
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {

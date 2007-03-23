@@ -18,10 +18,7 @@ package hub.sam.tef.templates;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.controllers.IAnnotationModelProvider;
-import hub.sam.tef.controllers.ICursorPostionProvider;
 import hub.sam.tef.controllers.IModelRepresentationProvider;
-import hub.sam.tef.controllers.Proposal;
-import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
@@ -29,8 +26,6 @@ import hub.sam.tef.models.extensions.InternalModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
 import hub.sam.tef.treerepresentation.ISyntaxProvider;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
-import hub.sam.tef.views.CompoundText;
-import hub.sam.tef.views.Text;
 
 /**
  * A special ValueTemplate used for elements, whereby elements are container for
@@ -48,9 +43,8 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		fMetaModel = metaModel;
 	}	
 
-	public ElementTemplate(IAnnotationModelProvider annotationModelProvider, 
-			ICursorPostionProvider cursorPositionProvider, IModelRepresentationProvider modelProvider, IMetaModelElement metaModel) {
-		super(annotationModelProvider, cursorPositionProvider, modelProvider, metaModel);
+	public ElementTemplate(IAnnotationModelProvider annotationModelProvider, IModelRepresentationProvider modelProvider, IMetaModelElement metaModel) {
+		super(annotationModelProvider, modelProvider, metaModel);
 		fMetaModel = metaModel;
 	}
 	
@@ -77,57 +71,6 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	 */
 	protected IMetaModelElement getMetaElement() {
 		return this.fMetaModel;
-	}
-
-	/**
-	 * Can be used when no value change listener is needed. Compare with {@link #createView(IModelElement, IValueChangeListener)}.
-	 */
-	public Text createView(IModelElement model) {
-		return createView(model, new IValueChangeListener<IModelElement>() {
-			public void valueChanges(IModelElement newValue) {
-				// empty				
-			}
-
-			public void newValue(Proposal proposal, ValueTemplate<IModelElement> template) {
-				// empty				
-			}
-
-			public void removeValue() {
-				// empty				
-			}
-
-			public void valueChanges(SymbolASTNode node) {
-				// empty			
-			}				 
-		});
-	}
-
-	@Override
-	public final Text createView(IModelElement model, IValueChangeListener<IModelElement> changeListener) {
-		CompoundText result = new CompoundText();
-		for (Template template: getTemplates()) {
-			if (template instanceof TerminalTemplate) {
-				result.addText(((TerminalTemplate)template).getView());
-			} else if (template instanceof PropertyTemplate) {
-				PropertyTemplate propertyTemplate = (PropertyTemplate)template;
-				Text propertyText = ((PropertyTemplate)template).getView(model);
-				if (isIdentifierProperty(propertyTemplate.getProperty())) {
-					//model.registerOccurence(propertyText);
-				}											
-				result.addText(propertyText);
-			} else if (template instanceof ElementTemplate) {
-				result.addText(((ElementTemplate)template).getView(model, null));
-			} else {
-				throw new RuntimeException("assert");
-			}			
-		}
-		return result;
-	}
-	
-	@Override
-	public ICommand getCommandForProposal(Proposal proposal, IModelElement owner, 
-			String property, int index) {
-		return getModelProvider().getModel().getCommandFactory().createChild(owner, getMetaElement(), property, index);		
 	}
 	
 	/**

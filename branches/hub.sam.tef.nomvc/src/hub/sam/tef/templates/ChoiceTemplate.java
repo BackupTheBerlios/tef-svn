@@ -16,12 +16,7 @@
  */
 package hub.sam.tef.templates;
 
-import hub.sam.tef.controllers.CursorMovementStrategy;
-import hub.sam.tef.controllers.IDeleteEventHandler;
-import hub.sam.tef.controllers.IProposalHandler;
-import hub.sam.tef.controllers.MarkFlag;
 import hub.sam.tef.controllers.Proposal;
-import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
@@ -31,9 +26,6 @@ import hub.sam.tef.treerepresentation.ModelTreeContents;
 import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.treerepresentation.TreeRepresentationLeaf;
-import hub.sam.tef.views.CompoundText;
-import hub.sam.tef.views.FixText;
-import hub.sam.tef.views.Text;
 
 import java.util.List;
 import java.util.Vector;
@@ -64,34 +56,6 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 	public Template[] getNestedTemplates() {
 		return fAlternativeTemplates;
 	}
-
-	@Override
-	public List<Proposal> getProposals() {
-		List<Proposal> result = new Vector<Proposal>();
-		for(ValueTemplate<IModelElement> alternativeTemplate: fAlternativeTemplates) {
-			result.addAll(alternativeTemplate.getProposals());
-		}
-		return result;
-	}
-	
-	private Text createChoiceValueView(IModelElement model, IValueChangeListener<IModelElement> changeListener) {		
-			for(ValueTemplate alternativeTemplate: fAlternativeTemplates) {
-				if (alternativeTemplate.isTemplateFor(model)) {
-					return alternativeTemplate.getView(model, changeListener);				
-				}
-			}
-			throw new TemplateException("non fullfilled alternative");
-	}	
-	
-	public ICommand getCommandForProposal(Proposal proposal, IModelElement owner, 
-			String property, int index) {
-		for(ValueTemplate template: fAlternativeTemplates) {
-			if (template.getProposals().contains(proposal)) {
-				return template.getCommandForProposal(proposal, owner, property, index);
-			}
-		}
-		return null;		
-	}
 	
 	/**
 	 * Returns true for those meta model elements that this element template
@@ -105,71 +69,7 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 			return super.isTemplateFor(model);
 		}
 	}	
-	
-	@Override
-	public void updateView(Text view, IModelElement value) {
-		((CompoundText)view).replaceText(((CompoundText)view).getTexts().get(0), createValueView(value, 
-				view.getElement(IValueChangeListener.class))); 
-	}
-
-	@Override
-	public Text createView(final IModelElement model, IValueChangeListener<IModelElement> changeListener) {
-		CompoundText result = new CompoundText();
-		Text valueText = createValueView(model, changeListener);
-		result.setElement(IValueChangeListener.class, changeListener);
-		result.addText(valueText);						
-		return result;
-	}
-	
-	private Text createValueView(IModelElement value, final IValueChangeListener<IModelElement> changeListener) {
-		if (value != null) {
-			Text valueText = createChoiceValueView(value, changeListener);
-			valueText.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(true, true));
-			valueText.setElement(MarkFlag.class, new MarkFlag());
-			valueText.addElement(IDeleteEventHandler.class,  new RemoveTextEventListener(changeListener));
-			return valueText;
-		} else{			
-			Text seed = new FixText("<...>");
-			seed.addElement(IProposalHandler.class, new IProposalHandler() {
-				public ProposalKind getProposalKind() {
-					return ProposalKind.insert;
-				}		
-
-				public List<Proposal> getProposals(Text context, int offset) {
-					return ChoiceTemplate.this.getProposals();
-				}
-
-				public boolean handleProposal(Text text, int offset, Proposal proposal) {
-					if (getProposals(text, offset).contains(proposal)) {
-						changeListener.newValue(proposal, ChoiceTemplate.this);								
-						return true;
-					} else {
-						return false;
-					}
-				}		
-			});			
-			seed.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(true, true));
-			return seed;
-		}
-	}
-	
-	/**
-	 * This controller element is notified when the user selects a element for
-	 * deletion. It will then remove the according value from the property's values.
-	 */
-	class RemoveTextEventListener implements IDeleteEventHandler {
-		private final IValueChangeListener<IModelElement> fChangeListener;
-		
-		public RemoveTextEventListener(final IValueChangeListener<IModelElement> changeListener) {
-			super();
-			fChangeListener = changeListener;
-		}
-
-		public void handleEvent(Text text) {
-			fChangeListener.removeValue();
-		}			
-	}		
-		
+				
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		if (ISyntaxProvider.class == adapter) {

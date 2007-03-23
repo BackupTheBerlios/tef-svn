@@ -17,7 +17,6 @@
 package hub.sam.tef.templates;
 
 import hub.sam.tef.controllers.IAnnotationModelProvider;
-import hub.sam.tef.controllers.ICursorPostionProvider;
 import hub.sam.tef.controllers.IModelRepresentationProvider;
 import hub.sam.tef.models.IModel;
 import hub.sam.util.IAdaptable;
@@ -33,13 +32,11 @@ import hub.sam.util.IAdaptable;
 public abstract class Template implements IAdaptable {
 
 	private final IAnnotationModelProvider fAnnotationModelProvider;
-	private final ICursorPostionProvider fCursorPositionProvider;
 	private final IModelRepresentationProvider fModelProvider;	
 	private final Template fParent;
 	
-	public Template(IAnnotationModelProvider annotationModelProvider, ICursorPostionProvider cursorPositionProvider, IModelRepresentationProvider modelProvider) {
-		this.fAnnotationModelProvider = annotationModelProvider;
-		this.fCursorPositionProvider = cursorPositionProvider;
+	public Template(IAnnotationModelProvider annotationModelProvider, IModelRepresentationProvider modelProvider) {
+		this.fAnnotationModelProvider = annotationModelProvider;		
 		this.fModelProvider = modelProvider;
 		fParent = null;
 	}
@@ -47,7 +44,6 @@ public abstract class Template implements IAdaptable {
 	public Template(Template template) {
 		fParent = template;
 		fAnnotationModelProvider = template.fAnnotationModelProvider;
-		fCursorPositionProvider = template.fCursorPositionProvider;
 		fModelProvider = template.fModelProvider;
 	}
 	
@@ -67,10 +63,6 @@ public abstract class Template implements IAdaptable {
 	
 	public IAnnotationModelProvider getAnnotationModelProvider() {
 		return fAnnotationModelProvider;
-	}
-	
-	public ICursorPostionProvider getCursorPostionProvider() {
-		return fCursorPositionProvider;
 	}
 	
 	public IModelRepresentationProvider getModelProvider() {

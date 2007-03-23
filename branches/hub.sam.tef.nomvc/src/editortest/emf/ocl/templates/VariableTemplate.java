@@ -1,10 +1,5 @@
 package editortest.emf.ocl.templates;
 
-import java.util.Arrays;
-import java.util.List;
-
-import editortest.emf.model.EMFMetaModelElement;
-import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.StringTemplate;
@@ -27,13 +22,6 @@ public class VariableTemplate extends ElementTemplate {
 				};
 			}
 		};
-	}
-
-	@Override
-	public List<Proposal> getProposals() {
-		return Arrays.asList(new Proposal[] { 
-				new Proposal(((EMFMetaModelElement)getMetaElement()).getEMFObject().getName() + " ...", null, 0)
-		});
 	}
 	
 	@Override

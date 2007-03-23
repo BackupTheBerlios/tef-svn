@@ -16,23 +16,14 @@
  */
 package hub.sam.tef;
 
-import hub.sam.tef.controllers.AbstractOffsetBasedVisitor;
-import hub.sam.tef.views.CompoundText;
-import hub.sam.tef.views.Text;
-
-import java.util.Collection;
-import java.util.Vector;
-
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.Region;
-import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.TextPresentation;
 import org.eclipse.jface.text.presentation.IPresentationDamager;
 import org.eclipse.jface.text.presentation.IPresentationRepairer;
-import org.eclipse.swt.custom.StyleRange;
 
 /**
  * This PresentationDamager/Repairer is used to realise TEF's syntax highlighting
@@ -40,21 +31,6 @@ import org.eclipse.swt.custom.StyleRange;
 public class PresentationDamagerRepairer implements IPresentationDamager, IPresentationRepairer {
 
 	private TEFDocument fDocument;
-	
-	class FirstTextAtOffsetVisitor extends AbstractOffsetBasedVisitor {
-		Text result = null;
-		public FirstTextAtOffsetVisitor(int forOffset) {
-			super(forOffset);
-		}
-		public void visitCompoundText(CompoundText visitedText, int atOffset) {
-			// empty
-		}
-		public void visitText(Text visitedText, int atOffset) {
-			if (result == null) {
-				result = visitedText;				
-			}
-		}		
-	}
 		
 	public void createPresentation(TextPresentation presentation, final ITypedRegion damage) {
 		/* TODO has to be rebuild for TreeRepresentation

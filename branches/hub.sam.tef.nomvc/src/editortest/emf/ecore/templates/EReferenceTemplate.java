@@ -16,19 +16,12 @@
  */
 package editortest.emf.ecore.templates;
 
-import java.util.Arrays;
-import java.util.List;
-
-import editortest.emf.model.EMFMetaModelElement;
-import hub.sam.tef.controllers.Proposal;
-import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.FlagTemplate;
 import hub.sam.tef.templates.IntegerTemplate;
 import hub.sam.tef.templates.LayoutElementTemplate;
 import hub.sam.tef.templates.LayoutManager;
 import hub.sam.tef.templates.ReferenceTemplate;
-import hub.sam.tef.templates.SequenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
@@ -66,7 +59,7 @@ public class EReferenceTemplate extends ElementTemplate {
 				new SingleValueTemplate<String>(this, "eType") {
 					@Override
 					protected ValueTemplate createValueTemplate() {
-						return new ReferenceTemplate(this, getModel().getMetaElement("EClass"), null) {
+						return new ReferenceTemplate(this, getModel().getMetaElement("EClass")) {
 							@Override
 							protected ElementTemplate getElementTemplate() {
 								return new EIdentifierTemplate(this);
@@ -99,7 +92,7 @@ public class EReferenceTemplate extends ElementTemplate {
 				new SingleValueTemplate<String>(this, "eOpposite") {
 					@Override
 					protected ValueTemplate createValueTemplate() {
-						return new ReferenceTemplate(this, getModel().getMetaElement("EReference"), null) {
+						return new ReferenceTemplate(this, getModel().getMetaElement("EReference")) {
 							@Override
 							protected ElementTemplate getElementTemplate() {
 								return new EIdentifierTemplate(this);
@@ -109,12 +102,4 @@ public class EReferenceTemplate extends ElementTemplate {
 				}
 		};
 	}
-	
-	@Override
-	public List<Proposal> getProposals() {
-		return Arrays.asList(new Proposal[] { 
-				new Proposal(((EMFMetaModelElement)getMetaElement()).getEMFObject().getName() + " ...", null, 0)
-		});
-	}
-
 }

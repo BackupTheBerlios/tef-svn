@@ -16,13 +16,6 @@
  */
 package hub.sam.tef;
 
-import hub.sam.tef.controllers.Proposal;
-import hub.sam.tef.controllers.ProposalCollectVisitor;
-import hub.sam.tef.controllers.IProposalHandler.ProposalKind;
-import hub.sam.tef.views.Text;
-
-import java.util.List;
-
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
@@ -32,30 +25,11 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
 public class TEFCompletionProcessor implements IContentAssistProcessor {
 	
-	private final ProposalKind fProposalKind;
-	
-	public TEFCompletionProcessor(ProposalKind proposalKind) {
+	public TEFCompletionProcessor() {
 		super();	
-		fProposalKind = proposalKind;
-	}
-	
-	private List<Proposal> getProposal(Text src, int offset) {
-		ProposalCollectVisitor visitor = new ProposalCollectVisitor(offset, fProposalKind);
-		src.process(visitor, offset);
-		return visitor.getResult();
 	}
 
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int documentOffset) {
-		/* TODO a whole new strategy
-		Text src = ((TEFDocument)viewer.getDocument()).getModelDocument().getDocumentText();
-		List<Proposal> proposals = getProposal(src, documentOffset);
-		ICompletionProposal[] result = new ICompletionProposal[proposals.size()];
-		int i = 0;
-		for (Proposal proposal: proposals) {
-			result[i++] = new TEFCompletionProposal(proposal, documentOffset, 0);
-		}
-		return result;
-		*/
 		return null; 
 	}
 

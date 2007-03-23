@@ -18,37 +18,14 @@ package editortest.emf.ecore;
 
 import hub.sam.tef.TEFDocument;
 import hub.sam.tef.controllers.IAnnotationModelProvider;
-import hub.sam.tef.controllers.ICursorPostionProvider;
 import hub.sam.tef.templates.Template;
 import editortest.emf.ecore.templates.EPackageTemplate;
 
 public class EcoreDocument extends TEFDocument {
 
-	/*
 	@Override
-	public void initializeDocument(DocumentText result) {
-
-		ICollection<IModelElement> outermostComposites = getModel().getOutermostComposites(getResource());
-		IModelElement topLevelPackage = null;
-		for (IModelElement o: outermostComposites) {
-			if (o.getMetaElement().equals(getModel().getMetaElement("EPackage"))) {
-				topLevelPackage = o;
-				result.addText(((ElementTemplate)getTopLevelTemplate()).getView(topLevelPackage, null));
-				result.addText(new FixText("\n"));
-			}
-		}
-		if (topLevelPackage == null) {
-			topLevelPackage = ((EMFModel)getModel()).createElement(getModel().getMetaElement("EPackage"));
-			((EMFSequence)getModel().getOutermostComposites(getResource())).getEMFObject().add(
-					((EMFModelElement)topLevelPackage).getEMFObject());
-			result.addText(((ElementTemplate)getTopLevelTemplate()).getView(topLevelPackage, null));
-		}		
-	}
-	*/
-
-	@Override
-	public Template createTopLevelTemplate(IAnnotationModelProvider annotationModelProvider, ICursorPostionProvider cursorPositionProvider) {
-		return new EPackageTemplate(annotationModelProvider, cursorPositionProvider, getModelRepresentationProvider());
+	public Template createTopLevelTemplate(IAnnotationModelProvider annotationModelProvider) {
+		return new EPackageTemplate(annotationModelProvider, getModelRepresentationProvider());
 	}
 
 }

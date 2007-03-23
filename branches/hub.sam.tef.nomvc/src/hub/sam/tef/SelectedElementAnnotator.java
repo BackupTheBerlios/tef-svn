@@ -16,8 +16,6 @@
  */
 package hub.sam.tef;
 
-import hub.sam.tef.views.Text;
-
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -28,10 +26,10 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
  * This class is responsible for marking the selected element. There is one
  * instance per editor.
  */
+@Deprecated
 public class SelectedElementAnnotator implements ISelectionChangedListener {
 	private final Annotation fObjectMarker = new Annotation("testeditor.currentobjectmarker", false, "A MARK");
 	
-	private Text currentSelectedText = null;
 	private Position currentObjectMarkerPosition = null;
 	
 	public void selectionChanged(SelectionChangedEvent event) {

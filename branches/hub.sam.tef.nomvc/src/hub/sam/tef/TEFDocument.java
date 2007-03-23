@@ -17,19 +17,15 @@
 package hub.sam.tef;
 
 import hub.sam.tef.controllers.IAnnotationModelProvider;
-import hub.sam.tef.controllers.ICursorPostionProvider;
 import hub.sam.tef.controllers.IModelRepresentationProvider;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.parse.SyntaxError;
-import hub.sam.tef.templates.LayoutManager;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.treerepresentation.ITreeContents;
 import hub.sam.tef.treerepresentation.ITreeRepresentationProvider;
 import hub.sam.tef.treerepresentation.IndexTreeRepresentationSelector;
 import hub.sam.tef.treerepresentation.ModelTreeContents;
 import hub.sam.tef.treerepresentation.TreeRepresentation;
-import hub.sam.tef.views.DocumentText;
 import hub.sam.util.strings.Change;
 import hub.sam.util.strings.Changes;
 import hub.sam.util.trees.IChildSelector;
@@ -45,8 +41,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
-
-import editortest.emf.model.IOccurence;
 
 /**
  * This class represent TEF documents as eclipse text documents
@@ -109,10 +103,6 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 	public IModelRepresentationProvider getModelRepresentationProvider() {
 		final IModel model = this.model;
 		return new IModelRepresentationProvider() {
-			public LayoutManager getLayoutManager() {
-				return null;
-			}
-
 			public IModel getModel() {
 				return model;
 			}			
@@ -162,13 +152,12 @@ public abstract class TEFDocument extends Document implements IModelProvider, IT
 		return resource;
 	}
 	
-	protected abstract Template createTopLevelTemplate(IAnnotationModelProvider annotationProvider, 
-			ICursorPostionProvider cursorPositionProvider);
+	protected abstract Template createTopLevelTemplate(IAnnotationModelProvider annotationProvider);
 	
 
 	public final Template getTopLevelTemplate() {
 		if (topLevelTemplate == null) {
-			topLevelTemplate = createTopLevelTemplate(null, null);
+			topLevelTemplate = createTopLevelTemplate(null);
 		}
 		return topLevelTemplate;
 	}
