@@ -1,13 +1,14 @@
 package hub.sam.tef.templates.adaptors;
 
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.templates.layout.AbstractLayoutManager;
 import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.ASTNode;
 
 
 public interface IASTProvider {
 	
-	public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite);
+	public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite, AbstractLayoutManager layout);
 	
 	public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite);
 	

@@ -27,6 +27,8 @@ import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
+import hub.sam.tef.templates.layout.BlockLayout;
+import hub.sam.tef.templates.layout.WhitespaceTemplate;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,9 +46,9 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 
 	protected Template[] getAnnotationTemplates() {
 		return new Template[] {
-			new LayoutElementTemplate(this, LayoutManager.INDENT),
+				new WhitespaceTemplate(this, BlockLayout.INDENT),
 			new TerminalTemplate(this, "annotations"),
-			new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK),
+			new WhitespaceTemplate(this, BlockLayout.BEGIN_BLOCK),
 			new TerminalTemplate(this, ":[\n"),
 			new SequenceTemplate<IModelElement>(this, "eAnnotations", null, true) {
 				@Override
@@ -54,8 +56,8 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 					return new EAnnotationTemplate(this);
 				}
 			},
-			new LayoutElementTemplate(this, LayoutManager.END_BLOCK),
-			new LayoutElementTemplate(this, LayoutManager.INDENT),
+			new WhitespaceTemplate(this, BlockLayout.END_BLOCK),
+			new WhitespaceTemplate(this, BlockLayout.INDENT),
 			new TerminalTemplate(this, "]")
 		};
 	}
@@ -69,7 +71,8 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 						return new IdentifierValueTemplate(this);
 					}					
 				},			
-				new TerminalTemplate(this, ",")
+				new TerminalTemplate(this, ","),
+				new WhitespaceTemplate(this, BlockLayout.SPACE)
 			} :
 			new Template[] {
 				new SingleValueTemplate<String>(this, "name") {
@@ -77,39 +80,43 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 					protected ValueTemplate<String> createValueTemplate() {
 						return new IdentifierValueTemplate(this);
 					}					
-				}			
+				},
+				new WhitespaceTemplate(this, BlockLayout.SPACE)
 			};
 	}
 	
 	@Override
 	public Template[] createTemplates() {
 		Collection<Template> templates = new Vector<Template>();
-		templates.add(new LayoutElementTemplate(this, LayoutManager.INDENT));
+		templates.add(new WhitespaceTemplate(this, BlockLayout.INDENT));
 		Template[] flags = getFlags();
 		if (flags != null) {
+			templates.add(new WhitespaceTemplate(this, BlockLayout.SPACE));
 			templates.addAll(Arrays.asList(flags));
 		}
 		templates.add(new TerminalTemplate(this, getElementKeyWord(), 
 				TerminalTemplate.KEY_WORD_HIGHLIGHT));
+		templates.add(new WhitespaceTemplate(this, BlockLayout.SPACE));
 		Template[] references = getReferenceTemplates();
 		templates.addAll(Arrays.asList(getNameTemplates(references != null)));		
 		if (references != null) {
 			templates.addAll((Arrays.asList(references)));		
+			templates.add(new WhitespaceTemplate(this, BlockLayout.SPACE));
 		}
 			
 		Template[] contents = getContentsTemplates();			
 		if (showAnnotations()) {			
-			templates.add(new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK));
+			templates.add(new WhitespaceTemplate(this, BlockLayout.BEGIN_BLOCK));
 			templates.addAll(Arrays.asList(getAnnotationTemplates()));
-			templates.add(new LayoutElementTemplate(this, LayoutManager.END_BLOCK));
+			templates.add(new WhitespaceTemplate(this, BlockLayout.END_BLOCK));
 		}
 	    		
-		if (contents != null) {
-			templates.add(new LayoutElementTemplate(this, LayoutManager.INDENT));
-			templates.add(new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK, "{\n"));
+		if (contents != null) {			
+			templates.add(new TerminalTemplate(this, "{"));
+			templates.add(new WhitespaceTemplate(this, BlockLayout.BEGIN_BLOCK));
 			templates.addAll(Arrays.asList(contents));		    
-		    templates.add(new LayoutElementTemplate(this, LayoutManager.END_BLOCK));
-		    templates.add(new LayoutElementTemplate(this, LayoutManager.INDENT));
+			templates.add(new WhitespaceTemplate(this, BlockLayout.END_BLOCK));
+			templates.add(new WhitespaceTemplate(this, BlockLayout.INDENT));
 		    templates.add(new TerminalTemplate(this, "}"));			
 		} 			
 		return templates.toArray(new Template[]{});

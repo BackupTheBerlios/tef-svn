@@ -6,6 +6,7 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.templates.layout.AbstractLayoutManager;
 import hub.sam.tef.treerepresentation.IASTElement;
 import hub.sam.tef.treerepresentation.ModelASTElement;
 import hub.sam.tef.treerepresentation.ModelSequenceASTNode;
@@ -64,7 +65,7 @@ public class SequenceTemplateSemantics implements ISyntaxProvider, IASTProvider,
 	private static final String tailKey = "TAIL_KEY";
 	private static final String sequenceKey = "SEQUENCE_KEY";
 	
-	public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite) {
+	public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite, AbstractLayoutManager layout) {
 		ASTElementNode treeRepresentation = new ASTElementNode(
 				new ModelASTElement(fTemplate, (IModelElement)model));
 		
@@ -84,25 +85,35 @@ public class SequenceTemplateSemantics implements ISyntaxProvider, IASTProvider,
 			}
 			
 			sequence.addNodeObject(valueKey, fTemplate.getValueTemplate().getAdapter(IASTProvider.class).
-					createTreeRepresentation(owner, null, (IModelElement)element, isComposite));
+					createTreeRepresentation(owner, null, (IModelElement)element, isComposite, layout));
 						
 			if (fTemplate.fSeparator != null && i+1 < elements.size()) {
 				sequence.addNodeObject(fTemplate.fSeparator);
-			}			
+			}	
+			if (i+1 < elements.size()) {
+				sequence.addNodeObject(fTemplate.getSeparatorWhitespace().getSpace(layout));
+			}
 			i++;						
 			parentNode = sequence;
 		}
-		if (fTemplate.fSeparateLast && fTemplate.fSeparator != null) {			
+		if (fTemplate.fSeparateLast && fTemplate.fSeparator != null && elements.size() > 0) {			
 			ASTElementNode sequence = 
 					new ASTElementNode(new ModelASTElement(fTemplate, (IModelElement)model));										
 			sequence.addNodeObject(fTemplate.fSeparator);			
 			parentNode.addNodeObject(tailKey, sequence);
+			parentNode = sequence;
+		}
+		if (fTemplate.fSeparateLast && elements.size() > 0) {			
+			parentNode.addNodeObject(fTemplate.getSeparatorWhitespace().getSpace(layout));
 		}
 		return result;		
 	}		
 	
-	public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {	
+	public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {			
 		tree = skipOptionalRule((ASTElementNode)tree, owner);
+		if (tree == null) { // empty sequence
+			return null;
+		}
 		ASTElementNode nextTree = getTailNode((ASTElementNode)tree);
 		if (nextTree != null) {
 			nextTree.setElement(new ModelASTElement(fTemplate, owner));
@@ -117,6 +128,9 @@ public class SequenceTemplateSemantics implements ISyntaxProvider, IASTProvider,
 
 	public Object createReferenceModel(IModelElement owner, String property, ASTNode tree, boolean isComposite, SemanticsContext context) {
 		tree = skipOptionalRule((ASTElementNode)tree, owner);
+		if (tree == null) { // empty sequence
+			return null;
+		}
 		ASTElementNode nextTree = getTailNode((ASTElementNode)tree);
 		if (nextTree != null) {		
 			createReferenceModel(owner, property, nextTree, isComposite, context);
@@ -174,6 +188,9 @@ public class SequenceTemplateSemantics implements ISyntaxProvider, IASTProvider,
 	
 	public void check(ASTElementNode representation, SemanticsContext context) {	
 		representation = skipOptionalRule(representation, null);
+		if (representation == null) { // empty sequence
+			return;
+		}
 		List<ASTElementNode> allValueNodes = collectAllValueNodes((ASTElementNode)representation, new Vector<ASTElementNode>());				
 		for (ASTElementNode valueNode: allValueNodes) {
 			fTemplate.getValueTemplate().getAdapter(ISemanticProvider.class).check(valueNode, context);

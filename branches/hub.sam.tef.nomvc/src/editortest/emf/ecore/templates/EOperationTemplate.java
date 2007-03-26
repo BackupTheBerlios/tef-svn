@@ -28,6 +28,8 @@ import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.adaptors.Proposal;
+import hub.sam.tef.templates.layout.BlockLayout;
+import hub.sam.tef.templates.layout.WhitespaceTemplate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,7 +45,7 @@ public class EOperationTemplate extends ElementTemplate {
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-				new LayoutElementTemplate(this, LayoutManager.INDENT),				
+				new WhitespaceTemplate(this, BlockLayout.INDENT),				
 				new TerminalTemplate(this,  "operation", TerminalTemplate.KEY_WORD_HIGHLIGHT),
 				new SingleValueTemplate<String>(this, "eType") {
 					@Override

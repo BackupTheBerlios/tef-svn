@@ -25,6 +25,7 @@ import hub.sam.tef.templates.adaptors.IIdentifierResolver;
 import hub.sam.tef.templates.adaptors.ILanguageModelProvider;
 import hub.sam.tef.templates.adaptors.IPresentationOptionsProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.templates.layout.AbstractLayoutManager;
 import hub.sam.tef.treerepresentation.IASTElement;
 import hub.sam.tef.treerepresentation.IndexASTSelector;
 import hub.sam.tef.treerepresentation.ModelASTElement;
@@ -77,6 +78,8 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 	private DocumentModel documentModel = null;		
 	private boolean changed = false;
 	private IAnnotationModelExtension annotationModel = null;
+	
+	private AbstractLayoutManager layout = null;
 	
 	@Override
 	public final void replace(int pos, int length, String text) throws BadLocationException {
@@ -166,4 +169,15 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 			return result;
 		}
 	}
+
+	protected abstract AbstractLayoutManager createLayout();
+	
+	public final AbstractLayoutManager getLayout() {
+		if (layout == null) {
+			layout = createLayout();
+		}
+		return layout;
+	}
+	
+	
 }

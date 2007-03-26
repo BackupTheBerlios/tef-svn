@@ -18,8 +18,12 @@ package hub.sam.tef.templates;
 
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.parse.ISemanticProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.templates.layout.AbstractLayoutManager;
+import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.treerepresentation.ModelASTElement;
 import hub.sam.tef.treerepresentation.PrimitiveTreeRepresentation;
 import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.ASTNode;
@@ -54,6 +58,8 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 			return (T)new SyntaxProvider();
 		} else if (IASTProvider.class == adapter) {
 			return (T)new TreeRepresentationProvider();
+		} else if (ISemanticProvider.class == adapter) {
+			return (T)new SemanticProvider();
 		} else {
 			return super.getAdapter(adapter);
 		}
@@ -61,30 +67,43 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 	
 	class SyntaxProvider implements ISyntaxProvider {		
 		public String getNonTerminal() {
-			return "'" + fFlagKeyword + "'";
+			return "Flag_" + fFlagKeyword;
 		}
 
 		public String[][] getRules() {		
-			return new String[][] {};
+			return new String[][] {
+					new String[] { getNonTerminal() , "'" + fFlagKeyword + "'" },
+					new String[] { getNonTerminal() },
+			};
 		}		
 	}
 	
 	class TreeRepresentationProvider implements IASTProvider {
-		public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite) {
+		public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite, AbstractLayoutManager layout) {
+			ASTElementNode result = new ASTElementNode(new ModelASTElement(FlagTemplate.this, null));			
 			if ((Boolean)model) {
-				return new PrimitiveTreeRepresentation(fFlagKeyword + " ");				
-			} else {
-				return new PrimitiveTreeRepresentation("");
-			}
+				result.addNodeObject(fFlagKeyword);							
+			} 
+			return result;
 		}
 
-		public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {
-			return FlagTemplate.super.getAdapter(IASTProvider.class).
-					createCompositeModel(owner, property, tree, true);
+		public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {			
+			if (((ASTElementNode)tree).getChildNodes().size() == 1) {
+				return FlagTemplate.super.getAdapter(IASTProvider.class).
+						createCompositeModel(owner, property, ((ASTElementNode)tree).getChildNodes().get(0), true);
+			}
+			return null;
 		}
 
 		public Object createReferenceModel(IModelElement owner, String property, ASTNode tree, boolean isComposite, SemanticsContext context) {		
 			return null;
 		}				
+	}
+	
+	class SemanticProvider implements ISemanticProvider {
+
+		public void check(ASTElementNode representation, SemanticsContext context) {
+			// empty	
+		}		
 	}
 }

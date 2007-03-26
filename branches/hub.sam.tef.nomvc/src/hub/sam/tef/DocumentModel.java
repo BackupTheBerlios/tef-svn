@@ -49,7 +49,7 @@ public class DocumentModel implements IDisposable, IDocumentModelProvider, IAnno
 	public void initialize() {
 		topLevelModelElement = (IModelElement)fModel.getOutermostCompositesOfEditedResource().iterator().next();
 		treeRepresentation = (ASTElementNode)fLanguageModel.getTopLevelTemplate().getAdapter(IASTProvider.class).
-				createTreeRepresentation(null, null, topLevelModelElement, true);
+				createTreeRepresentation(null, null, topLevelModelElement, true, fLanguageModel.getLayout());
 		text = treeRepresentation.getContent();
 	}
 	

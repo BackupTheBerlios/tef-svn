@@ -2,6 +2,8 @@ package hub.sam.tef.parse;
 
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.adaptors.IElementSyntaxProvider;
+import hub.sam.tef.treerepresentation.ASTNode;
 import hub.sam.tef.treerepresentation.TextASTElement;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 
@@ -24,22 +26,52 @@ public class UpdateTreeSemantic implements Semantic {
 	private ASTElementNode result;
 	private final ParserInterface fParserInterface;
 	
-	public UpdateTreeSemantic(ParserInterface parserInterface) {		
+	private final String stringContent;	
+	
+	public UpdateTreeSemantic(ParserInterface parserInterface, String content) {		
 		this.fParserInterface = parserInterface;
+		this.stringContent = content;
 	}
 	
-	public Object doSemantic(Rule rule, List parseResults, List<Range> resultRanges) {		
-		if (parseResults.size() == 0) {
-			throw new RuntimeException("assert");
+	/**
+	 * Is necessary because RCC has a bug and does not provide reasonable ranges
+	 * for empty parse results.
+	 */
+	private boolean isValidParseResult(Object parseResult, Range range) {
+		if (range.start.offset != range.end.offset) {
+			if (!(parseResult instanceof ASTNode) || ((ASTNode)parseResult).getLength() > 0) {
+				return true;
+			}
 		}
+		return false;
+	}
+	
+	public Object doSemantic(Rule rule, List parseResults, List<Range> resultRanges) {
 		int i = 0;
 		Template template = fParserInterface.getTemplateForNonTerminal(rule.getNonterminal()); 
 		ASTElementNode result = new ASTElementNode(new TextASTElement(rule, template));
 				
+		boolean first = true;
+		int lastValidResult = 0;
 		for(Object parseResult: parseResults) {
-			 // TODO whitespaces
+			if (!first) {			
+				if (isValidParseResult(parseResults.get(i), resultRanges.get(i))) {						
+					int lastOffset = resultRanges.get(lastValidResult).end.offset;
+					int actualOffset = resultRanges.get(i).start.offset;
+					String whiteSpace = stringContent.substring(lastOffset, actualOffset);
+					result.addNodeObject(whiteSpace);					
+				}
+			} else {
+				first = false;		
+			}
+			
+			if (isValidParseResult(parseResults.get(i), resultRanges.get(i))) {
+				lastValidResult = i;				
+			}
+			
 			if (template instanceof ElementTemplate) {
-				String property = ((ElementTemplate)template).getPropertyForRuleAndPosition(rule, i);
+				String property = ((ElementTemplate)template).getAdapter(IElementSyntaxProvider.class).
+						getPropertyForRuleAndPosition(rule, i);
 				if (property != null) {
 					result.addNodeObject(property, parseResult);
 				} else {
@@ -48,16 +80,11 @@ public class UpdateTreeSemantic implements Semantic {
 				}
 			} else {			
 				result.addNodeObject(parseResult);
-			}
+			}				
 			i++;
 		}	
 		
 		this.result = result;
-		try {
-			System.out.println(result);
-		} catch (NullPointerException ex) {
-			System.out.println("_");
-		}
 		return result;		
 	}
 	

@@ -46,7 +46,7 @@ public class ParserInterface {
 	 */
 	private void collectAllRules(Template template, Collection<String> visitedNonTerminals) {
 		ISyntaxProvider syntaxProvider = template.getAdapter(ISyntaxProvider.class);
-		if (! visitedNonTerminals.contains(syntaxProvider.getNonTerminal())) {
+		if (syntaxProvider != null && ! visitedNonTerminals.contains(syntaxProvider.getNonTerminal())) {
 			if (syntaxProvider.getRules() != null) {
 				for (String[] rule: syntaxProvider.getRules()) {
 					templatesForNonTerminals.put(rule[0], template);

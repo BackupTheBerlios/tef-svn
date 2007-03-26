@@ -27,6 +27,8 @@ import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.adaptors.Proposal;
+import hub.sam.tef.templates.layout.BlockLayout;
+import hub.sam.tef.templates.layout.WhitespaceTemplate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +44,7 @@ public class EAttributeTemplate extends ElementTemplate {
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-				new LayoutElementTemplate(this, LayoutManager.INDENT),				
+				new WhitespaceTemplate(this, BlockLayout.INDENT),				
 				new TerminalTemplate(this,  "attribute", TerminalTemplate.KEY_WORD_HIGHLIGHT),
 				new SingleValueTemplate<Boolean>(this, "derived") {
 					@Override
@@ -50,18 +52,21 @@ public class EAttributeTemplate extends ElementTemplate {
 						return new FlagTemplate(this, "isDerived");
 					}					
 				},
+				new WhitespaceTemplate(this, BlockLayout.SPACE),
 				new SingleValueTemplate<Boolean>(this, "changeable") {
 					@Override
 					protected ValueTemplate<Boolean> createValueTemplate() {
 						return new FlagTemplate(this, "isChangeable");
 					}					
 				},
+				new WhitespaceTemplate(this, BlockLayout.SPACE),
 				new SingleValueTemplate<Boolean>(this, "unsettable") {
 					@Override
 					protected ValueTemplate<Boolean> createValueTemplate() {
 						return new FlagTemplate(this, "isUnsettable");
 					}					
 				},
+				new WhitespaceTemplate(this, BlockLayout.SPACE),
 				new SingleValueTemplate<String>(this, "eType") {
 					@Override
 					protected ValueTemplate createValueTemplate() {
@@ -72,7 +77,8 @@ public class EAttributeTemplate extends ElementTemplate {
 							}						
 						};
 					}					
-				},	
+				},
+				new WhitespaceTemplate(this, BlockLayout.EMPTY),
 				new TerminalTemplate(this, "["),
 				new SingleValueTemplate(this, "lowerBound") {
 					@Override
@@ -87,7 +93,8 @@ public class EAttributeTemplate extends ElementTemplate {
 						return new IntegerTemplate(this, 1);
 					}					
 				},
-				new TerminalTemplate(this, "]"),				
+				new TerminalTemplate(this, "]"),
+				new WhitespaceTemplate(this, BlockLayout.SPACE),
 				new SingleValueTemplate<String>(this, "name") {
 					@Override
 					protected ValueTemplate<String> createValueTemplate() {

@@ -8,6 +8,8 @@ import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.adaptors.Proposal;
+import hub.sam.tef.templates.layout.ExpressionLayout;
+import hub.sam.tef.templates.layout.WhitespaceTemplate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,22 +31,33 @@ public class IteratorExpTemplate extends ElementTemplate {
 					return new OclExpressionTemplate(this);
 				}				
 			},
+			new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 			new TerminalTemplate(this, "->"),
+			new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 			new TerminalTemplate(this, "forAll"), // TODO
+			new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 			new TerminalTemplate(this, "("),
+			new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 			new SequenceTemplate<IModelElement>(this, "iterator", ",", false) {	
 				@Override
 				protected ValueTemplate<IModelElement> createValueTemplate() {
 					return new VariableTemplate(this);
-				}			
+				}
+				@Override
+				protected WhitespaceTemplate createSeparatorWhitespace() {
+					return new WhitespaceTemplate(this, ExpressionLayout.SPACE_SEPARATOR);
+				}				
 			},
+			new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 			new TerminalTemplate(this, "|"),
+			new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 			new SingleValueTemplate<IModelElement>(this, "body") {
 				@Override
 				protected ValueTemplate<IModelElement> createValueTemplate() {
 					return new OclExpressionTemplate(this);
 				}				
 			},
+			new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 			new TerminalTemplate(this, ")")
 		};
 	}

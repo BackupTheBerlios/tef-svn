@@ -24,6 +24,8 @@ import hub.sam.tef.templates.SequenceTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
+import hub.sam.tef.templates.layout.BlockLayout;
+import hub.sam.tef.templates.layout.WhitespaceTemplate;
 
 public class EClassTemplate extends EModelElementTemplate {
 
@@ -46,6 +48,10 @@ public class EClassTemplate extends EModelElementTemplate {
 								};
 							}							
 						};						
+					}
+					@Override
+					protected WhitespaceTemplate createSeparatorWhitespace() {
+						return new WhitespaceTemplate(this, BlockLayout.STATEMENT);
 					}					
 				},
 				new SequenceTemplate<IModelElement>(this, "eOperations", ";", true) {

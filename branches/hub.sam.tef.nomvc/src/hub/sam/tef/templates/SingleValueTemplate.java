@@ -20,6 +20,7 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.templates.layout.AbstractLayoutManager;
 import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 import hub.sam.tef.treerepresentation.ASTNode;
@@ -44,9 +45,9 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 	}
 	
 	class TreeRepresentationProvider implements IASTProvider {
-		public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite) {
+		public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite, AbstractLayoutManager layout) {
 			return getValueTemplate().getAdapter(IASTProvider.class).
-					createTreeRepresentation(null, null, ((IModelElement)model).getValue(property), true);			
+					createTreeRepresentation(null, null, ((IModelElement)model).getValue(property), true, layout);			
 		}
 
 		public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {

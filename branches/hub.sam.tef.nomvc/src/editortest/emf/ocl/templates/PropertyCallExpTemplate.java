@@ -7,6 +7,8 @@ import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
+import hub.sam.tef.templates.layout.ExpressionLayout;
+import hub.sam.tef.templates.layout.WhitespaceTemplate;
 import editortest.emf.ecore.templates.EIdentifierTemplate;
 
 public class PropertyCallExpTemplate extends ElementTemplate {
@@ -24,7 +26,9 @@ public class PropertyCallExpTemplate extends ElementTemplate {
 						return new OclExpressionTemplate(this);
 					}				
 				},
+				new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 				new TerminalTemplate(this, "."),
+				new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 				new SingleValueTemplate<IModelElement>(this, "referredProperty") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {						

@@ -33,8 +33,9 @@ public class ParserBasedReconcilingStrategy implements IReconcilingStrategy {
 	public void reconcile()  {				
 		if (fDocument.needsReconciling()) {
 			try {
-				UpdateTreeSemantic semantic = new UpdateTreeSemantic(getParserInterface());	
-				if (getParserInterface().parse(fDocument.get(), semantic)) {
+				String content = fDocument.get();
+				UpdateTreeSemantic semantic = new UpdateTreeSemantic(getParserInterface(), content);	
+				if (getParserInterface().parse(content, semantic)) {
 					// the current content can be parsed (contains no syntax errors)																										
 					final ASTElementNode newAST = semantic.getCurrentResult();
 					// build a new model							

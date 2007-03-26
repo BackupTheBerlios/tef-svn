@@ -3,6 +3,7 @@ package hub.sam.tef.templates;
 import java.util.List;
 import java.util.Vector;
 
+import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.ErrorAnnotation;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
@@ -11,8 +12,11 @@ import hub.sam.tef.models.IModelChangeListener;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
+import hub.sam.tef.templates.adaptors.IElementSyntaxProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.templates.layout.AbstractLayoutManager;
+import hub.sam.tef.templates.layout.WhitespaceTemplate;
 import hub.sam.tef.treerepresentation.ModelASTElement;
 import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.ASTElementNode;
@@ -21,7 +25,7 @@ import hub.sam.util.container.IDisposable;
 
 import org.eclipse.jface.text.Position;
 
-public class ElementTemplateSemantics extends ValueTemplateSemantics implements ISyntaxProvider, IASTProvider, ISemanticProvider {
+public class ElementTemplateSemantics extends ValueTemplateSemantics implements IElementSyntaxProvider, IASTProvider, ISemanticProvider {
 
 	private final IModel fModel;
 	private final IMetaModelElement fMetaModelElement;
@@ -46,14 +50,33 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		List<String> result = new Vector<String>();
 		result.add(getNonTerminal());						
 		for(Template part: fElementTemplate.getNestedTemplates()) {
-			if (!(part instanceof LayoutElementTemplate)) {
+			if (!(part instanceof WhitespaceTemplate) && !(part instanceof LayoutElementTemplate)) {
 				result.add(part.getAdapter(ISyntaxProvider.class).getNonTerminal());
 			}
 		}
 		return new String[][] { result.toArray(new String[] {}) };					
 	}
+	
+	public String getPropertyForRuleAndPosition(Rule rule, int position) {
+		int i = 0;
+		for (Template subTemplate: fElementTemplate.getNestedTemplates()) {
+			if (subTemplate instanceof WhitespaceTemplate) {
+				
+			} else if (subTemplate instanceof TerminalTemplate) {
+				i++;
+			} else if (subTemplate instanceof PropertyTemplate) {
+				if (position == i) {
+					return ((PropertyTemplate)subTemplate).getProperty();
+				}
+				i++;
+			} else {
+				throw new RuntimeException("assert");
+			}
+		} 
+		return null;		
+	}
 
-	public ASTNode createTreeRepresentation(IModelElement owner, String notused, Object model, boolean isComposite) {
+	public ASTNode createTreeRepresentation(IModelElement owner, String notused, Object model, boolean isComposite, AbstractLayoutManager layout) {
 		ModelASTElement contents = new ModelASTElement(fElementTemplate, (IModelElement)model);
 		ASTElementNode result = new ASTElementNode(contents);
 		if (model == null) {
@@ -67,12 +90,14 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 			if (subTemplate instanceof PropertyTemplate) {
 				String property = ((PropertyTemplate)subTemplate).getProperty();
 				result.addNodeObject(property, subTemplate.getAdapter(IASTProvider.class).
-						createTreeRepresentation((IModelElement)model, property, model, true));
-				ModelChangeListener changeListener = 
-						new ModelChangeListener(result, (PropertyTemplate)subTemplate, (IModelElement)model);
-				result.registerComponentListener(changeListener);
+						createTreeRepresentation((IModelElement)model, property, model, true, layout));
+				//ModelChangeListener changeListener = 
+				//		new ModelChangeListener(result, (PropertyTemplate)subTemplate, (IModelElement)model);
+				//result.registerComponentListener(changeListener);
 			} else if (subTemplate instanceof TerminalTemplate) {
-				result.addNodeObject(((TerminalTemplate)subTemplate).getTerminalText() + " ");
+				result.addNodeObject(((TerminalTemplate)subTemplate).getTerminalText());
+			} else if (subTemplate instanceof WhitespaceTemplate) {
+				result.addNodeObject(((WhitespaceTemplate)subTemplate).getSpace(layout));
 			} else {
 				throw new RuntimeException("assert");
 			}
@@ -94,8 +119,7 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		} else {
 			result = fModel.createElement(fMetaModelElement);
 			tree.setElement(new ModelASTElement(fElementTemplate, result));
-		}
-		
+		}		
 		
 		if (createModelForProperties) {
 			for (Template subTemplate: fElementTemplate.getNestedTemplates()) {
@@ -186,7 +210,7 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 			String property = fTemplate.getProperty();
 			if (changedProperty.equals(property)) {
 				fRepresentation.changeNodeObject(property, fTemplate.getAdapter(IASTProvider.class).
-						createTreeRepresentation(null, property, fModel, true));
+						createTreeRepresentation(null, property, fModel, true, null)); // TODO layout
 			}
 		}		
 	}

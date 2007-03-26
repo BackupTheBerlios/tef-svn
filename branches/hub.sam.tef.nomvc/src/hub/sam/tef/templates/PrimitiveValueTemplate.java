@@ -4,6 +4,7 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.IType;
 import hub.sam.tef.parse.ISemanticProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.templates.layout.AbstractLayoutManager;
 import hub.sam.tef.treerepresentation.PrimitiveTreeRepresentation;
 import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.ASTElementNode;
@@ -27,8 +28,8 @@ public abstract class PrimitiveValueTemplate<ModelType> extends ValueTemplate<Mo
 	protected abstract Object getObjectValueFromStringValue(String value);
 
 	class TreeRepresentationProvider implements IASTProvider {
-		public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite) {
-			return new PrimitiveTreeRepresentation((model == null) ? "<null>" : model + " ");
+		public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite, AbstractLayoutManager layout) {
+			return new PrimitiveTreeRepresentation((model == null) ? "<null>" : model);
 		}
 
 		public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {

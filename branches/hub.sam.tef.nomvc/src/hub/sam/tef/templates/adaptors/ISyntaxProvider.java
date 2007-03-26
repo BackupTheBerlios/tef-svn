@@ -1,5 +1,7 @@
 package hub.sam.tef.templates.adaptors;
 
+import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+
 public interface ISyntaxProvider {
 	
 	/**

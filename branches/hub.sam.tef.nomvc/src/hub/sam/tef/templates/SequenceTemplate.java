@@ -19,17 +19,30 @@ package hub.sam.tef.templates;
 import hub.sam.tef.parse.ISemanticProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
+import hub.sam.tef.templates.layout.WhitespaceTemplate;
 
 
 public abstract class SequenceTemplate<ElementModelType> extends PropertyTemplate<ElementModelType> {	
 	
 	protected final String fSeparator;
 	protected final boolean fSeparateLast;
+	private WhitespaceTemplate fSeparatorWhitespace;
 	
 	public SequenceTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast) {
 		super(elementTemplate, property);
 		fSeparator = separator;
 		fSeparateLast = separateLast;
+	}
+	
+	protected WhitespaceTemplate createSeparatorWhitespace() {
+		return new WhitespaceTemplate(this, -1);
+	}
+	
+	public final WhitespaceTemplate getSeparatorWhitespace() {
+		if (fSeparatorWhitespace == null) {
+			fSeparatorWhitespace = createSeparatorWhitespace();
+		}
+		return fSeparatorWhitespace;
 	}
 		
 	@Override

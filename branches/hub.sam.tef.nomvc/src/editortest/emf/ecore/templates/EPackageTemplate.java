@@ -22,6 +22,8 @@ import hub.sam.tef.templates.SequenceTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
+import hub.sam.tef.templates.layout.BlockLayout;
+import hub.sam.tef.templates.layout.WhitespaceTemplate;
 
 public class EPackageTemplate extends EModelElementTemplate {
 	
@@ -40,7 +42,11 @@ public class EPackageTemplate extends EModelElementTemplate {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new EPackageTemplate(this);
-					}	    			
+					}	
+					@Override
+					protected WhitespaceTemplate createSeparatorWhitespace() {
+						return new WhitespaceTemplate(this, BlockLayout.SPACE);
+					}
 	    		},
 	    		new SequenceTemplate<IModelElement>(this, "eClassifiers", null, true) {
 					@Override
@@ -54,8 +60,13 @@ public class EPackageTemplate extends EModelElementTemplate {
 								};
 							}							
 						};
-					}	    			
-	    		}	    		
+					}
+					@Override
+					protected WhitespaceTemplate createSeparatorWhitespace() {
+						return new WhitespaceTemplate(this, BlockLayout.STATEMENT);
+					}
+	    		}	    	
+	    		
 		};	    
 	}
 

@@ -23,6 +23,8 @@ import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
+import hub.sam.tef.templates.layout.BlockLayout;
+import hub.sam.tef.templates.layout.WhitespaceTemplate;
 
 public class EDataTypeTemplate extends ElementTemplate {
 
@@ -33,7 +35,7 @@ public class EDataTypeTemplate extends ElementTemplate {
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {			
-				new LayoutElementTemplate(this, LayoutManager.INDENT),	
+				new WhitespaceTemplate(this, BlockLayout.INDENT),	
 				new TerminalTemplate(this, "data type", TerminalTemplate.KEY_WORD_HIGHLIGHT),
 				new SingleValueTemplate<String>(this, "name") {
 					@Override

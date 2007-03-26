@@ -23,9 +23,11 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
 import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
+import hub.sam.tef.templates.adaptors.IElementSyntaxProvider;
 import hub.sam.tef.templates.adaptors.IPresentationOptionsProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.templates.layout.WhitespaceTemplate;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 
 /**
@@ -96,14 +98,6 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	protected boolean isIdentifierProperty(String property) {
 		return false;
 	}
-	
-	public String getPropertyForRuleAndPosition(Rule rule, int position) {
-		if (!(fTemplates[position] instanceof TerminalTemplate)) {
-			return ((PropertyTemplate)fTemplates[position]).getProperty();
-		} else {
-			return null;
-		}
-	}
 
 	@Override
 	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {	
@@ -122,7 +116,7 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	}
 	
 	public <T> T getAdapter(Class<T> adapter) {
-		if (ISyntaxProvider.class == adapter) {
+		if (ISyntaxProvider.class == adapter || IElementSyntaxProvider.class == adapter) {
 			return (T) new ElementTemplateSemantics(this);
 		} else if (IASTProvider.class == adapter) {
 			return (T) new ElementTemplateSemantics(this);

@@ -22,6 +22,7 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
+import hub.sam.tef.templates.layout.AbstractLayoutManager;
 import hub.sam.tef.treerepresentation.ModelASTElement;
 import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.ASTElementNode;
@@ -85,12 +86,12 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	}
 	
 	class TreeRepresentationProvider implements IASTProvider {
-		public ASTNode createTreeRepresentation(IModelElement owner, String notused, Object model, boolean isComposite) {
+		public ASTNode createTreeRepresentation(IModelElement owner, String notused, Object model, boolean isComposite, AbstractLayoutManager layout) {
 			ModelASTElement contents = new ModelASTElement(ReferenceTemplate.this, (IModelElement)model);
 			ASTElementNode treeRepresentation = new ASTElementNode(contents);
 			
 			treeRepresentation.addNodeObject(fIdentifierTemplate.getAdapter(IASTProvider.class).
-					createTreeRepresentation(owner, notused, model, false));						
+					createTreeRepresentation(owner, notused, model, false, layout));						
 			
 			return treeRepresentation;
 		}
