@@ -16,17 +16,25 @@
  */
 package hub.sam.tef.templates;
 
+import hub.sam.tef.templates.adaptors.ISyntaxHighlightProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 
 import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.text.rules.IRule;
+import org.eclipse.jface.text.rules.IToken;
+import org.eclipse.jface.text.rules.IWordDetector;
+import org.eclipse.jface.text.rules.Token;
+import org.eclipse.jface.text.rules.WordRule;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 /**
  * Terminal templates create simple fix views. Can be used for
  * terminals, like keywords, parathesis, whitespaces, etc.
  */
-public class TerminalTemplate extends Template implements ISyntaxProvider {
+public class TerminalTemplate extends Template implements ISyntaxProvider, ISyntaxHighlightProvider {
 	
 	public static final TextAttribute KEY_WORD_HIGHLIGHT = new TextAttribute(
 			Display.getCurrent().getSystemColor(SWT.COLOR_DARK_MAGENTA), null, SWT.BOLD);
@@ -59,6 +67,8 @@ public class TerminalTemplate extends Template implements ISyntaxProvider {
 	public <T> T getAdapter(Class<T> adapter) {
 		if (ISyntaxProvider.class == adapter) {
 			return (T)this;
+		} else if (ISyntaxHighlightProvider.class == adapter) {
+			return (T)this;
 		} else {
 			return super.getAdapter(adapter);
 		}
@@ -75,4 +85,29 @@ public class TerminalTemplate extends Template implements ISyntaxProvider {
 	public String[][] getRules() {
 		return new String[][] {};
 	}
+
+	public IRule getHighlightRule() {
+		if (fTerminalText.matches("[a-zA-Z]*")) {
+			IToken token = new Token(
+					new TextAttribute(new Color(Display.getCurrent(), new RGB(120,120,0)), null, SWT.BOLD));
+			WordRule rule = new WordRule(new IWordDetector() {
+				public boolean isWordPart(char c) {
+					return Character.isJavaIdentifierStart(c);
+				}
+
+				public boolean isWordStart(char c) {
+					return Character.isJavaIdentifierPart(c);
+				}				
+			});
+			rule.addWord(fTerminalText, token);
+			return rule;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	protected Object getId() {
+		return fTerminalText;
+	}			
 }

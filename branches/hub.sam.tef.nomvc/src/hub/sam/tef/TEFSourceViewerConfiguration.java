@@ -23,14 +23,14 @@ import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.reconciler.IReconciler;
+import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 
-public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
-
-	private final ContentAssistant fChangeContentAssistant;
+public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {		
+	private final ContentAssistant fChangeContentAssistant;	
 	private final ContentAssistant fInsertContentAssistant;
-	private final ITextDoubleClickStrategy fDoubleClickStrategy;
+	private final ITextDoubleClickStrategy fDoubleClickStrategy;	
 	//private final IAutoEditStrategy fAutoEditStrategy;
 			
 	public TEFSourceViewerConfiguration() {
@@ -63,9 +63,11 @@ public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {
 		PresentationReconciler reconciler = new PresentationReconciler();
 		reconciler.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
-		PresentationDamagerRepairer damageRepair = new PresentationDamagerRepairer();
-		reconciler.setDamager(damageRepair, IDocument.DEFAULT_CONTENT_TYPE);
-		reconciler.setRepairer(damageRepair, IDocument.DEFAULT_CONTENT_TYPE);
+				
+		DefaultDamagerRepairer damageRepairer = new DefaultDamagerRepairer(
+				new TEFTokenScanner(sourceViewer));
+		reconciler.setDamager(damageRepairer, IDocument.DEFAULT_CONTENT_TYPE);
+		reconciler.setRepairer(damageRepairer, IDocument.DEFAULT_CONTENT_TYPE);
 		return reconciler;		
 	}
 	

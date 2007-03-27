@@ -132,4 +132,9 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 			return null;
 		}
 	}
+
+	@Override
+	protected Object getId() {
+		return fMetaModel;
+	}	
 }

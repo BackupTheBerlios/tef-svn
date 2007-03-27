@@ -78,4 +78,23 @@ public abstract class Template implements IAdaptable {
 			return null;
 		}
 	}
+	
+	protected Object getId() {
+		return getClass();
+	}
+
+	@Override
+	public boolean equals(Object arg0) {
+		if (this.getClass().equals(arg0.getClass())) {
+			return  ((Template)arg0).getId().equals(getId());
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return getId().hashCode();
+	}
+	
+	
 }

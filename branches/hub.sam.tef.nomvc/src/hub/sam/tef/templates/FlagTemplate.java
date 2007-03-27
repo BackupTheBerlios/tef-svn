@@ -16,9 +16,21 @@
  */
 package hub.sam.tef.templates;
 
+import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.text.rules.IRule;
+import org.eclipse.jface.text.rules.IToken;
+import org.eclipse.jface.text.rules.IWordDetector;
+import org.eclipse.jface.text.rules.Token;
+import org.eclipse.jface.text.rules.WordRule;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
+
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.parse.ISemanticProvider;
+import hub.sam.tef.templates.adaptors.ISyntaxHighlightProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
 import hub.sam.tef.templates.layout.AbstractLayoutManager;
@@ -60,6 +72,8 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 			return (T)new TreeRepresentationProvider();
 		} else if (ISemanticProvider.class == adapter) {
 			return (T)new SemanticProvider();
+		} else if (ISyntaxHighlightProvider.class == adapter) {
+			return (T)new SyntaxHighlightProvider();
 		} else {
 			return super.getAdapter(adapter);
 		}
@@ -76,6 +90,28 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 					new String[] { getNonTerminal() },
 			};
 		}		
+	}
+	
+	class SyntaxHighlightProvider implements ISyntaxHighlightProvider {
+		public IRule getHighlightRule() {
+			if (fFlagKeyword.matches("[a-zA-Z]*")) {
+				IToken token = new Token(
+						new TextAttribute(new Color(Display.getCurrent(), new RGB(120,120,0)), null, SWT.BOLD));
+				WordRule rule = new WordRule(new IWordDetector() {
+					public boolean isWordPart(char c) {
+						return Character.isJavaIdentifierStart(c);
+					}
+
+					public boolean isWordStart(char c) {
+						return Character.isJavaIdentifierPart(c);
+					}				
+				});
+				rule.addWord(fFlagKeyword, token);
+				return rule;
+			} else {
+				return null;
+			}
+		}	
 	}
 	
 	class TreeRepresentationProvider implements IASTProvider {
@@ -106,4 +142,9 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 			// empty	
 		}		
 	}
+	
+	@Override
+	protected Object getId() {
+		return fFlagKeyword;
+	}		
 }
