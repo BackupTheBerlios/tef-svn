@@ -62,23 +62,31 @@ public class ParserInterface {
 		}
 	}
 	
-	private Parser getParser() throws SyntaxException, ParserBuildException, LexerException {
+	private Parser createParser() throws SyntaxException, ParserBuildException, LexerException {
 		if (fParser == null) {
 			SyntaxSeparation separation = new SyntaxSeparation(fSyntax);	// separate lexer and parser syntax
 			LexerBuilder builder = new LexerBuilder(separation.getLexerSyntax(), separation.getIgnoredSymbols());	// build a Lexer
 			Lexer lexer = builder.getLexer();
 									
 			ParserTables parserTables = new LALRParserTables(separation.getParserSyntax());			
-			fParser = new Parser(parserTables);			
+			fParser = createParser(parserTables);			
 			fParser.setLexer(lexer);				
 		}
 		return fParser;
  	}
 	
+	public Parser getParser() {
+		return fParser;
+	}
+	
+	protected Parser createParser(ParserTables parserTables) {
+		return new Parser(parserTables);
+	}
+	
 	public boolean parse(String content, Semantic semantic) {		
 		boolean ok = false;
 		try {						
-			Parser parser = getParser();		
+			Parser parser = createParser();		
 			parser.getLexer().setInput(content.trim());						
 			ok = parser.parse(semantic);	// start parsing with a print-semantic			
 			lastOffset = ((LexerImpl)parser.getLexer()).getOffset();

@@ -3,6 +3,7 @@ package editortest.emf;
 import java.util.Collection;
 import java.util.Vector;
 
+import hub.sam.tef.completion.IValidModelElementProvider;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
