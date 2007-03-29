@@ -17,7 +17,7 @@ public class EMFCompletions {
 		
 		for (IModelElement possibleElement: validElements) {
 			String name = (String)possibleElement.getValue("name");
-			if (name != null && name.startsWith(identifierPrefix)) {
+			if (name != null && name.startsWith(identifierPrefix) && ! name.equals(identifierPrefix)) {
 				result.add(new CompletionContextInformation(name.substring(identifierPrefix.length(), name.length()), name));
 			}
 		}

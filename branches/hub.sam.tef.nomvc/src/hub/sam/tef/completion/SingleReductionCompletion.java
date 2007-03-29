@@ -22,7 +22,7 @@ public abstract class SingleReductionCompletion implements ICompletionComputer {
 	public boolean reduceParseStack(CompletionParser parser) {
 		String[] rulePrefix = getRulePrefix();
 		for (int i = 0; i < rulePrefix.length; i++) {
-			Object parseResult = parser.getParseResult(rulePrefix.length - i);
+			Object parseResult = parser.getParseResult(rulePrefix.length - i - 1);
 			if (parseResult instanceof ASTElementNode) {
 				if (!((ASTElementNode)parseResult).getElement().getSymbol().equals(rulePrefix[i])) {
 					return false;

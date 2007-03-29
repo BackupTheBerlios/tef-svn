@@ -75,7 +75,8 @@ public class ParserInterface {
 		return fParser;
  	}
 	
-	public Parser getParser() {
+	public Parser getParser() throws SyntaxException, ParserBuildException, LexerException {		
+		createParser();
 		return fParser;
 	}
 	

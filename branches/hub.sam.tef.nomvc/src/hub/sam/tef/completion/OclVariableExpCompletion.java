@@ -10,7 +10,7 @@ public class OclVariableExpCompletion extends EmptyReductionCompletion {
 
 	@Override
 	public Rule getRule() {
-		return new Rule(new String[] { "VariableExo" });
+		return new Rule(new String[] { "VariableExp" });
 	}
 
 	public Collection<CompletionContextInformation> createProposals(ASTElementNode completionNode, CompletionContext context) {

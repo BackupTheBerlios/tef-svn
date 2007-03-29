@@ -1,6 +1,7 @@
 package hub.sam.tef.completion;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Vector;
 
 import hub.sam.tef.parse.ParserInterface;
@@ -16,22 +17,29 @@ public class CompletionEngine {
 		fParserInterface = parser;
 	}
 
-	public Collection<CompletionContextInformation> collectCompletionsFromCompletionComputer(ICompletionComputer completion, CompletionContext context) {
-		UpdateTreeSemantic semantic = new UpdateTreeSemantic(fParserInterface, context.getContent());		
-		fParserInterface.parse(context.getContent(), semantic);
-		CompletionParser parser = (CompletionParser)fParserInterface.getParser();
-		
-		String identifierPrefix = parser.removeLastIdentifier();
-		context.setIdentifierPrefix(identifierPrefix);
-		
-		boolean completionOk = completion.reduceParseStack(parser);
-		Collection<CompletionContextInformation> proposals = new Vector<CompletionContextInformation>();
-		if (completionOk) {
-			if (parser.hasValidStack()) {
-				proposals.addAll(completion.createProposals((ASTElementNode)parser.getParseResult(0), context));
+	public Collection<CompletionContextInformation> collectCompletionsFromCompletionComputer(ICompletionComputer completion, 
+			CompletionContext context) {
+		try {
+			UpdateTreeSemantic semantic = new UpdateTreeSemantic(fParserInterface, context.getContent());		
+					
+			CompletionParser parser = (CompletionParser)fParserInterface.getParser();
+			parser.setCompletionOffset(context.getContent().length());
+			fParserInterface.parse(context.getContent(), semantic);
+						
+			context.setIdentifierPrefix(parser.getIdentifierPrefix());
+			
+			boolean completionOk = completion.reduceParseStack(parser);
+			Collection<CompletionContextInformation> proposals = new Vector<CompletionContextInformation>();
+			if (completionOk) {
+				if (parser.hasValidStack()) {
+					proposals.addAll(completion.createProposals((ASTElementNode)parser.getParseResult(0), context));
+				}
 			}
+	
+			return proposals;
+		} catch (Exception ex) {
+			System.out.print("COMPLETION FAILED: " + ex.getMessage());
+			return Collections.EMPTY_LIST;
 		}
-
-		return proposals;
 	}
 }

@@ -14,10 +14,9 @@
  * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
  * MA 02111-1307 USA
  */
-package hub.sam.tef;
+package hub.sam.tef.completion;
 
-import hub.sam.tef.templates.adaptors.Proposal;
-
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContextInformation;
@@ -26,10 +25,12 @@ import org.eclipse.swt.graphics.Point;
 
 public class TEFCompletionProposal implements ICompletionProposal {
 	
-	private final Proposal fContextInformation;
-	private final int fDocumentOffset;	
 
-	public TEFCompletionProposal(final Proposal contextInformation, final int documentOffset, int cursorPosition) {
+	private final CompletionContextInformation fContextInformation;
+	private final int fDocumentOffset;	
+		
+
+	public TEFCompletionProposal(CompletionContextInformation contextInformation, int documentOffset) {
 		super();
 		fContextInformation = contextInformation;
 		fDocumentOffset = documentOffset;
@@ -38,13 +39,12 @@ public class TEFCompletionProposal implements ICompletionProposal {
 	/**
 	 * TODO a new content assist strategy
 	 */
-	public void apply(IDocument document) {
-		/*
-		TEFDocument tefDocument = (TEFDocument)document;							 	
-		ProposalVisitor visitor = new ProposalVisitor(fDocumentOffset, fContextInformation);
-		tefDocument.getModelDocument().getDocumentText().process(visitor, fDocumentOffset);
-		*/
-		//cursorPosition = 0;
+	public void apply(IDocument document) {	
+		try {
+			document.replace(fDocumentOffset, 0, fContextInformation.getContextDisplayString());
+		} catch (BadLocationException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	public String getAdditionalProposalInfo() { 

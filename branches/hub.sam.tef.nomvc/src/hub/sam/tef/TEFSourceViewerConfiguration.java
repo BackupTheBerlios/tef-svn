@@ -16,6 +16,8 @@
  */
 package hub.sam.tef;
 
+import hub.sam.tef.completion.TEFCompletionProcessor;
+
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
