@@ -8,9 +8,9 @@ import java.util.Collection;
 import java.util.Vector;
 
 public class EMFCompletions {
-	public static Collection<CompletionContextInformation> createProposals(String metaModelElement, CompletionContext context) {
+	public static Collection<TEFCompletionProposal> createProposals(String metaModelElement, CompletionContext context) {
 		String identifierPrefix = context.getIdentifierPrefix();
-		Collection<CompletionContextInformation> result = new Vector<CompletionContextInformation>();
+		Collection<TEFCompletionProposal> result = new Vector<TEFCompletionProposal>();
 		Collection<IModelElement> validElements = getValidElements(context.getDocumentModelProvider().getModel(), 
 				context.getDocumentModelProvider().getModel().getMetaElement(metaModelElement), 
 				context.getDocumentModelProvider().getTopLevelElement());
@@ -18,7 +18,8 @@ public class EMFCompletions {
 		for (IModelElement possibleElement: validElements) {
 			String name = (String)possibleElement.getValue("name");
 			if (name != null && name.startsWith(identifierPrefix) && ! name.equals(identifierPrefix)) {
-				result.add(new CompletionContextInformation(name.substring(identifierPrefix.length(), name.length()), name));
+				result.add(new TEFCompletionProposal(name, 
+						name.substring(identifierPrefix.length(), name.length()), context.getCompletionOffset()));
 			}
 		}
 		return result;

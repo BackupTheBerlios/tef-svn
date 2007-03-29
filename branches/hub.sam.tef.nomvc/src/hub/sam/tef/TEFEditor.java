@@ -84,15 +84,4 @@ public abstract class TEFEditor extends TextEditor {
 		return new TextOperationAction(resourceBundle, "ContentAssistProposal", 
 				this, ISourceViewer.CONTENTASSIST_PROPOSALS);
 	}
-	
-	
-	/**
-	 * Overidden to also change the selection on simple cursor movements. This
-	 * is done, because occurence marker are reacting to selection changes.
-	 */
-	@Override
-	protected void handleCursorPositionChanged() {
-		selectAndReveal(getSourceViewer().getTextWidget().getCaretOffset(), 0);
-		super.handleCursorPositionChanged();
-	}			
 }

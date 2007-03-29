@@ -68,11 +68,7 @@ public class TEFCompletionProcessor implements IContentAssistProcessor {
 		
 		Collection<ICompletionProposal> result = new Vector<ICompletionProposal>();
 		for (ICompletionComputer computer: computers) {
-			Collection<CompletionContextInformation> completions =
-					engine.collectCompletionsFromCompletionComputer(computer, context);
-			for (CompletionContextInformation completion: completions) {
-				result.add(new TEFCompletionProposal(completion, documentOffset));
-			}
+			result.addAll(engine.collectCompletionsFromCompletionComputer(computer, context));			
 		}
 				
 		return result.toArray(new ICompletionProposal[] {}); 

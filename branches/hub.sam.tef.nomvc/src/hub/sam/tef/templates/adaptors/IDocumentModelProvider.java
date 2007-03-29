@@ -21,4 +21,6 @@ public interface IDocumentModelProvider {
 	public String getText();
 	
 	public void addModelElementOccurence(IModelElement element, Position occurence);
+	
+	public void resetModelElementOccurences();
 }

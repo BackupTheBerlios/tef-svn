@@ -13,7 +13,7 @@ public class OclVariableExpCompletion extends EmptyReductionCompletion {
 		return new Rule(new String[] { "VariableExp" });
 	}
 
-	public Collection<CompletionContextInformation> createProposals(ASTElementNode completionNode, CompletionContext context) {
+	public Collection<TEFCompletionProposal> createProposals(ASTElementNode completionNode, CompletionContext context) {
 		return EMFCompletions.createProposals("Variable", context);
 	}
 }

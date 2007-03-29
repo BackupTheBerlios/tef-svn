@@ -68,6 +68,10 @@ public class DocumentModel implements IDisposable, IDocumentModelProvider, IAnno
 
 	public void addModelElementOccurence(IModelElement element, Position occurence) {
 		fOccurences.put(element, occurence);		
+	}	
+
+	public void resetModelElementOccurences() {
+		fOccurences.clear();
 	}
 
 	public ASTElementNode getTreeRepresentation() {

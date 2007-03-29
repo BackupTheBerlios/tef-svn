@@ -38,4 +38,8 @@ public class CompletionContext {
 	}	
 	
 	
+	public int getCompletionOffset() {
+		return fContent.length();
+	}
+	
 }

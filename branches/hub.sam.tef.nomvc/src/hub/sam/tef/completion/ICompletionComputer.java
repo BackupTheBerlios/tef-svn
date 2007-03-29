@@ -22,5 +22,5 @@ public interface ICompletionComputer {
 	 * computer's {@link #reduceParseStack(CompletionParser)}.
 	 * @param context TODO
 	 */
-	public Collection<CompletionContextInformation> createProposals(ASTElementNode completionNode, CompletionContext context);
+	public Collection<TEFCompletionProposal> createProposals(ASTElementNode completionNode, CompletionContext context);
 }

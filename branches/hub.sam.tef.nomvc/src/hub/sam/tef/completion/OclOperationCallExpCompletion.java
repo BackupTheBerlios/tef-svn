@@ -17,7 +17,7 @@ public class OclOperationCallExpCompletion extends SingleReductionCompletion {
 		return new String[] { "OCLExpression", "'.'" };
 	}
 
-	public Collection<CompletionContextInformation> createProposals(ASTElementNode completionNode, CompletionContext context) {
+	public Collection<TEFCompletionProposal> createProposals(ASTElementNode completionNode, CompletionContext context) {
 		return EMFCompletions.createProposals("EOperation", context);
 	}
 

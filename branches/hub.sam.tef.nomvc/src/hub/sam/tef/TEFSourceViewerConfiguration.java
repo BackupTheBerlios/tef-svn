@@ -30,8 +30,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 
 public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {		
-	private final ContentAssistant fChangeContentAssistant;	
-	private final ContentAssistant fInsertContentAssistant;
+	private final ContentAssistant fChangeContentAssistant;		
 	private final ITextDoubleClickStrategy fDoubleClickStrategy;	
 	//private final IAutoEditStrategy fAutoEditStrategy;
 			
@@ -39,9 +38,6 @@ public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 		super();
 		this.fChangeContentAssistant = new ContentAssistant();		
 		fChangeContentAssistant.setContentAssistProcessor(
-				new TEFCompletionProcessor(), IDocument.DEFAULT_CONTENT_TYPE);
-		this.fInsertContentAssistant = new ContentAssistant();
-		fInsertContentAssistant.setContentAssistProcessor(
 				new TEFCompletionProcessor(), IDocument.DEFAULT_CONTENT_TYPE);
 		
 		this.fDoubleClickStrategy = new TEFDoubleClickStrategy();
@@ -52,13 +48,10 @@ public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 		return fChangeContentAssistant;
 	}
 		
-	public IContentAssistant getInsertContentAssistant(ISourceViewer sourceViewer) {		
-		return fInsertContentAssistant;
-	}
-
 	@Override
 	public ITextDoubleClickStrategy getDoubleClickStrategy(ISourceViewer sourceViewer, String contentType) {
-		return fDoubleClickStrategy;
+		//return fDoubleClickStrategy;
+		return null;
 	}
 	
 	@Override

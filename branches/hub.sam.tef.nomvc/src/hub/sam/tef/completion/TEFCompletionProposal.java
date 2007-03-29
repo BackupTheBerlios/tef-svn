@@ -26,22 +26,31 @@ import org.eclipse.swt.graphics.Point;
 public class TEFCompletionProposal implements ICompletionProposal {
 	
 
-	private final CompletionContextInformation fContextInformation;
-	private final int fDocumentOffset;	
+	private final IContextInformation fContextInformation;
+	private final int fDocumentOffset;
+	private final String fDocumentText;
 		
-
-	public TEFCompletionProposal(CompletionContextInformation contextInformation, int documentOffset) {
+	public TEFCompletionProposal(final String displayText, String documentText, int documentOffset) {
 		super();
-		fContextInformation = contextInformation;
+		this.fDocumentText = documentText;
+		fContextInformation = new IContextInformation() {
+			public String getContextDisplayString() {
+				return displayText;
+			}
+
+			public Image getImage() {			
+				return null;
+			}
+			public String getInformationDisplayString() {
+				return displayText;
+			}			
+		};
 		fDocumentOffset = documentOffset;
 	}
-	
-	/**
-	 * TODO a new content assist strategy
-	 */
+
 	public void apply(IDocument document) {	
 		try {
-			document.replace(fDocumentOffset, 0, fContextInformation.getContextDisplayString());
+			document.replace(fDocumentOffset, 0, fDocumentText);
 		} catch (BadLocationException ex) {
 			throw new RuntimeException(ex);
 		}
@@ -64,6 +73,6 @@ public class TEFCompletionProposal implements ICompletionProposal {
 	}
 
 	public Point getSelection(IDocument document) { 
-		return null;
+		return new Point(fDocumentOffset + fDocumentText.length(), 0);
 	}
 }
