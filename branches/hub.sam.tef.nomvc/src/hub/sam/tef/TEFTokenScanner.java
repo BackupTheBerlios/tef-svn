@@ -44,10 +44,7 @@ public class TEFTokenScanner extends RuleBasedScanner implements ITokenScanner {
 		visited.add(template);
 		ISyntaxHighlightProvider provider = template.getAdapter(ISyntaxHighlightProvider.class);
 		if (provider != null) {
-			IRule rule = provider.getHighlightRule();
-			if (rule != null) {
-				rules.add(rule);
-			}
+			rules.addAll(provider.getHighlightRules());
 		}
 		for (Template nestedTemplate: template.getNestedTemplates()) {
 			if (!visited.contains(nestedTemplate)) {

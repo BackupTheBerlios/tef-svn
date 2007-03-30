@@ -1,6 +1,7 @@
 package hub.sam.tef.parse;
 
 import hub.sam.tef.templates.ElementTemplate;
+import hub.sam.tef.templates.EmtpyElementTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 
@@ -47,14 +48,14 @@ public class ParserInterface {
 	private void collectAllRules(Template template, Collection<String> visitedNonTerminals) {
 		ISyntaxProvider syntaxProvider = template.getAdapter(ISyntaxProvider.class);
 		if (syntaxProvider != null && ! visitedNonTerminals.contains(syntaxProvider.getNonTerminal())) {
+			if (template instanceof ElementTemplate || template instanceof EmtpyElementTemplate) {
+				visitedNonTerminals.add(syntaxProvider.getNonTerminal());
+			}
 			if (syntaxProvider.getRules() != null) {
 				for (String[] rule: syntaxProvider.getRules()) {
 					templatesForNonTerminals.put(rule[0], template);
 					fSyntax.addRule(new Rule(rule));
 				}
-			}
-			if (template instanceof ElementTemplate) {
-				visitedNonTerminals.add(syntaxProvider.getNonTerminal());
 			}
 			for(Template nestedTemplate: template.getNestedTemplates()) {
 				collectAllRules(nestedTemplate, visitedNonTerminals);

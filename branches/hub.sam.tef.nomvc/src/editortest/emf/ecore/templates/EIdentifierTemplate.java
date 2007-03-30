@@ -23,8 +23,21 @@ import hub.sam.tef.templates.ValueTemplate;
 
 public class EIdentifierTemplate extends ElementTemplate {
 	
+	private final String fSymbol;
+	
 	public EIdentifierTemplate(Template template) {
 		super(template, template.getModel().getMetaElement("EModelElement"));			
+		fSymbol = null;
+	}
+		
+	@Override
+	protected String getAlternativeSymbol() {
+		return fSymbol;
+	}
+	
+	public EIdentifierTemplate(Template template, String metaModelElement, String symbolName) {
+		super(template, template.getModel().getMetaElement(metaModelElement));
+		this.fSymbol = symbolName;
 	}
 
 	@Override

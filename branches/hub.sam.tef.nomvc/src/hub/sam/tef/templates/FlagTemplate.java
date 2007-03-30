@@ -16,6 +16,9 @@
  */
 package hub.sam.tef.templates;
 
+import java.util.Collection;
+import java.util.Vector;
+
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
@@ -93,7 +96,8 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 	}
 	
 	class SyntaxHighlightProvider implements ISyntaxHighlightProvider {
-		public IRule getHighlightRule() {
+		public Collection<IRule> getHighlightRules() {
+			Collection<IRule> result = new Vector<IRule>();
 			if (fFlagKeyword.matches("[a-zA-Z]*")) {
 				IToken token = new Token(
 						new TextAttribute(new Color(Display.getCurrent(), new RGB(120,120,0)), null, SWT.BOLD));
@@ -107,10 +111,9 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 					}				
 				});
 				rule.addWord(fFlagKeyword, token);
-				return rule;
-			} else {
-				return null;
+				result.add(rule);
 			}
+			return result;
 		}	
 	}
 	

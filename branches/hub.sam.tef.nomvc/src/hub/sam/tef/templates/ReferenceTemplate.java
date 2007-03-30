@@ -33,11 +33,20 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 
 	private final IMetaModelElement fTypeModel;
 	private final ElementTemplate fIdentifierTemplate;
+	private final String fSymbol;
+	
+	public ReferenceTemplate(Template template, IMetaModelElement typeModel, String symbol) {
+		super(template, typeModel);
+		this.fTypeModel = typeModel;		
+		this.fIdentifierTemplate = getElementTemplate();
+		this.fSymbol = symbol;
+	}
 	
 	public ReferenceTemplate(Template template, IMetaModelElement typeModel) {
 		super(template, typeModel);
 		this.fTypeModel = typeModel;		
 		this.fIdentifierTemplate = getElementTemplate();
+		this.fSymbol = null;
 	}	
 	
 	public IMetaModelElement getTypeModel() {
@@ -77,7 +86,11 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		}
 		
 		public String getNonTerminal() {
-			return super.getNonTerminal() + "_ref";
+			if (fSymbol == null) {
+				return super.getNonTerminal() + "_ref";
+			} else {
+				return fSymbol;
+			}
 		}
 
 		public String[][] getRules() {
@@ -116,4 +129,13 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 			fIdentifierTemplate.getAdapter(ISemanticProvider.class).check(representation.getChildNodes().get(0), context);
 		}		
 	}
+	
+	@Override
+	protected Object getId() {
+		if (getAdapter(ISyntaxProvider.class) != null) {
+			return getAdapter(ISyntaxProvider.class).getNonTerminal();
+		} else {
+			return super.getId();
+		}
+	}	
 }

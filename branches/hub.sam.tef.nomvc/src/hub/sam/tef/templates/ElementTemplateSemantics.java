@@ -38,9 +38,14 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		this.fModel = elementTemplate.getModel();
 		this.fMetaModelElement = elementTemplate.getMetaElement();
 	}	
-
+	
 	public String getNonTerminal() {
-		return fElementTemplate.getType().toString();
+		String alternativeSymbol = fElementTemplate.getAlternativeSymbol();
+		if (alternativeSymbol != null) {
+			return alternativeSymbol;
+		} else {
+			return fElementTemplate.getType().toString();
+		}
 	}
 	
 	/**

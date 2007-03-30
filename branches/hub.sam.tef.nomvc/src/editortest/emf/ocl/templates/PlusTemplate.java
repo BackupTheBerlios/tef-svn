@@ -1,5 +1,8 @@
 package editortest.emf.ocl.templates;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.ElementTemplateSemantics;
@@ -12,9 +15,9 @@ import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import editortest.emf.ecore.templates.EIdentifierTemplate;
 
-public class OperationCallExp1Template extends ElementTemplate {
+public class PlusTemplate extends ElementTemplate {
 
-	public OperationCallExp1Template(Template template) {
+	public PlusTemplate(Template template) {
 		super(template, template.getModel().getMetaElement("OperationCallExp"));	
 	}
 
@@ -24,31 +27,45 @@ public class OperationCallExp1Template extends ElementTemplate {
 				new SingleValueTemplate<IModelElement>(this, "source") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
-						return new OclExpressionTemplate(this);
-					}				
-				},			
-				new TerminalTemplate(this, "->"),
-				new SingleValueTemplate<IModelElement>(this, "referredOperation") {
-					@Override
-					protected ValueTemplate<IModelElement> createValueTemplate() {						
-						return new ReferenceTemplate(this, getModel().getMetaElement("EOperation")) {
-							@Override
-							protected ElementTemplate getElementTemplate() {
-								return new EIdentifierTemplate(this);
-							}						
-						};						
-					}					
-				},
-				new TerminalTemplate(this, "("),
-				new SequenceTemplate<IModelElement>(this, "argument", ",", false) {				
-					@Override
-					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return ExpTemplate.getExpTemplate(this);
 					}				
 				},
-				new TerminalTemplate(this, ")")
+				new SingleValueTemplate<IModelElement>(this, "referredOperation") {
+					@Override
+					protected ValueTemplate<IModelElement> createValueTemplate() {						
+						return new ReferenceTemplate(this, getModel().getMetaElement("EOperation"), "plusOps_ref") {
+							@Override
+							protected ElementTemplate getElementTemplate() {
+								return new OperandIdentifierTemplate(this, "plusOps", 
+										operationNames.toArray(new String[] {}));
+							}						
+						};						
+					}					
+				},							 							
+				new SingleValueTemplate<IModelElement>(this, "argument") {				
+					@Override
+					protected ValueTemplate<IModelElement> createValueTemplate() {
+						return new TermTemplate(this);
+					}				
+				}				
 		};
 	}	
+	
+	private static final Collection<String> operationNames = Arrays.asList(new String[] {
+			"+", "-", "or"
+	});
+	
+	@Override
+	public boolean isTemplateFor(IModelElement model) {
+		IModelElement operation = (IModelElement)model.getValue("referredOperation");
+		if (operation != null) {
+			String name = (String)operation.getValue("name");
+			if (name != null && operationNames.contains(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
@@ -66,7 +83,7 @@ public class OperationCallExp1Template extends ElementTemplate {
 		
 		@Override
 		public String getNonTerminal() {	
-			return super.getNonTerminal() + "1";
+			return "Plus";
 		}				
 	}
 }

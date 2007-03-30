@@ -12,22 +12,15 @@ import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import editortest.emf.ecore.templates.EIdentifierTemplate;
 
-public class OperationCallExp1Template extends ElementTemplate {
+public class OperationCallExp3Template extends ElementTemplate {
 
-	public OperationCallExp1Template(Template template) {
+	public OperationCallExp3Template(Template template) {
 		super(template, template.getModel().getMetaElement("OperationCallExp"));	
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-				new SingleValueTemplate<IModelElement>(this, "source") {
-					@Override
-					protected ValueTemplate<IModelElement> createValueTemplate() {
-						return new OclExpressionTemplate(this);
-					}				
-				},			
-				new TerminalTemplate(this, "->"),
 				new SingleValueTemplate<IModelElement>(this, "referredOperation") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {						
@@ -66,7 +59,8 @@ public class OperationCallExp1Template extends ElementTemplate {
 		
 		@Override
 		public String getNonTerminal() {	
-			return super.getNonTerminal() + "1";
+			return super.getNonTerminal() + "3";
 		}				
 	}
+
 }

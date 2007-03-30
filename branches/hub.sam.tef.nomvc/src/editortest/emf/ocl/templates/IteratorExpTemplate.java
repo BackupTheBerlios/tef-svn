@@ -54,7 +54,7 @@ public class IteratorExpTemplate extends ElementTemplate {
 			new SingleValueTemplate<IModelElement>(this, "body") {
 				@Override
 				protected ValueTemplate<IModelElement> createValueTemplate() {
-					return new OclExpressionTemplate(this);
+					return ExpTemplate.getExpTemplate(this);
 				}				
 			},
 			new WhitespaceTemplate(this, ExpressionLayout.EMTPY),

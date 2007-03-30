@@ -49,7 +49,13 @@ public abstract class PropertyTemplate<ModelType> extends Template {
 		}
 		return fValueTemplate;
 	}
+		
 	
+	@Override
+	protected Object getId() {	
+		return ((String)getParentTemplate().getId()) + super.getId();
+	}
+
 	@Override
 	public final Template[] getNestedTemplates() {	
 		return new Template[] { getValueTemplate() };

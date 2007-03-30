@@ -20,7 +20,7 @@ public class ConstraintTemplate  extends ElementTemplate {
 				new SingleValueTemplate<IModelElement>(this, "body") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
-						return new OclExpressionTemplate(this);
+						return ExpTemplate.getExpTemplate(this);
 					}				
 				}
 		};

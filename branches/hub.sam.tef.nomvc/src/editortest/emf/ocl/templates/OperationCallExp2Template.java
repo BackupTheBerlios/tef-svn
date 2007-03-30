@@ -43,7 +43,7 @@ public class OperationCallExp2Template extends ElementTemplate {
 				new SequenceTemplate<IModelElement>(this, "argument", ",", false) {				
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
-						return new OclExpressionTemplate(this);
+						return ExpTemplate.getExpTemplate(this);
 					}				
 				},
 				new TerminalTemplate(this, ")")

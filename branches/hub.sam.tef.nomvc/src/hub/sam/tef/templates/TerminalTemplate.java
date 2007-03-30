@@ -16,6 +16,9 @@
  */
 package hub.sam.tef.templates;
 
+import java.util.Collection;
+import java.util.Vector;
+
 import hub.sam.tef.templates.adaptors.ISyntaxHighlightProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 
@@ -86,7 +89,8 @@ public class TerminalTemplate extends Template implements ISyntaxProvider, ISynt
 		return new String[][] {};
 	}
 
-	public IRule getHighlightRule() {
+	public Collection<IRule> getHighlightRules() {
+		Collection<IRule> result = new Vector<IRule>();		
 		if (fTerminalText.matches("[a-zA-Z]*")) {
 			IToken token = new Token(
 					new TextAttribute(new Color(Display.getCurrent(), new RGB(120,120,0)), null, SWT.BOLD));
@@ -100,10 +104,9 @@ public class TerminalTemplate extends Template implements ISyntaxProvider, ISynt
 				}				
 			});
 			rule.addWord(fTerminalText, token);
-			return rule;
-		} else {
-			return null;
+			result.add(rule);
 		}
+		return result;
 	}
 
 	@Override

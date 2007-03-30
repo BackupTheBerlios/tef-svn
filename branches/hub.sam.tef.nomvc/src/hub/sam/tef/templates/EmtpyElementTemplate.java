@@ -1,19 +1,3 @@
-/*
- * Textual Editing Framework (TEF)
- * Copyright (C) 2006 Markus Scheidgen
- * 
- * This program is free software; you can redistribute it and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation; either 
- * version 2 of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
- * See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with this program; 
- * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
- * MA 02111-1307 USA
- */
 package hub.sam.tef.templates;
 
 import hub.sam.tef.models.ICollection;
@@ -23,42 +7,31 @@ import hub.sam.tef.parse.ISemanticProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.tef.templates.layout.AbstractLayoutManager;
+import hub.sam.tef.templates.layout.WhitespaceTemplate;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 import hub.sam.tef.treerepresentation.ASTNode;
 import hub.sam.tef.treerepresentation.ModelASTElement;
 import hub.sam.tef.treerepresentation.SemanticsContext;
 
-
-/**
- * This is a ValueTemplate that represents different types of 
- * values.
- */
-public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
-	
-	private ValueTemplate<IModelElement>[] fAlternativeTemplates = null;;
+public abstract class EmtpyElementTemplate extends ValueTemplate<IModelElement> {
+	private final Template[] fTemplates;
 	private final IMetaModelElement fMetaModelElement;
 	
-	public ChoiceTemplate(Template template, IMetaModelElement metaModelElement) {
+	public EmtpyElementTemplate(Template template, IMetaModelElement metaModelElement) {
 		super(template, metaModelElement);
-		this.fMetaModelElement = metaModelElement;		
-	}
-	
-	public ValueTemplate<IModelElement>[] getAlternativeTemplates() {
-		if (fAlternativeTemplates == null) {
-			fAlternativeTemplates = createAlternativeTemplates();
-		}
-		return fAlternativeTemplates;
+		this.fMetaModelElement = metaModelElement;
+		this.fTemplates = createTemplates();
 	}
 
 	/**
 	 * @return A set of value templates. These are the templates for all
 	 *         possible values for this template.
 	 */
-	public abstract ValueTemplate<IModelElement>[] createAlternativeTemplates();
+	public abstract Template[] createTemplates();
 	
 	@Override
 	public Template[] getNestedTemplates() {
-		return getAlternativeTemplates();
+		return fTemplates;
 	}
 	
 	/**
@@ -68,12 +41,12 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 	@Override
 	public boolean isTemplateFor(IModelElement model) {
 		if (model instanceof IModelElement) {
-			for (ValueTemplate choice: getAlternativeTemplates()) {
-				if (choice.isTemplateFor(model)) {
-					return true;
+			for (Template subTemplate: fTemplates) {
+				if (subTemplate instanceof ValueTemplate) {
 				}
+				return ((ValueTemplate)subTemplate).isTemplateFor(model);
 			}
-			return false;
+			throw new RuntimeException("assert");
 		} else {
 			return super.isTemplateFor(model);
 		}
@@ -118,13 +91,14 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 		}
 
 		public String[][] getRules() {
-			String[][] result = new String[getAlternativeTemplates().length][];
-			int i = 0;
-			for(Template choice: getAlternativeTemplates()) {
-				result[i++] = new String[] { getNonTerminal(), 
-									choice.getAdapter(ISyntaxProvider.class).getNonTerminal() };
+			
+			String[] result = new String[fTemplates.length + 1];
+			result[0] = getNonTerminal();
+			int i = 1;
+			for(Template subTemplate: fTemplates) {
+				result[i++] = subTemplate.getAdapter(ISyntaxProvider.class).getNonTerminal();
 			}
-			return result;					
+			return new String[][] { result };					
 		}			
 	}
 	
@@ -133,18 +107,21 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 			if (model instanceof ICollection) {
 				model = ((ICollection)model).iterator().next();
 			}
-			ModelASTElement contents = new ModelASTElement(ChoiceTemplate.this, (IModelElement)model);
+			ModelASTElement contents = new ModelASTElement(EmtpyElementTemplate.this, (IModelElement)model);
 			ASTElementNode treeRepresentation = new ASTElementNode(contents);
-
-			for (ValueTemplate alternative: getAlternativeTemplates()) {
-				if (alternative.isTemplateFor(model)) {
-					treeRepresentation.addNodeObject(alternative.getAdapter(IASTProvider.class).
+			for (Template subTemplate: fTemplates) {
+				if (subTemplate instanceof ValueTemplate) {
+					treeRepresentation.addNodeObject(subTemplate.getAdapter(IASTProvider.class).
 							createTreeRepresentation(owner, notused, model, true, layout));
-																			
-					return treeRepresentation;
+				} else if (subTemplate instanceof TerminalTemplate) {
+					treeRepresentation.addNodeObject(((TerminalTemplate)subTemplate).getTerminalText());
+				} else if (subTemplate instanceof WhitespaceTemplate) {
+					treeRepresentation.addNodeObject(((WhitespaceTemplate)subTemplate).getSpace(layout));
+				} else {
+					throw new RuntimeException("assert");
 				}
 			}
-			throw new RuntimeException("assert");
+			return treeRepresentation;
 		}
 
 		public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {			
@@ -164,7 +141,6 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 	}
 		
 	class SemanticProvider implements ISemanticProvider {
-		
 		public void check(ASTElementNode representation, SemanticsContext context) {		
 			ASTElementNode nextNode = ((ASTElementNode)representation).getChildNodes().get(0);
 			nextNode.getElement().getTemplate().getAdapter(ISemanticProvider.class).

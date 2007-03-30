@@ -115,6 +115,10 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		return mock;
 	}
 	
+	protected String getAlternativeSymbol() {
+		return null;
+	}
+	
 	public <T> T getAdapter(Class<T> adapter) {
 		if (ISyntaxProvider.class == adapter || IElementSyntaxProvider.class == adapter) {
 			return (T) new ElementTemplateSemantics(this);
@@ -135,6 +139,12 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 
 	@Override
 	protected Object getId() {
-		return fMetaModel;
+		if (getAlternativeSymbol() != null) {			
+			return getAlternativeSymbol();
+		} else if (getAdapter(ISyntaxProvider.class) != null) {
+			return getAdapter(ISyntaxProvider.class).getNonTerminal();
+		} else {
+			return getAlternativeSymbol();
+		}
 	}	
 }

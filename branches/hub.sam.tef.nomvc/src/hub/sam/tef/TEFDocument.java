@@ -72,7 +72,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
  * a concrete editor instance.
  */
 public abstract class TEFDocument extends Document implements ILanguageModelProvider {	
-	private Changes changes = new Changes();
+	//private Changes changes = new Changes();
 	private Template topLevelTemplate = null;
 	
 	private DocumentModel documentModel = null;		
@@ -96,14 +96,16 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 	}
 	
 	private synchronized final void eclipseReplace(int pos, int length, String text) throws BadLocationException {
-		changes.addChange(new Change(pos, length, text));
+		//changes.addChange(new Change(pos, length, text));
 		changed = true;
 		super.replace(pos, length, text);
 	}
 	
+	/*
 	public Changes getChanges() {
 		return this.changes;
 	}
+	*/
 	
 	public IDocumentModelProvider getModelProvider() {
 		return documentModel;
