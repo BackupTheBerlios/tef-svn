@@ -1,5 +1,8 @@
 package hub.sam.tef.parse;
 
+import fri.patterns.interpreter.parsergenerator.Semantic;
+import fri.patterns.interpreter.parsergenerator.Token.Range;
+import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.ErrorAnnotation;
 import hub.sam.tef.TEFDocument;
 import hub.sam.tef.models.IModelElement;
@@ -9,6 +12,7 @@ import hub.sam.tef.treerepresentation.ASTElementNode;
 import hub.sam.tef.treerepresentation.SemanticsContext;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.text.IDocument;
@@ -32,23 +36,40 @@ public class ParserBasedReconcilingStrategy implements IReconcilingStrategy {
 
 	public void reconcile()  {				
 		if (fDocument.needsReconciling()) {
+			System.out.println("reconciling: parsing");
+			getParserInterface().parse(fDocument.get(), new Semantic() {
+
+				public Object doSemantic(Rule rule, List parseResults, List<Range> resultRanges) {				
+					return null;
+				}
+
+				public Object doSemanticForErrorRecovery(String recoverSymbol) {
+					return null;
+				}
+				
+			});			
 			try {
 				String content = fDocument.get();
-				UpdateTreeSemantic semantic = new UpdateTreeSemantic(getParserInterface(), content);	
+				UpdateTreeSemantic semantic = new UpdateTreeSemantic(getParserInterface(), content);
+				System.out.println("reconciling: parsing 2 ");
 				if (getParserInterface().parse(content, semantic)) {
+					System.out.println("reconciling: parsing 3 ");
 					fDocument.getModelProvider().resetModelElementOccurences();
 					// the current content can be parsed (contains no syntax errors)																										
 					final ASTElementNode newAST = semantic.getCurrentResult();
-					// build a new model							
+					// build a new model
+					System.out.println("reconciling: composite");
 					final IModelElement newModel = (IModelElement)fDocument.getTopLevelTemplate().getAdapter(
 							IASTProvider.class).createCompositeModel(null, null, newAST, true);
 					
 					final SemanticsContext semanticContext = new SemanticsContext(fDocument.getModelProvider(), fDocument,
 							newModel);
 					
+					System.out.println("reconciling: reference");
 					fDocument.getTopLevelTemplate().getAdapter(
 							IASTProvider.class).createReferenceModel(null, null, newAST, true, semanticContext);
 					
+					System.out.println("reconciling: check");
 					// check the model and create error annotations				
 					newAST.getElement().getTemplate().getAdapter(ISemanticProvider.class).
 							check(newAST, semanticContext);								

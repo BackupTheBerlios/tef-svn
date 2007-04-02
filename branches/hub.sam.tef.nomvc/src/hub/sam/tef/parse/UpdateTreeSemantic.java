@@ -46,28 +46,32 @@ public class UpdateTreeSemantic implements Semantic {
 		return false;
 	}
 	
-	public Object doSemantic(Rule rule, List parseResults, List<Range> resultRanges) {
-		int i = 0;
+	public Object doSemantic(Rule rule, List parseResults, List<Range> resultRanges) {		
 		Template template = fParserInterface.getTemplateForNonTerminal(rule.getNonterminal()); 
 		ASTElementNode result = new ASTElementNode(new TextASTElement(rule, template));
 				
-		boolean first = true;
-		int lastValidResult = 0;
-		for(Object parseResult: parseResults) {
-			if (!first) {			
-				if (isValidParseResult(parseResults.get(i), resultRanges.get(i))) {						
-					int lastOffset = resultRanges.get(lastValidResult).end.offset;
-					int actualOffset = resultRanges.get(i).start.offset;
-					String whiteSpace = stringContent.substring(lastOffset, actualOffset);
-					result.addNodeObject(whiteSpace);					
+		int i = 0;		
+		for(Object parseResult: parseResults) {		
+			if (i > 0) {
+				Object currentParseResult = parseResults.get(i);
+				int start = resultRanges.get(i-1).end.offset;
+				int end = 0;
+				if (currentParseResult instanceof ASTNode) {
+					end = resultRanges.get(i).end.offset - ((ASTNode)currentParseResult).getLength();	
+				} else {
+					end = resultRanges.get(i).end.offset - ((String)currentParseResult).length();
 				}
-			} else {
-				first = false;		
-			}
-			
-			if (isValidParseResult(parseResults.get(i), resultRanges.get(i))) {
-				lastValidResult = i;				
-			}
+				
+				
+				if (start != end) {
+					String whiteSpace = stringContent.substring(start, end);
+					//if (!whiteSpace.trim().equals("")) {
+					//	throw new RuntimeException("assert");
+					//}
+					result.addNodeObject(whiteSpace);
+				}
+				
+			}		
 			
 			if (template instanceof ElementTemplate) {
 				String property = ((ElementTemplate)template).getAdapter(IElementSyntaxProvider.class).

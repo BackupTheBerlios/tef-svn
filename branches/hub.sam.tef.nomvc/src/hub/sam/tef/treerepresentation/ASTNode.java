@@ -42,7 +42,7 @@ public abstract class ASTNode extends AbstractTree<ASTNode, IASTElement> {
 	
 	public abstract int getLength();
 	
-	public int getOffsetWithInParent(int offset) {
+	public final int getOffsetWithInParent(int offset) {
 		if (previous == null) {
 			return offset;
 		} else {
@@ -50,7 +50,7 @@ public abstract class ASTNode extends AbstractTree<ASTNode, IASTElement> {
 		}
 	}
 	
-	public int getAbsoluteOffset(int offset) {
+	public final int getAbsoluteOffset(int offset) {
 		if (parent == null) {
 			return offset;
 		} else {

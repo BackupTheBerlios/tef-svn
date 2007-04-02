@@ -15,7 +15,7 @@ public class OclExpressionTemplate extends ChoiceTemplate {
 	public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
 		return new ValueTemplate[] {
 				new CallExpTemplate(this),
-				new VariableExpTemplate(this)
+				new VariableExpTemplate(this),				
 		};
 	}
 }

@@ -17,6 +17,7 @@ public class FactorTemplate extends ChoiceTemplate {
 	public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
 		return new ValueTemplate[] {
 				new NotTemplate(this),
+				new LetExpTemplate(this),
 				new OclExpressionTemplate(this),
 				new EmtpyElementTemplate(this, this.getModel().getMetaElement("OCLExpression")) {
 					@Override

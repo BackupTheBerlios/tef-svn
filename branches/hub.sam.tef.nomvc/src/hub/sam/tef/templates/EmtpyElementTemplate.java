@@ -42,9 +42,9 @@ public abstract class EmtpyElementTemplate extends ValueTemplate<IModelElement> 
 	public boolean isTemplateFor(IModelElement model) {
 		if (model instanceof IModelElement) {
 			for (Template subTemplate: fTemplates) {
-				if (subTemplate instanceof ValueTemplate) {
+				if (subTemplate instanceof ValueTemplate) {				
+					return ((ValueTemplate)subTemplate).isTemplateFor(model);
 				}
-				return ((ValueTemplate)subTemplate).isTemplateFor(model);
 			}
 			throw new RuntimeException("assert");
 		} else {

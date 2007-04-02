@@ -40,6 +40,9 @@ public class ASTElementNode extends ASTNode {
 	}
 	
 	public void addNodeObject(Object key, Object content) {
+		if (content == null) {
+			return;
+		}
 		ASTNode treeRepresentationContent = createTreeRepresentationContent(content);		
 		
 		// add conent
@@ -68,7 +71,7 @@ public class ASTElementNode extends ASTNode {
 		
 		// add string content		
 		addContent(treeRepresentationContent.getContent());
-		checkConsistency();
+		//checkConsistency();
 	}
 
 	public void addNodeObject(Object content) {
