@@ -1,6 +1,6 @@
 package hub.sam.tef;
 
-import hub.sam.tef.syntax.ParserBasedReconcilingStrategy;
+import hub.sam.tef.syntax.TEFReconcilingStrategy;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.reconciler.AbstractReconciler;
@@ -16,7 +16,7 @@ public class TEFReconciler extends AbstractReconciler {
 	public TEFReconciler(final ISourceViewer viewer) {
 		super();
 		fViewer = viewer;
-		fParserBasedReconcilingStrategy = new ParserBasedReconcilingStrategy(viewer);
+		fParserBasedReconcilingStrategy = new TEFReconcilingStrategy(viewer);
 	}
 
 	@Override

@@ -25,11 +25,11 @@ import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.PlatformUI;
 
-public class ParserBasedReconcilingStrategy implements IReconcilingStrategy {	
+public class TEFReconcilingStrategy implements IReconcilingStrategy {	
 	private TEFDocument fDocument;	
 	private ParserInterface fParserInterface;
 	
-	public ParserBasedReconcilingStrategy(final ISourceViewer viewer) {
+	public TEFReconcilingStrategy(final ISourceViewer viewer) {
 		super();		
 		fDocument = (TEFDocument)viewer.getDocument();
 	}
