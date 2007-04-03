@@ -1,5 +1,7 @@
 package editortest.emf.ocl.templates;
 
+import org.eclipse.emf.ocl.expressions.VariableExp;
+
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.ReferenceTemplate;
@@ -15,18 +17,18 @@ public class VariableExpTemplate extends ElementTemplate {
 
 	@Override
 	public Template[] createTemplates() {
-		return new Template[] {
-				new SingleValueTemplate<IModelElement>(this, "referredVariable") {
+		return new Template[] { new SingleValueTemplate<IModelElement>(this,
+				"referredVariable") {
+			@Override
+			protected ValueTemplate<IModelElement> createValueTemplate() {
+				return new ReferenceTemplate(this, getModel().getMetaElement(
+						"Variable")) {
 					@Override
-					protected ValueTemplate<IModelElement> createValueTemplate() {						
-						return new ReferenceTemplate(this, getModel().getMetaElement("Variable")) {
-							@Override
-							protected ElementTemplate getElementTemplate() {
-								return new VariableTemplate(this);
-							}						
-						};						
-					}				
-				}
-			};
-		}			
+					protected ElementTemplate getElementTemplate() {
+						return new VariableTemplate(this);
+					}
+				};
+			}
+		} };
+	}	
 }

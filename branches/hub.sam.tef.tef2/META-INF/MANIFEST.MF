@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: TEF
-Bundle-SymbolicName: hub.sam.tef;singleton:=true
+Bundle-Name: hub.sam.tef.TEFPlugin
+Bundle-SymbolicName: hub.sam.tef.TEFPlugin;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: hub.sam.tef.TEFPlugin
 Bundle-Localization: plugin

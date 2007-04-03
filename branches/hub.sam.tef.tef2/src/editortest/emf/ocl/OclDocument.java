@@ -7,6 +7,7 @@ import hub.sam.tef.syntax.AbstractLayoutManager;
 import hub.sam.tef.syntax.ExpressionLayout;
 import hub.sam.tef.templates.Template;
 import editortest.emf.EMFIdentifierResolver;
+import editortest.emf.ocl.annotations.OclIdentifierResolver;
 import editortest.emf.ocl.templates.ConstraintTemplate;
 
 public class OclDocument extends TEFDocument {
@@ -17,7 +18,7 @@ public class OclDocument extends TEFDocument {
 	}
 
 	public IIdentifierResolver getIdentityResolver() {
-		return new EMFIdentifierResolver();
+		return new OclIdentifierResolver();
 	}
 
 	@Override

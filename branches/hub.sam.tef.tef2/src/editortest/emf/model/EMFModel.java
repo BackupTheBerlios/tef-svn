@@ -140,7 +140,7 @@ public class EMFModel extends AbstractModel {
 		return new EMFSequence(fDomain.getResourceSet().getResource((URI)resource, false).getContents());
 	}
 
-	protected static Object getModelForEMFObject(Object emfObject) {
+	public static Object getModelForEMFObject(Object emfObject) {
 		if (emfObject instanceof EObject) {
 			return new EMFModelElement((EObject)emfObject);
 		} else if (emfObject instanceof EList) {
@@ -150,7 +150,7 @@ public class EMFModel extends AbstractModel {
 		}
 	}
 
-	protected static Object getEMFObjectForModel(Object model) {
+	public static Object getEMFObjectForModel(Object model) {
 		if (model instanceof EMFModelElement) {
 			return ((EMFModelElement)model).getEMFObject();
 		} else if (model instanceof EMFSequence) {

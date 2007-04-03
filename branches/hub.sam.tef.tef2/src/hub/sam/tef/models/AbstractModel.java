@@ -26,6 +26,7 @@ public abstract class AbstractModel implements IModel {
 	}		
 	
 	public void replaceOutermostComposite(Object resource, IModelElement oldElement, IModelElement newElement) {
+		
 		getCommandFactory().remove(getOutermostComposites(resource), oldElement).execute();		
 		getCommandFactory().add(getOutermostComposites(resource), newElement).execute();						
 	}

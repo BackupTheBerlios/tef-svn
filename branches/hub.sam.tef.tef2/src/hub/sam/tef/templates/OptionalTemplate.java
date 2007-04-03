@@ -136,8 +136,14 @@ public abstract class OptionalTemplate extends ValueTemplate<IModelElement> {
 				ModelASTElement contents = new ModelASTElement(OptionalTemplate.this, (IModelElement)model);
 				ASTElementNode treeRepresentation = new ASTElementNode(contents);				
 				for (Template template: getOptionTemplate()) {
+					if (template instanceof TerminalTemplate) {
+						treeRepresentation.addNodeObject(((TerminalTemplate)template).getTerminalText());
+					} else if (template instanceof WhitespaceTemplate) {
+						treeRepresentation.addNodeObject(((WhitespaceTemplate)template).getSpace(layout));
+					} else {
 						treeRepresentation.addNodeObject(template.getAdapter(IASTProvider.class).
 									createTreeRepresentation(owner, notused, model, true, layout));
+					}
 				}
 				return treeRepresentation;
 			} else {

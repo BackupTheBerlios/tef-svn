@@ -1,20 +1,15 @@
 package editortest.emf.ocl.templates;
 
-import hub.sam.tef.completion.Proposal;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.syntax.ExpressionLayout;
 import hub.sam.tef.templates.ElementTemplate;
+import hub.sam.tef.templates.EnumerationTemplate;
 import hub.sam.tef.templates.SequenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.WhitespaceTemplate;
-
-import java.util.Arrays;
-import java.util.List;
-
-import editortest.emf.model.EMFMetaModelElement;
 
 public class IteratorExpTemplate extends ElementTemplate {
 
@@ -34,7 +29,12 @@ public class IteratorExpTemplate extends ElementTemplate {
 			new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 			new TerminalTemplate(this, "->"),
 			new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
-			new TerminalTemplate(this, "forAll"), // TODO
+			new SingleValueTemplate<String>(this, "name") {
+				@Override
+				protected ValueTemplate<String> createValueTemplate() {
+					return new EnumerationTemplate(this, "oclLoops", new String[] { "forAll", "exists", "select", "collect" });
+				}				
+			},			
 			new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 			new TerminalTemplate(this, "("),
 			new WhitespaceTemplate(this, ExpressionLayout.EMTPY),

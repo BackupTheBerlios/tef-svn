@@ -13,7 +13,7 @@ import org.osgi.framework.BundleContext;
 public class TEFPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "EditorTest";
+	public static final String PLUGIN_ID = "hub.sam.tef";
 	
 	private ResourceBundle fResourceBundle;
 

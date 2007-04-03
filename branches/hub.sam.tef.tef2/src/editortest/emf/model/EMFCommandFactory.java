@@ -28,6 +28,8 @@ import org.eclipse.emf.edit.command.ReplaceCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import editortest.emf.model.EMFModelElement.EMFListener;
+
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.ICommandFactory;
@@ -102,9 +104,17 @@ public class EMFCommandFactory implements ICommandFactory {
 				((EMFSequence)list).getEMFObject(), EMFModel.getEMFObjectForModel(value)));
 	}
 
-	public ICommand remove(ICollection list, Object value) {
-		return new EMFCommand(new RemoveCommand(fEditDomain, 
-				((EMFSequence)list).getEMFObject(), EMFModel.getEMFObjectForModel(value)));
+	public ICommand remove(final ICollection list, final Object value) {
+		return new ICommand() {
+			public void execute() {
+				((EMFSequence)list).getEMFObject().remove(EMFModel.getEMFObjectForModel(value));
+			}
+			public Collection getResult() {			
+				return null;
+			}			
+		};
+		//return new EMFCommand(new RemoveCommand(fEditDomain, 
+		//		((EMFSequence)list).getEMFObject(), EMFModel.getEMFObjectForModel(value)));
 	}
 
 	

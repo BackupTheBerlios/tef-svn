@@ -105,7 +105,7 @@ public class EnumerationTemplate extends ValueTemplate<String> {
 		}
 
 		public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {			
-			getModel().getCommandFactory().set(owner, property, tree.getFirstChild().getContent()).execute();
+			getModel().getCommandFactory().set(owner, property, tree.getContent()).execute();
 			return null;
 		}
 
