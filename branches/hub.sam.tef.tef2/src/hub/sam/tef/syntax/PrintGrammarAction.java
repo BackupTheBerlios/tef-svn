@@ -1,4 +1,4 @@
-package hub.sam.tef.parse;
+package hub.sam.tef.syntax;
 
 import hub.sam.tef.TEFDocument;
 import hub.sam.tef.TEFEditor;

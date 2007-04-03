@@ -1,4 +1,4 @@
-package hub.sam.tef.parse;
+package hub.sam.tef.syntax;
 
 import fri.patterns.interpreter.parsergenerator.Semantic;
 import fri.patterns.interpreter.parsergenerator.Token.Range;

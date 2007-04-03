@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Vector;
 
-import hub.sam.tef.parse.ParserInterface;
-import hub.sam.tef.parse.UpdateTreeSemantic;
+import hub.sam.tef.syntax.ParserInterface;
+import hub.sam.tef.syntax.UpdateTreeSemantic;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 
 public class CompletionEngine {
