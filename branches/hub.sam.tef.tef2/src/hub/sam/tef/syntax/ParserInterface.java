@@ -3,7 +3,6 @@ package hub.sam.tef.syntax;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.EmtpyElementTemplate;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 
 import java.util.Collection;
 import java.util.HashMap;

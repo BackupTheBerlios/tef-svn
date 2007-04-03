@@ -1,4 +1,4 @@
-package hub.sam.tef.templates.adaptors;
+package hub.sam.tef.annotations;
 
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;

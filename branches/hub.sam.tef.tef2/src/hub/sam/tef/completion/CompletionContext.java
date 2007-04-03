@@ -1,7 +1,7 @@
 package hub.sam.tef.completion;
 
-import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
-import hub.sam.tef.templates.adaptors.ILanguageModelProvider;
+import hub.sam.tef.IDocumentModelProvider;
+import hub.sam.tef.ILanguageModelProvider;
 
 public class CompletionContext {
 

@@ -2,8 +2,8 @@ package hub.sam.tef.treerepresentation;
 
 import editortest.emf.model.IOccurence;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.syntax.ISyntaxProvider;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.util.container.AbstractWatchedDisposable;
 
 public class ModelASTElement extends AbstractWatchedDisposable implements IASTElement, IOccurence {

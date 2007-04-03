@@ -16,6 +16,8 @@
  */
 package editortest.emf.ecore.templates;
 
+import hub.sam.tef.completion.Proposal;
+import hub.sam.tef.syntax.BlockLayout;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.FlagTemplate;
 import hub.sam.tef.templates.IntegerTemplate;
@@ -26,9 +28,7 @@ import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
-import hub.sam.tef.templates.adaptors.Proposal;
-import hub.sam.tef.templates.layout.BlockLayout;
-import hub.sam.tef.templates.layout.WhitespaceTemplate;
+import hub.sam.tef.templates.WhitespaceTemplate;
 
 import java.util.Arrays;
 import java.util.List;

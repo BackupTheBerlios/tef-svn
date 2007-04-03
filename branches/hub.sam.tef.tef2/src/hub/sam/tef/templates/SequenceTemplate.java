@@ -16,10 +16,9 @@
  */
 package hub.sam.tef.templates;
 
-import hub.sam.tef.syntax.ISemanticProvider;
-import hub.sam.tef.templates.adaptors.IASTProvider;
-import hub.sam.tef.templates.adaptors.ISyntaxProvider;
-import hub.sam.tef.templates.layout.WhitespaceTemplate;
+import hub.sam.tef.annotations.ISemanticProvider;
+import hub.sam.tef.syntax.ISyntaxProvider;
+import hub.sam.tef.treerepresentation.IASTProvider;
 
 
 public abstract class SequenceTemplate<ElementModelType> extends PropertyTemplate<ElementModelType> {	

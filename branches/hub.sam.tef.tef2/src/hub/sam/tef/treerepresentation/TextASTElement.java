@@ -1,8 +1,8 @@
 package hub.sam.tef.treerepresentation;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.syntax.ISyntaxProvider;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 
 public class TextASTElement implements IASTElement {
 

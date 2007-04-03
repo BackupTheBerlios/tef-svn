@@ -16,7 +16,6 @@
  */
 package hub.sam.tef;
 
-import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
 
 import java.util.ResourceBundle;
 

@@ -19,8 +19,8 @@ package hub.sam.tef.templates;
 import java.util.Collection;
 import java.util.Vector;
 
-import hub.sam.tef.templates.adaptors.ISyntaxHighlightProvider;
-import hub.sam.tef.templates.adaptors.ISyntaxProvider;
+import hub.sam.tef.syntax.ISyntaxHighlightProvider;
+import hub.sam.tef.syntax.ISyntaxProvider;
 
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;

@@ -1,4 +1,4 @@
-package hub.sam.tef.templates.layout;
+package hub.sam.tef.syntax;
 
 public class BlockLayout extends AbstractLayoutManager {
 

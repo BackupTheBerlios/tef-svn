@@ -1,8 +1,9 @@
-package hub.sam.tef.templates.adaptors;
+package hub.sam.tef;
 
+import hub.sam.tef.annotations.IIdentifierResolver;
+import hub.sam.tef.syntax.AbstractLayoutManager;
 import hub.sam.tef.templates.LayoutManager;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.templates.layout.AbstractLayoutManager;
 
 public interface ILanguageModelProvider {
 	public Template getTopLevelTemplate();

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.syntax.ISyntaxProvider;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.ElementTemplateSemantics;
 import hub.sam.tef.templates.ReferenceTemplate;
@@ -12,7 +13,6 @@ import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
-import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import editortest.emf.ecore.templates.EIdentifierTemplate;
 
 public class PlusTemplate extends ElementTemplate {

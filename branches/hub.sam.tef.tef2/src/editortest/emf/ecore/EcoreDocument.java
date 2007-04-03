@@ -17,11 +17,11 @@
 package editortest.emf.ecore;
 
 import hub.sam.tef.TEFDocument;
+import hub.sam.tef.annotations.IAnnotationModelProvider;
+import hub.sam.tef.annotations.IIdentifierResolver;
+import hub.sam.tef.syntax.AbstractLayoutManager;
+import hub.sam.tef.syntax.BlockLayout;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.templates.adaptors.IAnnotationModelProvider;
-import hub.sam.tef.templates.adaptors.IIdentifierResolver;
-import hub.sam.tef.templates.layout.AbstractLayoutManager;
-import hub.sam.tef.templates.layout.BlockLayout;
 import editortest.emf.EMFIdentifierResolver;
 import editortest.emf.ecore.templates.EPackageTemplate;
 

@@ -2,7 +2,6 @@ package hub.sam.tef.syntax;
 
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.templates.adaptors.IElementSyntaxProvider;
 import hub.sam.tef.treerepresentation.ASTNode;
 import hub.sam.tef.treerepresentation.TextASTElement;
 import hub.sam.tef.treerepresentation.ASTElementNode;

@@ -1,4 +1,4 @@
-package hub.sam.tef.templates.adaptors;
+package hub.sam.tef.syntax;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 

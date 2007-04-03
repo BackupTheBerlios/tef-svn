@@ -16,10 +16,10 @@
  */
 package hub.sam.tef.templates;
 
+import hub.sam.tef.IDocumentModelProvider;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.IType;
-import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
 
 
 /**

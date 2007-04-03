@@ -1,8 +1,7 @@
 package hub.sam.tef;
 
+import hub.sam.tef.syntax.ISyntaxHighlightProvider;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.templates.adaptors.ILanguageModelProvider;
-import hub.sam.tef.templates.adaptors.ISyntaxHighlightProvider;
 
 import java.util.Collection;
 import java.util.HashSet;

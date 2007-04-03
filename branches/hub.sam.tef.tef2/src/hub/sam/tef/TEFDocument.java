@@ -16,17 +16,15 @@
  */
 package hub.sam.tef;
 
+import hub.sam.tef.annotations.IAnnotationModelProvider;
+import hub.sam.tef.annotations.IIdentifierResolver;
+import hub.sam.tef.annotations.IPresentationOptionsProvider;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.syntax.AbstractLayoutManager;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.templates.adaptors.IAnnotationModelProvider;
-import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
-import hub.sam.tef.templates.adaptors.IIdentifierResolver;
-import hub.sam.tef.templates.adaptors.ILanguageModelProvider;
-import hub.sam.tef.templates.adaptors.IPresentationOptionsProvider;
-import hub.sam.tef.templates.adaptors.IASTProvider;
-import hub.sam.tef.templates.layout.AbstractLayoutManager;
 import hub.sam.tef.treerepresentation.IASTElement;
+import hub.sam.tef.treerepresentation.IASTProvider;
 import hub.sam.tef.treerepresentation.IndexASTSelector;
 import hub.sam.tef.treerepresentation.ModelASTElement;
 import hub.sam.tef.treerepresentation.ASTElementNode;

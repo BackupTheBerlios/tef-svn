@@ -16,9 +16,9 @@
  */
 package hub.sam.tef.templates;
 
+import hub.sam.tef.IDocumentModelProvider;
+import hub.sam.tef.annotations.IPresentationOptionsProvider;
 import hub.sam.tef.models.IModel;
-import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
-import hub.sam.tef.templates.adaptors.IPresentationOptionsProvider;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 import hub.sam.util.IAdaptable;
 

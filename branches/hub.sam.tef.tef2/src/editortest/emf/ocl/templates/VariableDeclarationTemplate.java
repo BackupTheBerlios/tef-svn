@@ -1,6 +1,7 @@
 package editortest.emf.ocl.templates;
 
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.syntax.ExpressionLayout;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.OptionalTemplate;
 import hub.sam.tef.templates.ReferenceTemplate;
@@ -9,8 +10,7 @@ import hub.sam.tef.templates.StringTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
-import hub.sam.tef.templates.layout.ExpressionLayout;
-import hub.sam.tef.templates.layout.WhitespaceTemplate;
+import hub.sam.tef.templates.WhitespaceTemplate;
 
 public class VariableDeclarationTemplate extends ElementTemplate {
 

@@ -1,7 +1,7 @@
 package hub.sam.tef.treerepresentation;
 
+import hub.sam.tef.syntax.ISyntaxProvider;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.util.container.IDisposable;
 
 public interface IASTElement extends IDisposable {

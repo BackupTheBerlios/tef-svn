@@ -1,13 +1,13 @@
 package hub.sam.tef.templates;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.syntax.ISemanticProvider;
-import hub.sam.tef.templates.adaptors.ISyntaxProvider;
-import hub.sam.tef.templates.adaptors.IASTProvider;
-import hub.sam.tef.templates.layout.AbstractLayoutManager;
+import hub.sam.tef.syntax.AbstractLayoutManager;
+import hub.sam.tef.syntax.ISyntaxProvider;
 import hub.sam.tef.treerepresentation.IASTElement;
+import hub.sam.tef.treerepresentation.IASTProvider;
 import hub.sam.tef.treerepresentation.ModelASTElement;
 import hub.sam.tef.treerepresentation.ModelSequenceASTNode;
 import hub.sam.tef.treerepresentation.SemanticsContext;

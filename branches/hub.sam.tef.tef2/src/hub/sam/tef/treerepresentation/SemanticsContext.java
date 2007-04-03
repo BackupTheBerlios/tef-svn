@@ -1,10 +1,10 @@
 package hub.sam.tef.treerepresentation;
 
+import hub.sam.tef.IDocumentModelProvider;
+import hub.sam.tef.ILanguageModelProvider;
+import hub.sam.tef.annotations.IAnnotationModelProvider;
+import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.templates.adaptors.IAnnotationModelProvider;
-import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
-import hub.sam.tef.templates.adaptors.IIdentifierResolver;
-import hub.sam.tef.templates.adaptors.ILanguageModelProvider;
 
 import org.eclipse.jface.text.Position;
 

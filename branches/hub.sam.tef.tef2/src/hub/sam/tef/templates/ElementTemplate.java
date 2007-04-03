@@ -17,18 +17,17 @@
 package hub.sam.tef.templates;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.IDocumentModelProvider;
+import hub.sam.tef.annotations.IPresentationOptionsProvider;
+import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
-import hub.sam.tef.syntax.ISemanticProvider;
-import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
-import hub.sam.tef.templates.adaptors.IElementSyntaxProvider;
-import hub.sam.tef.templates.adaptors.IPresentationOptionsProvider;
-import hub.sam.tef.templates.adaptors.ISyntaxProvider;
-import hub.sam.tef.templates.adaptors.IASTProvider;
-import hub.sam.tef.templates.layout.WhitespaceTemplate;
+import hub.sam.tef.syntax.IElementSyntaxProvider;
+import hub.sam.tef.syntax.ISyntaxProvider;
 import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.treerepresentation.IASTProvider;
 
 /**
  * A special ValueTemplate used for elements, whereby elements are container for

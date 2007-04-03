@@ -1,11 +1,11 @@
 package editortest.emf.ocl;
 
 import hub.sam.tef.TEFDocument;
+import hub.sam.tef.annotations.IAnnotationModelProvider;
+import hub.sam.tef.annotations.IIdentifierResolver;
+import hub.sam.tef.syntax.AbstractLayoutManager;
+import hub.sam.tef.syntax.ExpressionLayout;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.templates.adaptors.IAnnotationModelProvider;
-import hub.sam.tef.templates.adaptors.IIdentifierResolver;
-import hub.sam.tef.templates.layout.AbstractLayoutManager;
-import hub.sam.tef.templates.layout.ExpressionLayout;
 import editortest.emf.EMFIdentifierResolver;
 import editortest.emf.ocl.templates.ConstraintTemplate;
 

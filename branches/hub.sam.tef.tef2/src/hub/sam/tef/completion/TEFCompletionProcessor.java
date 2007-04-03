@@ -24,10 +24,10 @@ import editortest.emf.ocl.completion.OclPropertyCallExpCompletion;
 import editortest.emf.ocl.completion.OclVariableExpCompletion;
 import fri.patterns.interpreter.parsergenerator.Parser;
 import fri.patterns.interpreter.parsergenerator.ParserTables;
+import hub.sam.tef.IDocumentModelProvider;
+import hub.sam.tef.ILanguageModelProvider;
 import hub.sam.tef.TEFDocument;
 import hub.sam.tef.syntax.ParserInterface;
-import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
-import hub.sam.tef.templates.adaptors.ILanguageModelProvider;
 
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;

@@ -1,10 +1,10 @@
 package hub.sam.tef.templates;
 
+import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.IType;
-import hub.sam.tef.syntax.ISemanticProvider;
-import hub.sam.tef.templates.adaptors.IASTProvider;
-import hub.sam.tef.templates.layout.AbstractLayoutManager;
+import hub.sam.tef.syntax.AbstractLayoutManager;
+import hub.sam.tef.treerepresentation.IASTProvider;
 import hub.sam.tef.treerepresentation.PrimitiveTreeRepresentation;
 import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.ASTElementNode;

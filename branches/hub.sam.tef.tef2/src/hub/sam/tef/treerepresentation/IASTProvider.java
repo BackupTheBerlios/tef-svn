@@ -1,9 +1,7 @@
-package hub.sam.tef.templates.adaptors;
+package hub.sam.tef.treerepresentation;
 
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.templates.layout.AbstractLayoutManager;
-import hub.sam.tef.treerepresentation.SemanticsContext;
-import hub.sam.tef.treerepresentation.ASTNode;
+import hub.sam.tef.syntax.AbstractLayoutManager;
 
 
 public interface IASTProvider {
