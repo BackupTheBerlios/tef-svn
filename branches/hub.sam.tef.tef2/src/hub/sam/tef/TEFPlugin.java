@@ -10,7 +10,7 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class EditorTestPlugin extends AbstractUIPlugin {
+public class TEFPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "EditorTest";
@@ -18,12 +18,12 @@ public class EditorTestPlugin extends AbstractUIPlugin {
 	private ResourceBundle fResourceBundle;
 
 	// The shared instance
-	private static EditorTestPlugin plugin;
+	private static TEFPlugin plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public EditorTestPlugin() {
+	public TEFPlugin() {
 		plugin = this;
 		try {
 			fResourceBundle = ResourceBundle.getBundle(this.getClass().getName());
@@ -58,7 +58,7 @@ public class EditorTestPlugin extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static EditorTestPlugin getDefault() {
+	public static TEFPlugin getDefault() {
 		return plugin;
 	}
 

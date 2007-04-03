@@ -19,6 +19,9 @@ package hub.sam.tef.completion;
 import java.util.Collection;
 import java.util.Vector;
 
+import editortest.emf.ocl.completion.OclOperationCallExpCompletion;
+import editortest.emf.ocl.completion.OclPropertyCallExpCompletion;
+import editortest.emf.ocl.completion.OclVariableExpCompletion;
 import fri.patterns.interpreter.parsergenerator.Parser;
 import fri.patterns.interpreter.parsergenerator.ParserTables;
 import hub.sam.tef.TEFDocument;

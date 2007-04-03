@@ -1,5 +1,7 @@
-package hub.sam.tef.completion;
+package editortest.emf.ocl.completion;
 
+import hub.sam.tef.completion.CompletionContext;
+import hub.sam.tef.completion.TEFCompletionProposal;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;

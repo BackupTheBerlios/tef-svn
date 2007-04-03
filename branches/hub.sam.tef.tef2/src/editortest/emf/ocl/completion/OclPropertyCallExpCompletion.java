@@ -1,15 +1,18 @@
-package hub.sam.tef.completion;
+package editortest.emf.ocl.completion;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.completion.CompletionContext;
+import hub.sam.tef.completion.SingleReductionCompletion;
+import hub.sam.tef.completion.TEFCompletionProposal;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 
 import java.util.Collection;
 
-public class OclOperationCallExpCompletion extends SingleReductionCompletion {
+public class OclPropertyCallExpCompletion extends SingleReductionCompletion {
 
 	@Override
 	public Rule getRule() {
-		return new Rule( new String[] { "OperationCallExp", "OCLExpression", "'.'" });
+		return new Rule( new String[] { "PropertyCallExp", "OCLExpression", "'.'" });
 	}
 
 	@Override
@@ -18,7 +21,7 @@ public class OclOperationCallExpCompletion extends SingleReductionCompletion {
 	}
 
 	public Collection<TEFCompletionProposal> createProposals(ASTElementNode completionNode, CompletionContext context) {
-		return EMFCompletions.createProposals("EOperation", context);
+		return EMFCompletions.createProposals("EStructuralFeature", context);
 	}
 
 	

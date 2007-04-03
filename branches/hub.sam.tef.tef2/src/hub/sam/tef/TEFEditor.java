@@ -80,7 +80,7 @@ public abstract class TEFEditor extends TextEditor {
 	}		
 	
 	private IAction createContentAssistAction() {
-		ResourceBundle resourceBundle = EditorTestPlugin.getDefault().getResourceBundle();
+		ResourceBundle resourceBundle = TEFPlugin.getDefault().getResourceBundle();
 		return new TextOperationAction(resourceBundle, "ContentAssistProposal", 
 				this, ISourceViewer.CONTENTASSIST_PROPOSALS);
 	}
