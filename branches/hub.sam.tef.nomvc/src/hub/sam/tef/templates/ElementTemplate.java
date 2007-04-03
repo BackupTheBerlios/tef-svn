@@ -21,7 +21,7 @@ import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
-import hub.sam.tef.parse.ISemanticProvider;
+import hub.sam.tef.syntax.ISemanticProvider;
 import hub.sam.tef.templates.adaptors.IDocumentModelProvider;
 import hub.sam.tef.templates.adaptors.IElementSyntaxProvider;
 import hub.sam.tef.templates.adaptors.IPresentationOptionsProvider;

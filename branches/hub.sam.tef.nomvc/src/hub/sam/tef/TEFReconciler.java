@@ -1,6 +1,6 @@
 package hub.sam.tef;
 
-import hub.sam.tef.parse.ParserBasedReconcilingStrategy;
+import hub.sam.tef.syntax.ParserBasedReconcilingStrategy;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.reconciler.AbstractReconciler;

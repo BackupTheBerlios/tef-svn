@@ -17,7 +17,7 @@
 package hub.sam.tef.templates;
 
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.parse.ISemanticProvider;
+import hub.sam.tef.syntax.ISemanticProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
 import hub.sam.tef.templates.layout.AbstractLayoutManager;

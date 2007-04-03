@@ -11,7 +11,7 @@ import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelChangeListener;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
-import hub.sam.tef.parse.ISemanticProvider;
+import hub.sam.tef.syntax.ISemanticProvider;
 import hub.sam.tef.templates.adaptors.IElementSyntaxProvider;
 import hub.sam.tef.templates.adaptors.ISyntaxProvider;
 import hub.sam.tef.templates.adaptors.IASTProvider;
