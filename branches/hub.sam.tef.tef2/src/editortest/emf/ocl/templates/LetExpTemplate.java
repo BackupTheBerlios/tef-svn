@@ -19,20 +19,20 @@ public class LetExpTemplate extends ElementTemplate {
 	public Template[] createTemplates() {
 		return new Template[] {
 				new TerminalTemplate(this, "let"),
-				new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
+				new WhitespaceTemplate(this, ExpressionLayout.SPACE),
 				new SingleValueTemplate<IModelElement>(this, "variable") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new VariableDeclarationTemplate(this);
 					}				
 				},				
-				new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
+				new WhitespaceTemplate(this, ExpressionLayout.SPACE),
 				new TerminalTemplate(this, "in"),
-				new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
+				new WhitespaceTemplate(this, ExpressionLayout.SPACE),
 				new SingleValueTemplate<IModelElement>(this, "in") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {						
-						return new OclExpressionTemplate(this);						
+						return new FactorTemplate(this);					
 					}					
 				}
 		};

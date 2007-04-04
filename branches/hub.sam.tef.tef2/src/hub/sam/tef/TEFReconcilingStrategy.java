@@ -5,12 +5,12 @@ import fri.patterns.interpreter.parsergenerator.Token.Range;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.annotations.IAnnotationModelProvider;
 import hub.sam.tef.annotations.ISemanticProvider;
+import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.syntax.ParserInterface;
 import hub.sam.tef.syntax.UpdateTreeSemantic;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 import hub.sam.tef.treerepresentation.IASTProvider;
-import hub.sam.tef.treerepresentation.SemanticsContext;
 
 import java.util.HashMap;
 import java.util.List;

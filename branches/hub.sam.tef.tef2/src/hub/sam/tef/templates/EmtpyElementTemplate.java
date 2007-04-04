@@ -1,6 +1,7 @@
 package hub.sam.tef.templates;
 
 import hub.sam.tef.annotations.ISemanticProvider;
+import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
@@ -10,7 +11,6 @@ import hub.sam.tef.treerepresentation.ASTElementNode;
 import hub.sam.tef.treerepresentation.ASTNode;
 import hub.sam.tef.treerepresentation.IASTProvider;
 import hub.sam.tef.treerepresentation.ModelASTElement;
-import hub.sam.tef.treerepresentation.SemanticsContext;
 
 public abstract class EmtpyElementTemplate extends ValueTemplate<IModelElement> {
 	private final Template[] fTemplates;

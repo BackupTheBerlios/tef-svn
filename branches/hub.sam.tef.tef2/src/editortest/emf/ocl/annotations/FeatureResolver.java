@@ -11,8 +11,10 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ocl.expressions.OperationCallExp;
 import org.eclipse.emf.ocl.expressions.PropertyCallExp;
+import org.eclipse.emf.ocl.types.TypesFactory;
 import org.eclipse.emf.ocl.utilities.PredefinedType;
 
 import cmof.Constraint;
@@ -49,10 +51,13 @@ public class FeatureResolver implements IIdentifierResolver {
 			} else if (eContext instanceof OperationCallExp) {
 				OperationCallExp operationCall = (OperationCallExp)eContext;				
 				EClassifier sourceType =  TypeHelper.getTypeFor(operationCall.getSource());
+				
 				if (sourceType == null) {
 					System.out.println(getClass().getCanonicalName() + ": sourceType not set");
 					return null;
 				}
+				
+				PredefinedType predefinedSourceType = TypeHelper.getPredefinedType(sourceType);
 				if (sourceType instanceof EClass) {
 					EClass sourceClass = (EClass)sourceType;
 					for (Object operationObj: sourceClass.getEAllOperations()) {
@@ -63,8 +68,15 @@ public class FeatureResolver implements IIdentifierResolver {
 						}
 					}
 					return null;
-				} else if (sourceType instanceof PredefinedType) {
-					// TODO
+				} else if (predefinedSourceType != null) {
+					for (Object operationObj: predefinedSourceType.getOperations()) {
+						EOperation operation = (EOperation)operationObj;
+						if (name.equals(operation.getName())) {
+							// TODO type check, parameter?
+							return (IModelElement)EMFModel.getModelForEMFObject(operation);
+						}
+					}
+					return null;
 				}
 				return null;
 			} else if (eContext instanceof Constraint) {
@@ -75,5 +87,13 @@ public class FeatureResolver implements IIdentifierResolver {
 		return null;
 	}
 
+	
 
+	public void addToEnvironment(IModelElement element) {
+		// TODO Auto-generated method stub	
+	}
+
+	public void removeFromEnvironment(IModelElement element) {
+		// TODO Auto-generated method stub	
+	}
 }

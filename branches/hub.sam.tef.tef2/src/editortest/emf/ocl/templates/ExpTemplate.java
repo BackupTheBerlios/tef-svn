@@ -19,16 +19,6 @@ public class ExpTemplate extends ChoiceTemplate {
 		}
 		return result;
 	}
-
-	/*
-	private static ExpTemplate instance = null;
-	public static final ExpTemplate getExpTemplate(Template template) {		
-		if (instance == null) {
-			instance = new ExpTemplate(template);			
-		}
-		return instance;
-	}
-	*/
 	
 	private ExpTemplate(Template template) {
 		super(template, template.getModel().getMetaElement("OCLExpression"));

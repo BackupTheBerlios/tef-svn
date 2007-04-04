@@ -1,6 +1,7 @@
 package editortest.emf.ocl.templates;
 
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.syntax.ExpressionLayout;
 import hub.sam.tef.syntax.ISyntaxProvider;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.ElementTemplateSemantics;
@@ -10,6 +11,7 @@ import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
+import hub.sam.tef.templates.WhitespaceTemplate;
 import editortest.emf.ecore.templates.EIdentifierTemplate;
 
 public class OperationCallExp2Template extends ElementTemplate {
@@ -26,8 +28,10 @@ public class OperationCallExp2Template extends ElementTemplate {
 					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new OclExpressionTemplate(this);
 					}				
-				},			
+				},
+				new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 				new TerminalTemplate(this, "."),
+				new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 				new SingleValueTemplate<IModelElement>(this, "referredOperation") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {						
@@ -39,6 +43,7 @@ public class OperationCallExp2Template extends ElementTemplate {
 						};						
 					}					
 				},
+				new WhitespaceTemplate(this, ExpressionLayout.EMTPY),
 				new TerminalTemplate(this, "("),
 				new SequenceTemplate<IModelElement>(this, "argument", ",", false) {				
 					@Override

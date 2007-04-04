@@ -44,4 +44,15 @@ public class VariableResolver implements IIdentifierResolver {
 		return null;
 	}
 
+	public void addToEnvironment(IModelElement element) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeFromEnvironment(IModelElement element) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 }

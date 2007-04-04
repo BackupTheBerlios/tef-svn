@@ -42,4 +42,14 @@ public class EMFIdentifierResolver implements IIdentifierResolver {
 			collectValidElementsFromModel((IModelElement)o, metaModelElement, values);
 		}
 	}
+
+	public void addToEnvironment(IModelElement element) {
+		
+	}
+
+	public void removeFromEnvironment(IModelElement element) {
+		
+	}
+	
+	
 }

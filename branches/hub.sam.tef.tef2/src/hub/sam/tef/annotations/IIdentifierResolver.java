@@ -32,4 +32,8 @@ public interface IIdentifierResolver {
 			IModelElement topLevelElement, 
 			IMetaModelElement expectedType, String property);
 	
+	public void addToEnvironment(IModelElement element);
+	
+	public void removeFromEnvironment(IModelElement element);
+	
 }

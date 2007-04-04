@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.syntax.ExpressionLayout;
 import hub.sam.tef.syntax.ISyntaxProvider;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.ElementTemplateSemantics;
@@ -12,6 +13,7 @@ import hub.sam.tef.templates.ReferenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.ValueTemplate;
+import hub.sam.tef.templates.WhitespaceTemplate;
 
 public class MulTemplate extends ElementTemplate {
 
@@ -28,6 +30,7 @@ public class MulTemplate extends ElementTemplate {
 						return new TermTemplate(this);
 					}				
 				},			
+				new WhitespaceTemplate(this, ExpressionLayout.SPACE),
 				new SingleValueTemplate<IModelElement>(this, "referredOperation") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {						
@@ -39,7 +42,8 @@ public class MulTemplate extends ElementTemplate {
 							}						
 						};						
 					}					
-				},									
+				},					
+				new WhitespaceTemplate(this, ExpressionLayout.SPACE),
 				new SingleValueTemplate<IModelElement>(this, "argument") {				
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {

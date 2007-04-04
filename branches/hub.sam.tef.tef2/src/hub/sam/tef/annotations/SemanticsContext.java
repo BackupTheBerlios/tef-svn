@@ -1,9 +1,7 @@
-package hub.sam.tef.treerepresentation;
+package hub.sam.tef.annotations;
 
 import hub.sam.tef.IDocumentModelProvider;
 import hub.sam.tef.ILanguageModelProvider;
-import hub.sam.tef.annotations.IAnnotationModelProvider;
-import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.models.IModelElement;
 
 import org.eclipse.jface.text.Position;
@@ -13,6 +11,8 @@ public class SemanticsContext {
 	private final IDocumentModelProvider fDocumentModelProvider;
 	private final ILanguageModelProvider fLanguageModelProvider;
 	private final IModelElement fNewModel;
+	
+	private final IIdentifierResolver fResolver;
 
 	public SemanticsContext(final IDocumentModelProvider documentProvider, final ILanguageModelProvider languageModelProvider,
 			IModelElement newModel) {
@@ -20,6 +20,7 @@ public class SemanticsContext {
 		fDocumentModelProvider = documentProvider;
 		fLanguageModelProvider = languageModelProvider;
 		fNewModel = newModel;
+		fResolver = fLanguageModelProvider.getIdentityResolver();
 	}
 
 	public IAnnotationModelProvider getAnnotationModelProvider() {
@@ -31,7 +32,7 @@ public class SemanticsContext {
 	}
 		
 	public IIdentifierResolver getIdentifierResolver() {
-		return fLanguageModelProvider.getIdentityResolver();
+		return fResolver;
 	}
 	
 	public IModelElement getNewModel() {

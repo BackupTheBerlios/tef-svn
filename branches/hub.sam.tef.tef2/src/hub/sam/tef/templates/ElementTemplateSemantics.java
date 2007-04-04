@@ -6,6 +6,7 @@ import java.util.Vector;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.ErrorAnnotation;
 import hub.sam.tef.annotations.ISemanticProvider;
+import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
@@ -17,7 +18,6 @@ import hub.sam.tef.syntax.IElementSyntaxProvider;
 import hub.sam.tef.syntax.ISyntaxProvider;
 import hub.sam.tef.treerepresentation.IASTProvider;
 import hub.sam.tef.treerepresentation.ModelASTElement;
-import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 import hub.sam.tef.treerepresentation.ASTNode;
 import hub.sam.util.container.IDisposable;
@@ -141,7 +141,7 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		IModelElement result = null;
 		boolean createModelForProperties = true;
 		if (parent != null && isComposite) {
-			result = ((ModelASTElement)tree.getElement()).getModelElement();
+			result = ((ModelASTElement)tree.getElement()).getModelElement();			
 		} else if (parent != null && !isComposite) {		
 			result = context.getIdentifierResolver().resolveIdentifier(fElementTemplate.getModel(),
 					(ASTElementNode)tree, parent, context.getNewModel(),
@@ -157,6 +157,8 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 			result = ((ModelASTElement)tree.getElement()).getModelElement();
 		}		
 		
+		context.getIdentifierResolver().addToEnvironment(result);
+		
 		if (createModelForProperties) {
 			for (Template subTemplate: fElementTemplate.getNestedTemplates()) {
 				if (subTemplate instanceof PropertyTemplate) {
@@ -166,6 +168,8 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 				}
 			}
 		}
+		
+		context.getIdentifierResolver().removeFromEnvironment(result);
 		return result;
 	}
 

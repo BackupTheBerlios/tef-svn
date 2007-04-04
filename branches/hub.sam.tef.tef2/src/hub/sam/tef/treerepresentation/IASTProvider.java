@@ -1,5 +1,6 @@
 package hub.sam.tef.treerepresentation;
 
+import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.syntax.AbstractLayoutManager;
 

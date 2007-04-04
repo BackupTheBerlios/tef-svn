@@ -31,6 +31,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 import hub.sam.tef.annotations.ISemanticProvider;
+import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.syntax.AbstractLayoutManager;
@@ -40,7 +41,6 @@ import hub.sam.tef.treerepresentation.ASTElementNode;
 import hub.sam.tef.treerepresentation.IASTProvider;
 import hub.sam.tef.treerepresentation.ModelASTElement;
 import hub.sam.tef.treerepresentation.PrimitiveTreeRepresentation;
-import hub.sam.tef.treerepresentation.SemanticsContext;
 import hub.sam.tef.treerepresentation.ASTNode;
 
 
