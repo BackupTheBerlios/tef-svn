@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RCC Plug-in
+Bundle-SymbolicName: fri.patterns.interpreter.parsergenerator
+Bundle-Version: 1.0.0
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime
+Bundle-Activator: fri.patterns.interpreter.parsergenerator.PlugInActivator
+Export-Package: fri.patterns.interpreter.parsergenerator,
+ fri.patterns.interpreter.parsergenerator.builder,
+ fri.patterns.interpreter.parsergenerator.lexer,
+ fri.patterns.interpreter.parsergenerator.lexer.semantics,
+ fri.patterns.interpreter.parsergenerator.parsertables,
+ fri.patterns.interpreter.parsergenerator.semantics,
+ fri.patterns.interpreter.parsergenerator.syntax,
+ fri.patterns.interpreter.parsergenerator.syntax.builder,
+ fri.patterns.interpreter.parsergenerator.util,
+ fri.util,
+ fri.util.collections,
+ fri.util.io,
+ fri.util.props
