@@ -1,19 +1,19 @@
 package editortest.emf.ocl.annotations;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ocl.expressions.LetExp;
-import org.eclipse.emf.ocl.expressions.LoopExp;
-import org.eclipse.emf.ocl.expressions.Variable;
-
-import cmof.Constraint;
-
-import editortest.emf.model.EMFModel;
-import editortest.emf.model.EMFModelElement;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.treerepresentation.ASTElementNode;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ocl.expressions.LetExp;
+import org.eclipse.emf.ocl.expressions.LoopExp;
+import org.eclipse.emf.ocl.expressions.Variable;
+import org.eclipse.emf.ocl.uml.Constraint;
+
+import editortest.emf.model.EMFModel;
+import editortest.emf.model.EMFModelElement;
 
 public class VariableResolver implements IIdentifierResolver {
 

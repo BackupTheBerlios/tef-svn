@@ -60,4 +60,8 @@ public class MultiMap<E, V> {
     public Collection<E> getKeys() {
     	return values.keySet();
     }
+    
+    public void clear() {
+    	values.clear();
+    }
 }

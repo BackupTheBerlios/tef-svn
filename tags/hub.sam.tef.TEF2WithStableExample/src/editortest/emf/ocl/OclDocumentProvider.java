@@ -53,7 +53,7 @@ public class OclDocumentProvider extends EMFDocumentProvider {
 		// Create an adapter factory that yields item providers.
 		List factories = new ArrayList();
 		factories.add(new ResourceItemProviderAdapterFactory());
-		factories.add(new org.eclipse.emf.ocl.expressions.provider.ExpressionsItemProviderAdapterFactory());
+		//factories.add(new org.eclipse.emf.ocl.expressions.provider.ExpressionsItemProviderAdapterFactory());
 		factories.add(new ReflectiveItemProviderAdapterFactory());
 		return new ComposedAdapterFactory(factories);
 	}

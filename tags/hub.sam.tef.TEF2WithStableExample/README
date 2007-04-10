@@ -1,9 +1,7 @@
 RUNNING THE EXAMPLES
 
-This is an Eclipse PDE Project featuring two EMF based Editors. The first is an
-editor for ecore-Models (file extension ecore). The second is an editor
-featuring live-parsing. This editor is for simple Integer/+/*/()-expressions
-like (1+2)*3 (file extension expressions).
+This is an Eclipse PDE Project featuring a EMF based Editor. This is an
+editor for ecore-Models (file extension ecore).
 
 You have to run eclipse 3.2 with the newest EMF installed.
 
@@ -17,7 +15,7 @@ contains a little hack to let both editors (the tree-based and the TEF-editor)
 share the same editing domain. This lets both editors edit the same model at
 the same time.
 
-All TEF-editors define 3 edit actions: 
+All TEF(1)-editors define 3 edit actions: 
 
 * the normal code-complete action from eclipse (ctrl-space)
 * Text Editing / Insert an Element
@@ -28,8 +26,3 @@ The two latter action have still to be bind by you
 The delete action deletes the actually marked elements, the insert actions
 opens a code-completion dialog to choose an element to insert.  The normal
 code-completion action can be used to change an existing element.
-
-THE EXPRESSION EDITOR
-
-Here you can actually type the model, using live-parsing. Anything that is
-marked yellow is not yet in the model and exists only on the parse stack.

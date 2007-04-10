@@ -5,8 +5,8 @@ import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 import hub.sam.tef.treerepresentation.IASTProvider;
-import hub.sam.util.MultiMap;
 import hub.sam.util.container.IDisposable;
+import hub.sam.util.container.MultiMap;
 
 import java.util.Collection;
 import java.util.HashMap;

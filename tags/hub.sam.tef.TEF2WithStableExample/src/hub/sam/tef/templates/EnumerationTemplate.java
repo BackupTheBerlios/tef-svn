@@ -100,7 +100,7 @@ public class EnumerationTemplate extends ValueTemplate<String> {
 	class TreeRepresentationProvider implements IASTProvider {
 		public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite, AbstractLayoutManager layout) {
 			ASTElementNode result = new ASTElementNode(new ModelASTElement(EnumerationTemplate.this, null));
-			result.addNodeObject(new PrimitiveTreeRepresentation((model == null) ? "<null>" : model));
+			result.addNodeObject(new PrimitiveTreeRepresentation((model == null) ? "unknown" : model));
 			return result;
 		}
 

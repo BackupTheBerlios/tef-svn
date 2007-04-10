@@ -11,13 +11,11 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ocl.expressions.OperationCallExp;
 import org.eclipse.emf.ocl.expressions.PropertyCallExp;
-import org.eclipse.emf.ocl.types.TypesFactory;
+import org.eclipse.emf.ocl.uml.Constraint;
 import org.eclipse.emf.ocl.utilities.PredefinedType;
 
-import cmof.Constraint;
 import editortest.emf.model.EMFModel;
 import editortest.emf.model.EMFModelElement;
 
