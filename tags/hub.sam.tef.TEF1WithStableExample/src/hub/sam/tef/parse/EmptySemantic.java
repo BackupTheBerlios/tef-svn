@@ -12,4 +12,9 @@ public class EmptySemantic implements Semantic {
 		return null;
 	}
 
+	public Object doSemanticForErrorRecovery(String recoverSymbol) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -142,4 +142,9 @@ public class UpdatedASTTreeSemantic implements Semantic {
 	public TextBasedUpdatedAST getCurrentResult() {
 		return result;
 	}
+
+	public Object doSemanticForErrorRecovery(String recoverSymbol) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

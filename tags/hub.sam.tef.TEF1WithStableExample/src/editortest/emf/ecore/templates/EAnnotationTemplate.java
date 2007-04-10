@@ -18,8 +18,6 @@ package editortest.emf.ecore.templates;
 
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ElementTemplate;
-import hub.sam.tef.templates.LayoutElementTemplate;
-import hub.sam.tef.templates.LayoutManager;
 import hub.sam.tef.templates.ReferenceTemplate;
 import hub.sam.tef.templates.SequenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
@@ -27,7 +25,6 @@ import hub.sam.tef.templates.StringTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
-import editortest.mof.template.MofIdentifierTemplate;
 
 public class EAnnotationTemplate extends EModelElementTemplate {
 

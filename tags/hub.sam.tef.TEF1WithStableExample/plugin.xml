@@ -5,22 +5,6 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            name="Sample TEF Editor"
-            extensions="mof"
-            icon="icons/sample.gif"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            class="editortest.mof.editor.MofEditor"
-            id="editortest.mof.MofEditor">
-      </editor>
-      <editor
-            class="editortest.emf.expressions.ExpressionEditor"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            default="true"
-            extensions="expressions"
-            icon="icons/full/obj16/ExpressionsModelFile.gif"
-            id="tef.emf.expressions.editor"
-            name="TEF Expressions Editor"/>
-      <editor
             class="editortest.emf.ecore.EcoreEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             default="false"
@@ -28,14 +12,6 @@
             icon="icons/full/obj16/EcoreModelFile.gif"
             id="tef.emf.ecore.editor"
             name="TEF ECore Editor"/>
-      <editor
-            class="editortest.emf.ocl.OclEditor"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            default="false"
-            extensions="uml"
-            icon="icons/full/obj16/Plus.gif"
-            id="tef.emf.ocl.editor"
-            name="TEF OCL Editor"/>
    </extension>
    
    <extension point="org.eclipse.ui.editors.annotationTypes">

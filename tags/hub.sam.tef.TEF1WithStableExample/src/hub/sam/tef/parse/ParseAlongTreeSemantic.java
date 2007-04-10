@@ -114,5 +114,10 @@ public class ParseAlongTreeSemantic implements Semantic {
 			return nextSibling.getFirstLeaf().getParent();
 		}
 	}
+
+	public Object doSemanticForErrorRecovery(String recoverSymbol) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

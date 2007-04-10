@@ -11,6 +11,11 @@ public class PrintSemantic implements fri.patterns.interpreter.parsergenerator.S
 		System.out.println("parser parsed " + rule);
 		return null;
 	}
+
+	public Object doSemanticForErrorRecovery(String recoverSymbol) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 }

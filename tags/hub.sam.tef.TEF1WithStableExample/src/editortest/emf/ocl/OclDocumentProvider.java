@@ -3,14 +3,9 @@ package editortest.emf.ocl;
 import hub.sam.tef.TEFDocument;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -65,7 +60,7 @@ public class OclDocumentProvider extends EMFDocumentProvider {
 		// Create an adapter factory that yields item providers.
 		List factories = new ArrayList();
 		factories.add(new ResourceItemProviderAdapterFactory());
-		factories.add(new org.eclipse.emf.ocl.expressions.provider.ExpressionsItemProviderAdapterFactory());
+		//factories.add(new org.eclipse.emf.ocl.expressions.provider.ExpressionsItemProviderAdapterFactory());
 		factories.add(new ReflectiveItemProviderAdapterFactory());
 		return new ComposedAdapterFactory(factories);
 	}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore">
+  <ecore:EPackage name="HansPackage"/>
+  <ecore:EPackage name="KlausPackage">
+    <eAnnotations source="dit"/>
+    <eClassifiers xsi:type="ecore:EClass" name="AClass" eSuperTypes="#/1/BClass">
+      <eAnnotations source="s"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="hansaae" eType="#/2"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="klaus" eType="#/2" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="hans" eType="#/2" changeable="false"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BClass"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="String"/>
+  </ecore:EPackage>
+  <ecore:EDataType name="String"/>
+</xmi:XMI>
