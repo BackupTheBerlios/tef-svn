@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="editortest.emf.ecore.EcoreEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="false"
+            extensions="ecore"
+            icon="icons/full/obj16/EcoreModelFile.gif"
+            id="tef.emf.ecore.editor"
+            name="TEF ECore Editor"/>
+      <editor
+            class="editortest.emf.ocl.OclEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="false"
+            extensions="uml"
+            icon="icons/full/obj16/Plus.gif"
+            id="tef.emf.ocl.editor"
+            name="TEF OCL Editor"/>
+   </extension>
+   
+   <extension point="org.eclipse.ui.editors.annotationTypes">
+         <type
+               name="hub.sam.tef.occurence"
+               >
+         </type>
+          <type
+         	name="testeditor.currentobjectmarker">
+         </type>
+          <type
+                name="hub.sam.tef.error"
+                super="org.eclipse.ui.workbench.texteditor.error"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+         <specification
+               annotationType="hub.sam.tef.occurence"
+               colorPreferenceKey="occurrenceIndicationColor"
+               colorPreferenceValue="230,230,230"
+               highlightPreferenceKey="occurrenceHighlighting"
+               highlightPreferenceValue="true"
+               includeOnPreferencePage="false"
+               label="%marker.occurences.label"
+               overviewRulerPreferenceKey="occurrenceIndicationInOverviewRuler"
+               overviewRulerPreferenceValue="true"
+               presentationLayer="5"
+               textPreferenceKey="occurrenceIndication"
+               textPreferenceValue="true"
+               textStylePreferenceValue="IBEAM"
+               verticalRulerPreferenceKey="occurrenceIndicationInVerticalRuler"
+               verticalRulerPreferenceValue="true">
+	  </specification>
+	  <specification
+            annotationType="testeditor.currentobjectmarker"
+            label="%marker.acutal-element.label"
+            textPreferenceKey="actualObjectIndication"
+            textPreferenceValue="false"
+            highlightPreferenceKey="actualObjectHighlighting"
+            highlightPreferenceValue="true"
+            contributesToHeader="false"
+            overviewRulerPreferenceKey="actualObjectIndicationInOverviewRuler"
+            overviewRulerPreferenceValue="false"
+            verticalRulerPreferenceKey="actualObjectIndicationInVerticalRuler"
+            verticalRulerPreferenceValue="true"
+            colorPreferenceKey="actualObjectIndicationColor"
+            colorPreferenceValue="255,230,230"
+            presentationLayer="4"
+            showInNextPrevDropdownToolbarActionKey="showActualObjectInNextPrevDropdownToolbarAction"
+            showInNextPrevDropdownToolbarAction="true"
+            isGoToNextNavigationTargetKey="isActualObjectGoToNextNavigationTarget"
+	        isGoToNextNavigationTarget="false"
+            isGoToPreviousNavigationTargetKey="isActualObjectGoToPreviousNavigationTarget"
+	        isGoToPreviousNavigationTarget="false">
+	  </specification>
+   </extension>
+   
+  <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+    <factory 
+       uri = "null" 
+       class = "editortest.emf.expressions.emfmodel.provider.ExpressionsItemProviderAdapterFactory" 
+       supportedTypes = 
+         "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+          org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+          org.eclipse.emf.edit.provider.ITreeItemContentProvider
+          org.eclipse.emf.edit.provider.IItemLabelProvider
+          org.eclipse.emf.edit.provider.IItemPropertySource" />
+  </extension>
+  
+    <extension
+    point = "org.eclipse.ui.newWizards">
+    <category
+      id = "org.eclipse.emf.ecore.Wizard.category.ID"
+      name="%_UI_Wizard_category">
+    </category>
+    <wizard
+      id = "editortest.emf.expressions.emfmodel.presentation.ExpressionsModelWizardID"
+      name = "%_UI_ExpressionsModelWizard_label"
+      class = "editortest.emf.expressions.emfmodel.presentation.ExpressionsModelWizard"
+      category = "org.eclipse.emf.ecore.Wizard.category.ID"
+      icon = "icons/full/obj16/ExpressionsModelFile.gif">
+      <description>%_UI_ExpressionsModelWizard_description</description>
+      <selection class = "org.eclipse.core.resources.IResource" />
+    </wizard>
+  </extension>
+
+  <extension
+        point="org.eclipse.ui.popupMenus">
+     <viewerContribution
+           id="tef.emf.ocl.editor.contextPopup"
+           targetID="#TextEditorContext">
+        <menu
+              id="tef.emf.ocl.editor.contextmenu"
+              label="Test Actions">
+           <separator name="typeGroup"/>
+        </menu>
+        <action
+              class="hub.sam.tef.syntax.TestParseAction"
+              id="tef.emf.ocl.editor.actions.Parse"
+              label="Parse"
+              menubarPath="tef.emf.ocl.editor.contextmenu/typeGroup"/>
+        <action
+              class="hub.sam.tef.syntax.PrintGrammarAction"
+              id="tef.emf.ocl.editor.actions.PrintGrammar"
+              label="Print grammar"
+              menubarPath="tef.emf.ocl.editor.contextmenu/typeGroup"/>
+     </viewerContribution>
+  </extension>  
+</plugin>
