@@ -1,4 +1,4 @@
-package editortest.emf.model;
+package hub.sam.tef.emf.model;
 
 import hub.sam.tef.models.IType;
 

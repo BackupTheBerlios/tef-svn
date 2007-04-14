@@ -1,5 +1,7 @@
 package editortest.emf.ocl;
 
+import hub.sam.tef.emf.EMFDocumentProvider;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -16,7 +18,6 @@ import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 import org.eclipse.jface.text.IDocument;
 
-import editortest.emf.ecore.EMFDocumentProvider;
 
 public class OclDocumentProvider extends EMFDocumentProvider {
 

@@ -1,6 +1,8 @@
 package editortest.emf.ocl.annotations;
 
 import hub.sam.tef.annotations.IIdentifierResolver;
+import hub.sam.tef.emf.model.EMFModel;
+import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
@@ -12,8 +14,6 @@ import org.eclipse.emf.ocl.expressions.LoopExp;
 import org.eclipse.emf.ocl.expressions.Variable;
 import org.eclipse.emf.ocl.uml.Constraint;
 
-import editortest.emf.model.EMFModel;
-import editortest.emf.model.EMFModelElement;
 
 public class VariableResolver implements IIdentifierResolver {
 

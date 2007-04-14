@@ -1,6 +1,10 @@
 package editortest.emf.ocl.annotations;
 
 import hub.sam.tef.annotations.IIdentifierResolver;
+import hub.sam.tef.emf.EMFIdentifierResolver;
+import hub.sam.tef.emf.model.EMFMetaModelElement;
+import hub.sam.tef.emf.model.EMFModel;
+import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
@@ -28,10 +32,6 @@ import org.eclipse.emf.ocl.parser.EnvironmentFactory;
 import org.eclipse.emf.ocl.types.impl.TypeUtil;
 import org.eclipse.emf.ocl.uml.TypedElement;
 
-import editortest.emf.EMFIdentifierResolver;
-import editortest.emf.model.EMFMetaModelElement;
-import editortest.emf.model.EMFModel;
-import editortest.emf.model.EMFModelElement;
 
 public class OclIdentifierResolver extends EMFIdentifierResolver {
 

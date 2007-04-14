@@ -14,7 +14,7 @@
  * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
  * MA 02111-1307 USA
  */
-package editortest.emf.model;
+package hub.sam.tef.emf.model;
 
 import java.util.Collection;
 import java.util.Vector;
@@ -28,8 +28,8 @@ import org.eclipse.emf.edit.command.ReplaceCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import editortest.emf.model.EMFModelElement.EMFListener;
 
+import hub.sam.tef.emf.model.EMFModelElement.EMFListener;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.ICommandFactory;

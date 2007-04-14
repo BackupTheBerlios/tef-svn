@@ -16,6 +16,8 @@
  */
 package editortest.emf.ecore;
 
+import hub.sam.tef.emf.EMFDocumentProvider;
+
 import java.util.Vector;
 
 import org.eclipse.emf.ecore.EFactory;

@@ -14,10 +14,11 @@
  * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
  * MA 02111-1307 USA
  */
-package editortest.emf.ecore;
+package hub.sam.tef.emf;
 
 import hub.sam.tef.TEFDocument;
 import hub.sam.tef.TEFDocumentProvider;
+import hub.sam.tef.emf.model.EMFModel;
 import hub.sam.tef.models.IModel;
 
 import java.io.IOException;
@@ -35,7 +36,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
 
-import editortest.emf.model.EMFModel;
 
 public abstract class EMFDocumentProvider extends TEFDocumentProvider {
 	

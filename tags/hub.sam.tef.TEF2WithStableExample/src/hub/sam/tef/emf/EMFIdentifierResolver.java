@@ -1,4 +1,4 @@
-package editortest.emf;
+package hub.sam.tef.emf;
 
 import java.util.Collection;
 import java.util.Vector;

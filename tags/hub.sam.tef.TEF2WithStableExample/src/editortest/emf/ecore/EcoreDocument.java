@@ -19,10 +19,10 @@ package editortest.emf.ecore;
 import hub.sam.tef.TEFDocument;
 import hub.sam.tef.annotations.IAnnotationModelProvider;
 import hub.sam.tef.annotations.IIdentifierResolver;
+import hub.sam.tef.emf.EMFIdentifierResolver;
 import hub.sam.tef.syntax.AbstractLayoutManager;
 import hub.sam.tef.syntax.BlockLayout;
 import hub.sam.tef.templates.Template;
-import editortest.emf.EMFIdentifierResolver;
 import editortest.emf.ecore.templates.EPackageTemplate;
 
 public class EcoreDocument extends TEFDocument {

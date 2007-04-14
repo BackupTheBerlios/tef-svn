@@ -17,6 +17,7 @@
 package editortest.emf.ecore.templates;
 
 import hub.sam.tef.completion.Proposal;
+import hub.sam.tef.emf.model.EMFMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.syntax.BlockLayout;
 import hub.sam.tef.templates.ElementTemplate;
@@ -34,7 +35,6 @@ import hub.sam.tef.templates.WhitespaceTemplate;
 import java.util.Arrays;
 import java.util.List;
 
-import editortest.emf.model.EMFMetaModelElement;
 
 public class EOperationTemplate extends ElementTemplate {
 

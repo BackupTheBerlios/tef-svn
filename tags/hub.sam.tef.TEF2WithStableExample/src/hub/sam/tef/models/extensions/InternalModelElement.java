@@ -1,5 +1,6 @@
 package hub.sam.tef.models.extensions;
 
+import hub.sam.tef.emf.model.IOccurence;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelChangeListener;
@@ -11,7 +12,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
-import editortest.emf.model.IOccurence;
 
 public class InternalModelElement implements IModelElement {
 
