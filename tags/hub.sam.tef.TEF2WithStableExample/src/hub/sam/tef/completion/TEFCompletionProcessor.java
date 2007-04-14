@@ -64,10 +64,12 @@ public class TEFCompletionProcessor implements IContentAssistProcessor {
 		CompletionContext context = new CompletionContext(viewer.getDocument().get().substring(0, documentOffset),
 				languageProvider, modelProvider);
 		
-		Collection<ICompletionComputer> computers = new Vector<ICompletionComputer>();
+		Collection<ICompletionComputer> computers = languageProvider.getCompletions();
+		/*
 		computers.add(new OclPropertyCallExpCompletion());
 		computers.add(new OclOperationCallExpCompletion());
 		computers.add(new OclVariableExpCompletion());
+		*/
 		
 		Collection<ICompletionProposal> result = new Vector<ICompletionProposal>();
 		for (ICompletionComputer computer: computers) {

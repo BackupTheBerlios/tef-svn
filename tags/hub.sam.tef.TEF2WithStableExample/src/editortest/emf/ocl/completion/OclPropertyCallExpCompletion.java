@@ -4,6 +4,7 @@ import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.completion.CompletionContext;
 import hub.sam.tef.completion.SingleReductionCompletion;
 import hub.sam.tef.completion.TEFCompletionProposal;
+import hub.sam.tef.emf.EMFCompletions;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package editortest.emf.ocl.completion;
+package hub.sam.tef.emf;
 
 import hub.sam.tef.completion.CompletionContext;
 import hub.sam.tef.completion.TEFCompletionProposal;

@@ -19,6 +19,7 @@ package hub.sam.tef;
 import hub.sam.tef.annotations.IAnnotationModelProvider;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
+import hub.sam.tef.completion.ICompletionComputer;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.syntax.AbstractLayoutManager;
@@ -35,6 +36,7 @@ import hub.sam.util.trees.IChildSelector;
 import hub.sam.util.trees.TreeIterator;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -179,5 +181,8 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 		return layout;
 	}
 	
-	
+	public Collection<ICompletionComputer> getCompletions() {
+		return Collections.EMPTY_LIST;
+	}
+
 }
