@@ -16,6 +16,7 @@
  */
 package hub.sam.tef.templates;
 
+import hub.sam.tef.IDocumentModelProvider;
 import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.models.ICollection;
@@ -41,6 +42,11 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 	public ChoiceTemplate(Template template, IMetaModelElement metaModelElement) {
 		super(template, metaModelElement);
 		this.fMetaModelElement = metaModelElement;		
+	}
+	
+	public ChoiceTemplate(IDocumentModelProvider modelProvider, IMetaModelElement metaModel) {
+		super(modelProvider, metaModel);
+		this.fMetaModelElement = metaModel;
 	}
 	
 	public ValueTemplate<IModelElement>[] getAlternativeTemplates() {
