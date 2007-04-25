@@ -1,5 +1,6 @@
 package editortest.emf.ocl.annotations;
 
+import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.emf.model.EMFModel;
 import hub.sam.tef.emf.model.EMFModelElement;
@@ -23,7 +24,7 @@ public class FeatureResolver implements IIdentifierResolver {
 
 	public IModelElement resolveIdentifier(IModel model, ASTElementNode node,
 			IModelElement context, IModelElement topLevelElement,
-			IMetaModelElement expectedType, String property) {
+			IMetaModelElement expectedType, String property) throws CouldNotResolveIdentifierException {
 		String name = node.getNode("name").getContent();
 		EObject eContext = (EObject)((EMFModelElement)context).getEMFObject();
 		while (eContext != null) {
@@ -32,7 +33,7 @@ public class FeatureResolver implements IIdentifierResolver {
 				EClassifier sourceType = TypeHelper.getTypeFor(propertyCall.getSource());
 				if (sourceType == null) {
 					System.out.println(getClass().getCanonicalName() + ": sourceType not set");
-					return null;
+					throw new CouldNotResolveIdentifierException("Could not resolve the reference because the type of the referee is unknown.");
 				}
 				if (sourceType instanceof EClass) {
 					EClass sourceClass = (EClass)sourceType;
@@ -43,16 +44,16 @@ public class FeatureResolver implements IIdentifierResolver {
 							return (IModelElement)EMFModel.getModelForEMFObject(feature);
 						}
 					}
-					return null;
+					throw new CouldNotResolveIdentifierException("The type " + sourceType.getName() + " has no property " + name + ".");
 				} 
-				return null;
+				throw new CouldNotResolveIdentifierException("Could not resolve the reference because the referee is not a class instance.");
 			} else if (eContext instanceof OperationCallExp) {
 				OperationCallExp operationCall = (OperationCallExp)eContext;				
 				EClassifier sourceType =  TypeHelper.getTypeFor(operationCall.getSource());
 				
 				if (sourceType == null) {
 					System.out.println(getClass().getCanonicalName() + ": sourceType not set");
-					return null;
+					throw new CouldNotResolveIdentifierException("Could not resolve the reference because the type of the referee is unknown.");
 				}
 				
 				PredefinedType predefinedSourceType = TypeHelper.getPredefinedType(sourceType);
@@ -65,7 +66,7 @@ public class FeatureResolver implements IIdentifierResolver {
 							return (IModelElement)EMFModel.getModelForEMFObject(operation);
 						}
 					}
-					return null;
+					throw new CouldNotResolveIdentifierException("The type " + sourceType.getName() + " has no operation " + name + ".");
 				} else if (predefinedSourceType != null) {
 					for (Object operationObj: predefinedSourceType.getOperations()) {
 						EOperation operation = (EOperation)operationObj;
@@ -74,15 +75,15 @@ public class FeatureResolver implements IIdentifierResolver {
 							return (IModelElement)EMFModel.getModelForEMFObject(operation);
 						}
 					}
-					return null;
+					throw new CouldNotResolveIdentifierException("The type " + predefinedSourceType.toString() + " has no operation " + name + ".");
 				}
-				return null;
+				throw new CouldNotResolveIdentifierException("Could not resolve the reference because the referee is not a class instance nor an instance of a predefined type.");
 			} else if (eContext instanceof Constraint) {
-				return null;
+				throw new CouldNotResolveIdentifierException("unkown reason");
 			}
 			eContext = eContext.eContainer();
 		}
-		return null;
+		throw new CouldNotResolveIdentifierException("unkown reason");
 	}
 
 	

@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.ErrorAnnotation;
+import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
 import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.models.ICommand;
@@ -143,9 +144,14 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		if (parent != null && isComposite) {
 			result = ((ModelASTElement)tree.getElement()).getModelElement();			
 		} else if (parent != null && !isComposite) {		
-			result = context.getIdentifierResolver().resolveIdentifier(fElementTemplate.getModel(),
-					(ASTElementNode)tree, parent, context.getNewModel(),
-					((ReferenceTemplate)tree.getParent().getElement().getTemplate()).getTypeModel(), property);
+			try {
+				result = context.getIdentifierResolver().resolveIdentifier(fElementTemplate.getModel(),
+						(ASTElementNode)tree, parent, context.getNewModel(),
+						((ReferenceTemplate)tree.getParent().getElement().getTemplate()).getTypeModel(), property);
+			} catch (CouldNotResolveIdentifierException ex) {
+				context.getAnnotationModelProvider().addAnnotation(new ErrorAnnotation(ex.getMessage()),
+						new Position(tree.getAbsoluteOffset(0), tree.getLength()));
+			}
 			if (result == null) {
 				result = fElementTemplate.createMockObject();
 			} else {
@@ -176,8 +182,7 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 	public void check(ASTElementNode representation, SemanticsContext context) {	
 		IModelElement modelElement = ((ModelASTElement)representation.getElement()).getModelElement();
 		if (modelElement instanceof InternalModelElement) {			
-			context.getAnnotationModelProvider().addAnnotation(new ErrorAnnotation(),
-					new Position(representation.getAbsoluteOffset(0), representation.getLength()));
+			// already handled in createReferenceModel
 		} else {
 			context.addModelElementOccurence(modelElement, 
 					new Position(representation.getAbsoluteOffset(0), representation.getLength()));

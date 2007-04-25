@@ -157,7 +157,7 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 		if (modelElement != null && template.getAdapter(IPresentationOptionsProvider.class).markOccurences(selectedTreeNode, cursorPosition - selectedTreeNode.getAbsoluteOffset(0))) {					
 			Collection<Position> positions =  documentModel.getOccurences(modelElement);					
 			for(Position position: positions) {
-				result.put(new Annotation("hub.sam.tef.occurence", false, "A OCCURENCE"), position);
+				result.put(new Annotation("hub.sam.tef.occurence", false, null), position);
 			}
 			return result;
 		} else {

@@ -65,7 +65,8 @@ public class ReconciliationUnit {
 				return new ReconciliationResults(newModel, newAST);
 			} else {
 				fDocument.getModelProvider().getAnnotationModelProvider().
-						addAnnotation(new ErrorAnnotation(), new Position(getParserInterface(fDocument.getTopLevelTemplate()).getLastOffset(), 1));
+						addAnnotation(new ErrorAnnotation("Could not parse the document."), 
+								new Position(0, getParserInterface(fDocument.getTopLevelTemplate()).getLastOffset()));
 				return new ReconciliationResults(null, null);
 			}
 		} catch (Exception ex) {			

@@ -6,8 +6,8 @@ public class ErrorAnnotation extends Annotation {
 
 	public static final String TEF_ERROR = "hub.sam.tef.error";
 	
-	public ErrorAnnotation() {
-		super(TEF_ERROR, false, "An error...");
+	public ErrorAnnotation(String message) {
+		super(TEF_ERROR, false, message);
 	}
 	
 }

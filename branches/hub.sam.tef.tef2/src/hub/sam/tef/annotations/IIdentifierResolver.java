@@ -29,7 +29,7 @@ public interface IIdentifierResolver {
 	 */
 	public IModelElement resolveIdentifier(IModel model, ASTElementNode node, IModelElement context, 
 			IModelElement topLevelElement, 
-			IMetaModelElement expectedType, String property);
+			IMetaModelElement expectedType, String property) throws CouldNotResolveIdentifierException;
 	
 	public void addToEnvironment(IModelElement element);
 	

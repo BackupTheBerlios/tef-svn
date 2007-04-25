@@ -1,5 +1,6 @@
 package editortest.emf.ocl.annotations;
 
+import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.emf.model.EMFModel;
 import hub.sam.tef.emf.model.EMFModelElement;
@@ -19,7 +20,7 @@ public class VariableResolver implements IIdentifierResolver {
 
 	public IModelElement resolveIdentifier(IModel model, ASTElementNode node,
 			IModelElement context, IModelElement topLevelElement,
-			IMetaModelElement expectedType, String property) {
+			IMetaModelElement expectedType, String property) throws CouldNotResolveIdentifierException{
 		String name = node.getNode("name").getContent();
 		EObject eContext = (EObject)((EMFModelElement)context).getEMFObject();
 		while (eContext != null) {
@@ -41,7 +42,7 @@ public class VariableResolver implements IIdentifierResolver {
 			}
 			eContext = eContext.eContainer();
 		}
-		return null;
+		throw new CouldNotResolveIdentifierException("There is no variable " + name);
 	}
 
 	public void addToEnvironment(IModelElement element) {

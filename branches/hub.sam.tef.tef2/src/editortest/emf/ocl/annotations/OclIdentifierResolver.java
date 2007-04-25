@@ -1,5 +1,6 @@
 package editortest.emf.ocl.annotations;
 
+import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.emf.EMFIdentifierResolver;
 import hub.sam.tef.emf.model.EMFMetaModelElement;
@@ -109,10 +110,11 @@ public class OclIdentifierResolver extends EMFIdentifierResolver {
 			}
 		}
 	}
-		
+	
+	@Override
 	public IModelElement resolveIdentifier(IModel model, ASTElementNode node,
 			IModelElement context, IModelElement topLevelElement,
-			IMetaModelElement expectedType, String property) {
+			IMetaModelElement expectedType, String property)  throws CouldNotResolveIdentifierException {
 		EClass metaType = ((EMFMetaModelElement)expectedType).getEMFObject();
 		if (org.eclipse.emf.ocl.expressions.ExpressionsPackage.eINSTANCE.getVariable().isSuperTypeOf(metaType)) {
 			return variableResolver.resolveIdentifier(model, node, context, topLevelElement, expectedType, property);
