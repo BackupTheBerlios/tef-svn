@@ -1,12 +1,15 @@
 package hub.sam.tef.completion;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Vector;
-
 import hub.sam.tef.syntax.ParserInterface;
 import hub.sam.tef.syntax.UpdateTreeSemantic;
 import hub.sam.tef.treerepresentation.ASTElementNode;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Vector;
 
 public class CompletionEngine {
 
@@ -29,14 +32,21 @@ public class CompletionEngine {
 			context.setIdentifierPrefix(parser.getIdentifierPrefix());
 			
 			boolean completionOk = completion.reduceParseStack(parser);
-			Collection<TEFCompletionProposal> proposals = new Vector<TEFCompletionProposal>();
+			Collection<TEFCompletionProposal> proposals = new HashSet<TEFCompletionProposal>();
 			if (completionOk) {
 				if (parser.hasValidStack()) {
 					proposals.addAll(completion.createProposals((ASTElementNode)parser.getParseResult(0), context));
 				}
 			}
 	
-			return proposals;
+			List<TEFCompletionProposal> sortedProposals = new Vector<TEFCompletionProposal>();
+			sortedProposals.addAll(proposals);
+			Collections.sort(sortedProposals, new Comparator<TEFCompletionProposal>() {
+				public int compare(TEFCompletionProposal o1, TEFCompletionProposal o2) {
+					return o1.getDisplayString().compareTo(o2.getDisplayString());
+				}				
+			});
+			return sortedProposals;
 		} catch (Exception ex) {
 			System.out.print("COMPLETION FAILED: " + ex.getMessage());
 			return Collections.EMPTY_LIST;

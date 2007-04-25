@@ -75,4 +75,31 @@ public class TEFCompletionProposal implements ICompletionProposal {
 	public Point getSelection(IDocument document) { 
 		return new Point(fDocumentOffset + fDocumentText.length(), 0);
 	}
+
+	@Override
+	public int hashCode() {
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + ((fDocumentText == null) ? 0 : fDocumentText.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final TEFCompletionProposal other = (TEFCompletionProposal) obj;
+		if (fDocumentText == null) {
+			if (other.fDocumentText != null)
+				return false;
+		} else if (!fDocumentText.equals(other.fDocumentText))
+			return false;
+		return true;
+	}
+	
+	
 }
