@@ -25,6 +25,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
@@ -61,10 +62,9 @@ public abstract class TEFEditor extends TextEditor {
 	}
 	
 	@Override
-	public final void createPartControl(Composite parent) {		
+	public final void createPartControl(Composite parent) {	
 		super.createPartControl(parent);	
-		((TEFDocument)getSourceViewer().getDocument()).configure((IAnnotationModelExtension)
-				getSourceViewer().getAnnotationModel());
+		getDocument().configure((IAnnotationModelExtension)getSourceViewer().getAnnotationModel());
 		new TEFOccurencesUpdater(this);					
 	}
 
@@ -78,9 +78,13 @@ public abstract class TEFEditor extends TextEditor {
 		setAction("ContentAssistProposal", action);
 	}		
 	
-	private IAction createContentAssistAction() {
+	private IAction createContentAssistAction() {		
 		ResourceBundle resourceBundle = TEFPlugin.getDefault().getResourceBundle();
 		return new TextOperationAction(resourceBundle, "ContentAssistProposal", 
 				this, ISourceViewer.CONTENTASSIST_PROPOSALS);
+	}
+		
+	public Control getWidget() {
+		return getSourceViewer().getTextWidget();
 	}
 }

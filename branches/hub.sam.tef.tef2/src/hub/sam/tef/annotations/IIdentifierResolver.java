@@ -3,13 +3,12 @@ package hub.sam.tef.annotations;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.models.extensions.InternalModelElement;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 
 public interface IIdentifierResolver {
 	
 	/**
-	 * Implementing classes have the responsiblity to resolve identifiers and
+	 * Implementing classes have the responsibility to resolve identifiers and
 	 * return an according object if the identifier can be resolved.
 	 * 
 	 * @param model

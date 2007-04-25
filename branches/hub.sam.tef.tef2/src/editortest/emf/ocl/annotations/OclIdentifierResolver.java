@@ -3,7 +3,6 @@ package editortest.emf.ocl.annotations;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.emf.EMFIdentifierResolver;
 import hub.sam.tef.emf.model.EMFMetaModelElement;
-import hub.sam.tef.emf.model.EMFModel;
 import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
@@ -30,8 +29,6 @@ import org.eclipse.emf.ocl.parser.EcoreEnvironmentFactory;
 import org.eclipse.emf.ocl.parser.Environment;
 import org.eclipse.emf.ocl.parser.EnvironmentFactory;
 import org.eclipse.emf.ocl.types.impl.TypeUtil;
-import org.eclipse.emf.ocl.uml.TypedElement;
-
 
 public class OclIdentifierResolver extends EMFIdentifierResolver {
 
@@ -55,27 +52,6 @@ public class OclIdentifierResolver extends EMFIdentifierResolver {
 		environment.setSelfVariable(selfVar);
 		expressionVariableForEnvironmentVariable.put(selfVar, selfVar);
 	}
-
-	/*
-	@Override	
-	public IModelElement resolveIdentifier(IModel model, ASTElementNode node, IModelElement context, IModelElement topLevelElement, IMetaModelElement expectedType, String property) {		
-		EClass metaType = ((EMFMetaModelElement)expectedType).getEMFObject();
-		checkForVariablesWithLazyType(); // TODO performance?
-		if (org.eclipse.emf.ocl.expressions.ExpressionsPackage.eINSTANCE.getVariable().isSuperTypeOf(metaType)) {
-			return (IModelElement)EMFModel.getModelForEMFObject(
-					expressionVariableForEnvironmentVariable.get(environment.lookup(node.getNode("name").getContent())));			
-		} else if (org.eclipse.emf.ecore.EcorePackage.eINSTANCE.getEStructuralFeature().isSuperTypeOf(metaType)) {			
-			return (IModelElement)EMFModel.getModelForEMFObject(
-					environment.lookupProperty(((TypedElement)((EMFModelElement)context).getEMFObject()).getType(), 
-					node.getNode("name").getContent()));			
-		} else if (org.eclipse.emf.ecore.EcorePackage.eINSTANCE.getEOperation().isSuperTypeOf(metaType)) {
-			return featureResolver.resolveIdentifier(model, node, context, topLevelElement, expectedType, property);
-		} else {
-			return super.resolveIdentifier(model, node, context, topLevelElement, expectedType, property);
-		}
-			
-	}
-	*/
 	
 	private final Map<Variable, OCLExpression> variablesWithLazyType = new HashMap<Variable, OCLExpression>();
 	private final Map<Variable, Variable> expressionVariableForEnvironmentVariable = new HashMap<Variable, Variable>();

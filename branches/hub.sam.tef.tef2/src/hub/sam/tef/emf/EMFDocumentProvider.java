@@ -37,6 +37,11 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
 
 
+/**
+ * This document provider provides TEF documents based on EMF models. A document
+ * is a part of editing domain. The model is identified based on a URI obtained
+ * from the editor input. 
+ */
 public abstract class EMFDocumentProvider extends TEFDocumentProvider {
 	
 	protected abstract Iterable<EPackage> getPackage();

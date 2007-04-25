@@ -68,11 +68,10 @@ import org.eclipse.jface.text.source.ISourceViewer;
  * eclipse mode this document does not present the TEF text structure, but a
  * normal StringBuffer based string content.
  * 
- * This document is a document per editor. This is completly wrong. It should be separated from
+ * This document is a document per editor. This is completely wrong. It should be separated from
  * a concrete editor instance.
  */
 public abstract class TEFDocument extends Document implements ILanguageModelProvider {	
-	//private Changes changes = new Changes();
 	private Template topLevelTemplate = null;
 	
 	private DocumentModel documentModel = null;		
@@ -96,16 +95,9 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 	}
 	
 	private synchronized final void eclipseReplace(int pos, int length, String text) throws BadLocationException {
-		//changes.addChange(new Change(pos, length, text));
 		changed = true;
 		super.replace(pos, length, text);
 	}
-	
-	/*
-	public Changes getChanges() {
-		return this.changes;
-	}
-	*/
 	
 	public IDocumentModelProvider getModelProvider() {
 		return documentModel;
@@ -120,12 +112,13 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 
 	public void setInitialModelContent(IModel model, Object resource) {
 		documentModel = new DocumentModel(model, resource, annotationModel, this, this);
-		documentModel.initialize();
+		documentModel.initializeFromModel();
 		try {
 			doReplace(0, get().length(), documentModel.getText());
 		} catch (BadLocationException ex) {
 			throw new RuntimeException(ex);
 		}
+		documentModel.reconcile();
 		this.changed = false;					
 	}
 	

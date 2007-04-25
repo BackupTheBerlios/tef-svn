@@ -3,6 +3,9 @@ package hub.sam.tef;
 import hub.sam.tef.annotations.IAnnotationModelProvider;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.reconciliation.ReconciliationFailedException;
+import hub.sam.tef.reconciliation.ReconciliationResults;
+import hub.sam.tef.reconciliation.ReconciliationUnit;
 import hub.sam.tef.treerepresentation.ASTElementNode;
 import hub.sam.tef.treerepresentation.IASTProvider;
 import hub.sam.util.container.IDisposable;
@@ -12,17 +15,20 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModelExtension;
 
+/**
+ * The document model combines all model information for the edited model. This includes not only the model
+ * itself, but also its textual representation, an annotation model, its tree representation, occurrences, and more. 
+ */
 public class DocumentModel implements IDisposable, IDocumentModelProvider, IAnnotationModelProvider {
 	
 	private final IModel fModel;
 	private final Object fResource;
 	private IAnnotationModelExtension fAnnotationModel = null;
-	private final IDocument fDocument;
+	private final TEFDocument fDocument;
 	
 	private final ILanguageModelProvider fLanguageModel;
 	
@@ -34,7 +40,7 @@ public class DocumentModel implements IDisposable, IDocumentModelProvider, IAnno
 	private Map<Annotation, Position> annotations = new HashMap<Annotation, Position>();
 	
 	public DocumentModel(final IModel model, final Object resource, 
-			final IAnnotationModelExtension annotationModel, final IDocument document, 
+			final IAnnotationModelExtension annotationModel, final TEFDocument document, 
 			final ILanguageModelProvider languageModel) {
 		super();
 		fModel = model;
@@ -42,13 +48,26 @@ public class DocumentModel implements IDisposable, IDocumentModelProvider, IAnno
 		fAnnotationModel = annotationModel;
 		fDocument = document;
 		fLanguageModel = languageModel;
-	}
-
-	public void initialize() {
+	}	
+	
+	public void initializeFromModel() {
 		topLevelModelElement = (IModelElement)fModel.getOutermostCompositesOfEditedResource().iterator().next();
 		treeRepresentation = (ASTElementNode)fLanguageModel.getTopLevelTemplate().getAdapter(IASTProvider.class).
 				createTreeRepresentation(null, null, topLevelModelElement, true, fLanguageModel.getLayout());
-		text = treeRepresentation.getContent();
+		initializeFromText(treeRepresentation.getContent());
+	}	
+	
+	public void initializeFromText(String text) {
+		this.text = text;	
+	}
+	
+	public void reconcile() {
+		try {
+			ReconciliationResults result = new ReconciliationUnit().run(fDocument);
+			update(result.getTopLevelTreeNode(), result.getTopLevelElement());
+		} catch (ReconciliationFailedException ex) {
+			System.out.println("initial reconciliation failed");
+		}	
 	}
 	
 	public void update(ASTElementNode newTree, IModelElement newModel) {
@@ -58,10 +77,7 @@ public class DocumentModel implements IDisposable, IDocumentModelProvider, IAnno
 			topLevelModelElement = newModel;
 			treeRepresentation = newTree;
 		}
-		
-		fAnnotationModel.replaceAnnotations(previousAnnotations, annotations);
-		previousAnnotations = annotations.keySet().toArray(new Annotation[] {});			
-		annotations.clear();
+		updateAnnotations();
 	}
 
 	public void addModelElementOccurence(IModelElement element, Position occurence) {
@@ -110,5 +126,14 @@ public class DocumentModel implements IDisposable, IDocumentModelProvider, IAnno
 	
 	public void setAnnotationModel(IAnnotationModelExtension annotationModel) {
 		this.fAnnotationModel = annotationModel;
+		updateAnnotations();
+	}
+	
+	private void updateAnnotations() {
+		if (fAnnotationModel != null) {
+			fAnnotationModel.replaceAnnotations(previousAnnotations, annotations);
+			previousAnnotations = annotations.keySet().toArray(new Annotation[] {});			
+			annotations.clear();
+		}
 	}
 }
