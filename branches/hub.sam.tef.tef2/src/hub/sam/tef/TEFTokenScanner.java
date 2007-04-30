@@ -1,5 +1,7 @@
 package hub.sam.tef;
 
+import hub.sam.tef.documents.ILanguageModelProvider;
+import hub.sam.tef.documents.TEFDocument;
 import hub.sam.tef.reconciliation.syntax.ISyntaxHighlightProvider;
 import hub.sam.tef.templates.Template;
 

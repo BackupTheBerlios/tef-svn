@@ -1,4 +1,4 @@
-package hub.sam.tef;
+package hub.sam.tef.documents;
 
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.completion.ICompletionComputer;

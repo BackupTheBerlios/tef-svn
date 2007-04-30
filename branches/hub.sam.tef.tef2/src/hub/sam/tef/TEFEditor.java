@@ -17,6 +17,9 @@
 package hub.sam.tef;
 
 
+import hub.sam.tef.documents.TEFDocument;
+import hub.sam.tef.documents.TEFDocumentProvider;
+
 import java.util.ResourceBundle;
 
 import org.eclipse.jface.action.IAction;

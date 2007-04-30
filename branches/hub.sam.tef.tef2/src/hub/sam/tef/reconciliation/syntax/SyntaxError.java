@@ -1,6 +1,6 @@
 package hub.sam.tef.reconciliation.syntax;
 
-import hub.sam.tef.ErrorAnnotation;
+import hub.sam.tef.annotations.ErrorAnnotation;
 
 import org.eclipse.jface.text.source.Annotation;
 

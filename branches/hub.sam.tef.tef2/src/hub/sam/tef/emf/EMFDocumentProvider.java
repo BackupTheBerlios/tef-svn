@@ -16,8 +16,8 @@
  */
 package hub.sam.tef.emf;
 
-import hub.sam.tef.TEFDocument;
-import hub.sam.tef.TEFDocumentProvider;
+import hub.sam.tef.documents.TEFDocument;
+import hub.sam.tef.documents.TEFDocumentProvider;
 import hub.sam.tef.emf.model.EMFModel;
 import hub.sam.tef.models.IModel;
 

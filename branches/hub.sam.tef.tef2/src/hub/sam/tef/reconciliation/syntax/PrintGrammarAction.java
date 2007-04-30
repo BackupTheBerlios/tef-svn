@@ -1,7 +1,7 @@
 package hub.sam.tef.reconciliation.syntax;
 
-import hub.sam.tef.TEFDocument;
 import hub.sam.tef.TEFEditor;
+import hub.sam.tef.documents.TEFDocument;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;

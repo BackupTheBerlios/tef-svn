@@ -17,9 +17,9 @@
 package hub.sam.tef.templates;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
-import hub.sam.tef.IDocumentModelProvider;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
 import hub.sam.tef.annotations.ISemanticProvider;
+import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;

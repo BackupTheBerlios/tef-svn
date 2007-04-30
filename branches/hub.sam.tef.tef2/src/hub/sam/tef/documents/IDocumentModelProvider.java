@@ -1,4 +1,4 @@
-package hub.sam.tef;
+package hub.sam.tef.documents;
 
 import org.eclipse.jface.text.Position;
 

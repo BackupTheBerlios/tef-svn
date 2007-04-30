@@ -19,10 +19,10 @@ package editortest.emf.ecore;
 import java.util.Collection;
 import java.util.Collections;
 
-import hub.sam.tef.TEFDocument;
 import hub.sam.tef.annotations.IAnnotationModelProvider;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.completion.ICompletionComputer;
+import hub.sam.tef.documents.TEFDocument;
 import hub.sam.tef.emf.EMFIdentifierResolver;
 import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
 import hub.sam.tef.reconciliation.syntax.BlockLayout;

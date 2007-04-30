@@ -16,9 +16,9 @@
  */
 package hub.sam.tef.templates;
 
-import hub.sam.tef.IDocumentModelProvider;
 import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.annotations.SemanticsContext;
+import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;

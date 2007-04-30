@@ -1,4 +1,4 @@
-package hub.sam.tef;
+package hub.sam.tef.annotations;
 
 import org.eclipse.jface.text.source.Annotation;
 

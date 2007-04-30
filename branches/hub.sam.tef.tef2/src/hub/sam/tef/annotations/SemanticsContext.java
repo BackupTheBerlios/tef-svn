@@ -1,7 +1,7 @@
 package hub.sam.tef.annotations;
 
-import hub.sam.tef.IDocumentModelProvider;
-import hub.sam.tef.ILanguageModelProvider;
+import hub.sam.tef.documents.IDocumentModelProvider;
+import hub.sam.tef.documents.ILanguageModelProvider;
 import hub.sam.tef.models.IModelElement;
 
 import org.eclipse.jface.text.Position;

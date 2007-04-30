@@ -1,6 +1,6 @@
 package editortest.emf.ocl.templates;
 
-import hub.sam.tef.IDocumentModelProvider;
+import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ElementTemplate;

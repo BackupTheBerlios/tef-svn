@@ -1,5 +1,6 @@
 package hub.sam.tef;
 
+import hub.sam.tef.documents.TEFDocument;
 import hub.sam.tef.reconciliation.ReconciliationFailedException;
 import hub.sam.tef.reconciliation.ReconciliationResults;
 import hub.sam.tef.reconciliation.ReconciliationUnit;

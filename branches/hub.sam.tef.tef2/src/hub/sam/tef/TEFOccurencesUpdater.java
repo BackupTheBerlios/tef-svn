@@ -16,6 +16,8 @@
  */
 package hub.sam.tef;
 
+import hub.sam.tef.documents.TEFDocument;
+
 import java.util.Map;
 
 import org.eclipse.jface.text.IDocument;

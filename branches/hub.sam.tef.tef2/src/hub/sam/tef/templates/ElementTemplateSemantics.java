@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Vector;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
-import hub.sam.tef.ErrorAnnotation;
 import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
+import hub.sam.tef.annotations.ErrorAnnotation;
 import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.models.ICommand;
