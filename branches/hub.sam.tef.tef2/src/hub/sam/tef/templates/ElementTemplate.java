@@ -24,10 +24,10 @@ import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
-import hub.sam.tef.syntax.IElementSyntaxProvider;
-import hub.sam.tef.syntax.ISyntaxProvider;
-import hub.sam.tef.treerepresentation.ASTElementNode;
-import hub.sam.tef.treerepresentation.IASTProvider;
+import hub.sam.tef.reconciliation.syntax.IElementSyntaxProvider;
+import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.IASTProvider;
 
 /**
  * A special ValueTemplate used for elements, whereby elements are container for

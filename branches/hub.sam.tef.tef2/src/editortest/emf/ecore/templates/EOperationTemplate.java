@@ -19,7 +19,7 @@ package editortest.emf.ecore.templates;
 import hub.sam.tef.completion.Proposal;
 import hub.sam.tef.emf.model.EMFMetaModelElement;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.syntax.BlockLayout;
+import hub.sam.tef.reconciliation.syntax.BlockLayout;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.IntegerTemplate;
 import hub.sam.tef.templates.LayoutElementTemplate;

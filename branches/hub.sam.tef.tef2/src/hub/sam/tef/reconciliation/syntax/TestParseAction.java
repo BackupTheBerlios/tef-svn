@@ -1,7 +1,7 @@
-package hub.sam.tef.syntax;
+package hub.sam.tef.reconciliation.syntax;
 
-import hub.sam.tef.treerepresentation.IASTChangedListener;
-import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.IASTChangedListener;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;

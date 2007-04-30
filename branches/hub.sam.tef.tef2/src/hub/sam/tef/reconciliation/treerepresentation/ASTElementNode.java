@@ -1,4 +1,4 @@
-package hub.sam.tef.treerepresentation;
+package hub.sam.tef.reconciliation.treerepresentation;
 
 import hub.sam.util.container.IDisposable;
 

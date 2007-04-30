@@ -1,8 +1,8 @@
-package hub.sam.tef.treerepresentation;
+package hub.sam.tef.reconciliation.treerepresentation;
 
 import hub.sam.tef.emf.model.IOccurence;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.syntax.ISyntaxProvider;
+import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
 import hub.sam.tef.templates.Template;
 import hub.sam.util.container.AbstractWatchedDisposable;
 

@@ -1,10 +1,10 @@
-package hub.sam.tef.syntax;
+package hub.sam.tef.reconciliation.syntax;
 
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.ASTNode;
+import hub.sam.tef.reconciliation.treerepresentation.TextASTElement;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.treerepresentation.ASTNode;
-import hub.sam.tef.treerepresentation.TextASTElement;
-import hub.sam.tef.treerepresentation.ASTElementNode;
 
 import java.util.List;
 

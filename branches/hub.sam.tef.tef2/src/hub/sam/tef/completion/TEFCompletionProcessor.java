@@ -27,7 +27,7 @@ import fri.patterns.interpreter.parsergenerator.ParserTables;
 import hub.sam.tef.IDocumentModelProvider;
 import hub.sam.tef.ILanguageModelProvider;
 import hub.sam.tef.TEFDocument;
-import hub.sam.tef.syntax.ParserInterface;
+import hub.sam.tef.reconciliation.syntax.ParserInterface;
 
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;

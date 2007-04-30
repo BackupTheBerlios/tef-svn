@@ -2,7 +2,7 @@ package hub.sam.tef;
 
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.completion.ICompletionComputer;
-import hub.sam.tef.syntax.AbstractLayoutManager;
+import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
 import hub.sam.tef.templates.Template;
 
 import java.util.Collection;

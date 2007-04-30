@@ -75,7 +75,7 @@ public abstract class TEFEditor extends TextEditor {
 		
 		String actionId = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
 		action.setActionDefinitionId(actionId);
-		setAction("ContentAssistProposal", action);
+		setAction("ContentAssistProposal", action);		
 	}		
 	
 	private IAction createContentAssistAction() {		

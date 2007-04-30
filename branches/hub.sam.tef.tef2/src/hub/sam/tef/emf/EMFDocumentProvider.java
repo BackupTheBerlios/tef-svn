@@ -47,8 +47,8 @@ public abstract class EMFDocumentProvider extends TEFDocumentProvider {
 	protected abstract Iterable<EPackage> getPackage();
 	protected abstract Iterable<EFactory> getFactory();
 	protected abstract EditingDomain getEditingDomain();
-		
-	protected void setDocumentContent(IDocument document, IModel model, Object resource) throws CoreException {		
+			
+	private void setDocumentContent(IDocument document, IModel model, Object resource) throws CoreException {		
 		((TEFDocument)document).setInitialModelContent(model, resource);		
 	}
 	
@@ -56,6 +56,7 @@ public abstract class EMFDocumentProvider extends TEFDocumentProvider {
 		return new EMFModel(getFactory(), getPackage(), resource, domain);
 	}
 	
+	@Override
 	protected boolean setDocumentContent(IDocument document, IEditorInput editorInput, String encoding) throws CoreException {
 		if (editorInput instanceof IStorageEditorInput) {
 			IStorage storage= ((IStorageEditorInput) editorInput).getStorage();						

@@ -1,7 +1,7 @@
-package hub.sam.tef.treerepresentation;
+package hub.sam.tef.reconciliation.treerepresentation;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
-import hub.sam.tef.syntax.ISyntaxProvider;
+import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
 import hub.sam.tef.templates.Template;
 
 public class TextASTElement implements IASTElement {

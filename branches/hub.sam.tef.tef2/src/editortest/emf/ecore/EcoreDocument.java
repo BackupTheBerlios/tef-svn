@@ -24,8 +24,8 @@ import hub.sam.tef.annotations.IAnnotationModelProvider;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.completion.ICompletionComputer;
 import hub.sam.tef.emf.EMFIdentifierResolver;
-import hub.sam.tef.syntax.AbstractLayoutManager;
-import hub.sam.tef.syntax.BlockLayout;
+import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
+import hub.sam.tef.reconciliation.syntax.BlockLayout;
 import hub.sam.tef.templates.Template;
 import editortest.emf.ecore.templates.EPackageTemplate;
 

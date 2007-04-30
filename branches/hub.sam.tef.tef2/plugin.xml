@@ -117,12 +117,12 @@
            <separator name="typeGroup"/>
         </menu>
         <action
-              class="hub.sam.tef.syntax.TestParseAction"
+              class="hub.sam.tef.reconciliation.syntax.TestParseAction"
               id="tef.emf.ocl.editor.actions.Parse"
               label="Parse"
               menubarPath="tef.emf.ocl.editor.contextmenu/typeGroup"/>
         <action
-              class="hub.sam.tef.syntax.PrintGrammarAction"
+              class="hub.sam.tef.reconciliation.syntax.PrintGrammarAction"
               id="tef.emf.ocl.editor.actions.PrintGrammar"
               label="Print grammar"
               menubarPath="tef.emf.ocl.editor.contextmenu/typeGroup"/>

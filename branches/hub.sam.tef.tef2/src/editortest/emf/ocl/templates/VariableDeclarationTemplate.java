@@ -1,7 +1,7 @@
 package editortest.emf.ocl.templates;
 
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.syntax.ExpressionLayout;
+import hub.sam.tef.reconciliation.syntax.ExpressionLayout;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.OptionalTemplate;
 import hub.sam.tef.templates.ReferenceTemplate;

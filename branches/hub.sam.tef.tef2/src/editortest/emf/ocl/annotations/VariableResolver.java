@@ -7,7 +7,7 @@ import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ocl.expressions.LetExp;

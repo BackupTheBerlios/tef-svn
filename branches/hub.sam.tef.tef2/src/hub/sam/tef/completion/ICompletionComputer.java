@@ -2,7 +2,7 @@ package hub.sam.tef.completion;
 
 import java.util.Collection;
 
-import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
 
 public interface ICompletionComputer {

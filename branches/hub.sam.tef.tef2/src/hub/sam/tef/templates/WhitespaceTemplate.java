@@ -1,6 +1,6 @@
 package hub.sam.tef.templates;
 
-import hub.sam.tef.syntax.AbstractLayoutManager;
+import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
 
 public class WhitespaceTemplate extends Template {
 

@@ -3,7 +3,7 @@ package hub.sam.tef.annotations;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
 public interface IIdentifierResolver {
 	

@@ -1,6 +1,6 @@
 package hub.sam.tef;
 
-import hub.sam.tef.syntax.ISyntaxHighlightProvider;
+import hub.sam.tef.reconciliation.syntax.ISyntaxHighlightProvider;
 import hub.sam.tef.templates.Template;
 
 import java.util.Collection;

@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.syntax.ExpressionLayout;
-import hub.sam.tef.syntax.ISyntaxProvider;
+import hub.sam.tef.reconciliation.syntax.ExpressionLayout;
+import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.ElementTemplateSemantics;
 import hub.sam.tef.templates.ReferenceTemplate;

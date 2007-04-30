@@ -1,4 +1,4 @@
-package hub.sam.tef.syntax;
+package hub.sam.tef.reconciliation.syntax;
 
 import java.util.Collection;
 

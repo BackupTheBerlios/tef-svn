@@ -5,7 +5,7 @@ import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
 import java.util.Collection;
 import java.util.Vector;

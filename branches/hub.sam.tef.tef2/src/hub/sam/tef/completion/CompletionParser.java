@@ -1,6 +1,6 @@
 package hub.sam.tef.completion;
 
-import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
 import java.io.IOException;
 import java.util.List;

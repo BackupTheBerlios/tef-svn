@@ -1,7 +1,7 @@
 package hub.sam.tef.completion;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
-import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
 
 /**

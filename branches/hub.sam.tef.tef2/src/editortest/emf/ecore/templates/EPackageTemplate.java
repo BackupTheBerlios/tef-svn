@@ -18,7 +18,7 @@ package editortest.emf.ecore.templates;
 
 import hub.sam.tef.IDocumentModelProvider;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.syntax.BlockLayout;
+import hub.sam.tef.reconciliation.syntax.BlockLayout;
 import hub.sam.tef.templates.ChoiceTemplate;
 import hub.sam.tef.templates.SequenceTemplate;
 import hub.sam.tef.templates.Template;

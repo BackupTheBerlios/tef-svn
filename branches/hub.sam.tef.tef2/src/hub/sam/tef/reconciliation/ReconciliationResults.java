@@ -1,7 +1,7 @@
 package hub.sam.tef.reconciliation;
 
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
 public class ReconciliationResults {
 	private final IModelElement topLevelElement;

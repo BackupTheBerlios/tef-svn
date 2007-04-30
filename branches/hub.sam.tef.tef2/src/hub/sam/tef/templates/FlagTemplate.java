@@ -34,14 +34,14 @@ import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.syntax.AbstractLayoutManager;
-import hub.sam.tef.syntax.ISyntaxHighlightProvider;
-import hub.sam.tef.syntax.ISyntaxProvider;
-import hub.sam.tef.treerepresentation.ASTElementNode;
-import hub.sam.tef.treerepresentation.IASTProvider;
-import hub.sam.tef.treerepresentation.ModelASTElement;
-import hub.sam.tef.treerepresentation.PrimitiveTreeRepresentation;
-import hub.sam.tef.treerepresentation.ASTNode;
+import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
+import hub.sam.tef.reconciliation.syntax.ISyntaxHighlightProvider;
+import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.ASTNode;
+import hub.sam.tef.reconciliation.treerepresentation.IASTProvider;
+import hub.sam.tef.reconciliation.treerepresentation.ModelASTElement;
+import hub.sam.tef.reconciliation.treerepresentation.PrimitiveTreeRepresentation;
 
 
 public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {

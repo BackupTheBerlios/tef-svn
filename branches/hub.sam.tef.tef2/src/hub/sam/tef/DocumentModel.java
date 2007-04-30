@@ -6,8 +6,8 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.ReconciliationFailedException;
 import hub.sam.tef.reconciliation.ReconciliationResults;
 import hub.sam.tef.reconciliation.ReconciliationUnit;
-import hub.sam.tef.treerepresentation.ASTElementNode;
-import hub.sam.tef.treerepresentation.IASTProvider;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.IASTProvider;
 import hub.sam.util.container.IDisposable;
 import hub.sam.util.container.MultiMap;
 
@@ -23,7 +23,7 @@ import org.eclipse.jface.text.source.IAnnotationModelExtension;
  * The document model combines all model information for the edited model. This includes not only the model
  * itself, but also its textual representation, an annotation model, its tree representation, occurrences, and more. 
  */
-public class DocumentModel implements IDisposable, IDocumentModelProvider, IAnnotationModelProvider {
+public final class DocumentModel implements IDisposable, IDocumentModelProvider, IAnnotationModelProvider {
 	
 	private final IModel fModel;
 	private final Object fResource;
