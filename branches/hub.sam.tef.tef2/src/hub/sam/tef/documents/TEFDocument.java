@@ -120,8 +120,41 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 		}
 		documentModel.reconcile();
 		this.changed = false;					
+	}	
+	
+	public void setInitialTextContext(IModel model, Object resourceId, String text) {
+		documentModel = new DocumentModel(model, resourceId, annotationModel, this, this);
+		documentModel.initializeFromText(text);
+		try {
+			doReplace(0, get().length(), text);
+		} catch (BadLocationException ex) {
+			throw new RuntimeException(ex);			
+		}
+		documentModel.reconcile();
+		this.changed = true;
 	}
 	
+	public void setInitialModel(IModel model, Object resource) {
+		documentModel = new DocumentModel(model, resource, annotationModel, this, this);		
+	}
+	
+	@Override
+	public void set(String text) {
+		super.set(text);
+		documentModel.initializeFromModel();
+		try {
+			doReplace(0, get().length(), documentModel.getText());
+		} catch (BadLocationException ex) {
+			throw new RuntimeException(ex);
+		}
+		documentModel.reconcile();
+		this.changed = false;
+	}
+
+	public IIdentifierResolver getIdentityResolver() {
+		return null;
+	}
+
 	synchronized public void setModelContent(ASTElementNode tree, IModelElement model) {
 		changed = tree == null;
 		documentModel.update(tree, model);
@@ -178,4 +211,7 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 		return Collections.EMPTY_LIST;
 	}
 
+	public void dispose() {
+		documentModel.dispose();
+	}
 }

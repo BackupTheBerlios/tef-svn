@@ -20,6 +20,14 @@
             icon="icons/full/obj16/Plus.gif"
             id="tef.emf.ocl.editor"
             name="TEF OCL Editor"/>
+       <editor
+            class="editortest.emf.ocl.OclTextEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="false"
+            extensions="tuml"
+            icon="icons/full/obj16/Plus.gif"
+            id="tef.emf.ocl.texteditor"
+            name="TEF OCL Text Editor"/>
    </extension>
    
    <extension point="org.eclipse.ui.editors.annotationTypes">

@@ -39,7 +39,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.ui.internal.ReopenEditorMenu;
 
 public class EMFModel extends AbstractModel {
 	
@@ -69,11 +68,9 @@ public class EMFModel extends AbstractModel {
 			fPackage.add(aPackage);
 			fFactorys.put(aPackage, factoriesIt.next());
 		}
-		fResource = resource;
+		fResource = resource;		
 		fDomain = editingDomain;		
 	}
-	
-	
 
 	@Override
 	protected ICommandFactory createCommandFactory() {
@@ -136,8 +133,8 @@ public class EMFModel extends AbstractModel {
 		return null;
 	}
 
-	public ICollection getOutermostComposites(Object resource) {
-		return new EMFSequence(fDomain.getResourceSet().getResource((URI)resource, false).getContents());
+	public ICollection getOutermostComposites(Object resourceId) {
+		return new EMFSequence(fDomain.getResourceSet().getResource((URI)resourceId, false).getContents());
 	}
 
 	public static Object getModelForEMFObject(Object emfObject) {
@@ -166,6 +163,13 @@ public class EMFModel extends AbstractModel {
 
 	public IType getType(String name) {
 		return getMetaElement(name);
+	}	
+
+	public void dispose() {
+		fDomain.getResourceSet().getResources().remove(fResource);
 	}
-	
+
+	public boolean isActive() {
+		return true;
+	}	
 }

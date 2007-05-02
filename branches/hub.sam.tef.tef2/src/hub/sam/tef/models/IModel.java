@@ -16,7 +16,9 @@
  */
 package hub.sam.tef.models;
 
-public interface IModel {
+import hub.sam.util.container.IDisposable;
+
+public interface IModel extends IDisposable {
 	
 	public Iterable<IModelElement> getElements(IMetaModelElement metaElement);
 	
@@ -37,7 +39,7 @@ public interface IModel {
 	
 	public IType getType(Class theTypesJavaClass);
 	
-	public ICollection getOutermostComposites(Object resource);
+	public ICollection getOutermostComposites(Object resourceId);
 	
 	public ICollection getOutermostCompositesOfEditedResource();
 	

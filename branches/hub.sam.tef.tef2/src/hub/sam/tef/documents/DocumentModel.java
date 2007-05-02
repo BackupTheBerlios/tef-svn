@@ -26,7 +26,7 @@ import org.eclipse.jface.text.source.IAnnotationModelExtension;
 public final class DocumentModel implements IDisposable, IDocumentModelProvider, IAnnotationModelProvider {
 	
 	private final IModel fModel;
-	private final Object fResource;
+	private final Object fResourceId;
 	private IAnnotationModelExtension fAnnotationModel = null;
 	private final TEFDocument fDocument;
 	
@@ -39,12 +39,12 @@ public final class DocumentModel implements IDisposable, IDocumentModelProvider,
 	private Annotation[] previousAnnotations = new Annotation[] {};
 	private Map<Annotation, Position> annotations = new HashMap<Annotation, Position>();
 	
-	public DocumentModel(final IModel model, final Object resource, 
+	public DocumentModel(final IModel model, final Object resourceId, 
 			final IAnnotationModelExtension annotationModel, final TEFDocument document, 
 			final ILanguageModelProvider languageModel) {
 		super();
 		fModel = model;
-		fResource = resource;
+		fResourceId = resourceId;
 		fAnnotationModel = annotationModel;
 		fDocument = document;
 		fLanguageModel = languageModel;
@@ -72,8 +72,10 @@ public final class DocumentModel implements IDisposable, IDocumentModelProvider,
 	
 	public void update(ASTElementNode newTree, IModelElement newModel) {
 		if (newTree != null) {
-			treeRepresentation.dispose();
-			fModel.replaceOutermostComposite(fResource, topLevelModelElement, newModel);
+			if (treeRepresentation != null) {
+				treeRepresentation.dispose();
+			}
+			fModel.replaceOutermostComposite(fResourceId, topLevelModelElement, newModel);
 			topLevelModelElement = newModel;
 			treeRepresentation = newTree;
 		}
@@ -97,7 +99,10 @@ public final class DocumentModel implements IDisposable, IDocumentModelProvider,
 	}
 
 	public void dispose() {
-		treeRepresentation.dispose();
+		if (treeRepresentation != null) {
+			treeRepresentation.dispose();
+		}
+		fModel.dispose();
 	}
 
 	public boolean isActive() {

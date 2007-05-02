@@ -23,6 +23,8 @@ import hub.sam.tef.documents.TEFDocumentProvider;
 import java.util.ResourceBundle;
 
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextInputListener;
 import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
@@ -47,7 +49,7 @@ public abstract class TEFEditor extends TextEditor {
 	}
 	
 	@Override
-	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
+	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {		
 		// this may change with future eclipse versions
 		fAnnotationAccess= getAnnotationAccess();
 		fOverviewRuler= createOverviewRuler(getSharedColors());
@@ -68,7 +70,14 @@ public abstract class TEFEditor extends TextEditor {
 	public final void createPartControl(Composite parent) {	
 		super.createPartControl(parent);	
 		getDocument().configure((IAnnotationModelExtension)getSourceViewer().getAnnotationModel());
-		new TEFOccurencesUpdater(this);					
+		new TEFOccurencesUpdater(this);				
+		getSourceViewer().addTextInputListener(new ITextInputListener() {
+			public void inputDocumentAboutToBeChanged(IDocument oldInput, IDocument newInput) {
+			}
+			public void inputDocumentChanged(IDocument oldInput, IDocument newInput) {
+				((TEFDocument)oldInput).dispose();
+			}			
+		});
 	}
 
 	@Override
