@@ -17,7 +17,6 @@
 package hub.sam.tef.emf;
 
 import hub.sam.tef.documents.TEFDocument;
-import hub.sam.tef.documents.TEFDocumentProvider;
 import hub.sam.tef.emf.model.EMFModel;
 import hub.sam.tef.models.IModel;
 
@@ -28,8 +27,6 @@ import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.text.IDocument;
@@ -42,12 +39,8 @@ import org.eclipse.ui.IStorageEditorInput;
  * is a part of editing domain. The model is identified based on a URI obtained
  * from the editor input. 
  */
-public abstract class EMFDocumentProvider extends TEFDocumentProvider {
-	
-	protected abstract Iterable<EPackage> getPackage();
-	protected abstract Iterable<EFactory> getFactory();
-	protected abstract EditingDomain getEditingDomain();
-			
+public abstract class EMFDocumentProvider extends AbstractEMFDocumentProvider {
+
 	private void setDocumentContent(IDocument document, IModel model, Object resource) throws CoreException {		
 		((TEFDocument)document).setInitialModelContent(model, resource);		
 	}

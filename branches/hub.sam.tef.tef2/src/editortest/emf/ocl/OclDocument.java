@@ -11,6 +11,8 @@ import hub.sam.tef.templates.Template;
 import java.util.Collection;
 import java.util.Vector;
 
+import org.eclipse.emf.ecore.EObject;
+
 import editortest.emf.ocl.annotations.OclIdentifierResolver;
 import editortest.emf.ocl.completion.OclOperationCallExpCompletion;
 import editortest.emf.ocl.completion.OclPropertyCallExpCompletion;
@@ -19,13 +21,15 @@ import editortest.emf.ocl.templates.ConstraintTemplate;
 
 public class OclDocument extends TEFDocument {
 	
+	private final OclIdentifierResolver fIdentifierResolver = new OclIdentifierResolver();
+	
 	@Override
 	public Template createTopLevelTemplate(IAnnotationModelProvider annotationModelProvider) {
 		return new ConstraintTemplate(getModelProvider(), getModelProvider().getModel().getMetaElement("Constraint"));
 	}
 
 	public IIdentifierResolver getIdentityResolver() {
-		return new OclIdentifierResolver();
+		return fIdentifierResolver;
 	}
 
 	@Override
@@ -39,5 +43,9 @@ public class OclDocument extends TEFDocument {
 		computers.add(new OclOperationCallExpCompletion());
 		computers.add(new OclVariableExpCompletion());
 		return computers;
+	}
+	
+	public void setContext(EObject context) {
+		fIdentifierResolver.setContext(context);
 	}
 }

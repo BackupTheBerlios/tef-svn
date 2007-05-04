@@ -18,6 +18,8 @@ import org.eclipse.emf.ocl.uml.Constraint;
 
 public class VariableResolver implements IIdentifierResolver {
 
+	private EObject selfVar = null;
+	
 	public IModelElement resolveIdentifier(IModel model, ASTElementNode node,
 			IModelElement context, IModelElement topLevelElement,
 			IMetaModelElement expectedType, String property) throws CouldNotResolveIdentifierException{
@@ -37,7 +39,11 @@ public class VariableResolver implements IIdentifierResolver {
 				}
 			} else if (eContext instanceof Constraint) {
 				if (name.equals("self")) {
-
+					if (this.selfVar == null) {
+						throw new CouldNotResolveIdentifierException("Self is not valid since this expression has no context.");
+					} else {						
+						return (IModelElement)EMFModel.getModelForEMFObject(this.selfVar);
+					}
 				}
 			}
 			eContext = eContext.eContainer();
@@ -55,5 +61,8 @@ public class VariableResolver implements IIdentifierResolver {
 		
 	}
 
+	public void setSelfVar(EObject context) {
+		this.selfVar = context;
+	}
 	
 }

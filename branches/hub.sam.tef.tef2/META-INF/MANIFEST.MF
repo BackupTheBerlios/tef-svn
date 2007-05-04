@@ -20,10 +20,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.ui,
  org.eclipse.emf.examples.library
 Eclipse-LazyStart: true
-Export-Package: editortest.emf.ocl,
+Export-Package: editortest.emf.ecore,
+ editortest.emf.ocl,
  hub.sam.tef,
  hub.sam.tef.annotations,
  hub.sam.tef.completion,
+ hub.sam.tef.documents,
  hub.sam.tef.emf,
  hub.sam.tef.emf.model,
  hub.sam.tef.models,

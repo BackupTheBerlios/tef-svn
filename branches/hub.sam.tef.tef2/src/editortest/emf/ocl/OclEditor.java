@@ -7,13 +7,6 @@ import hub.sam.tef.documents.TEFDocumentProvider;
 
 public class OclEditor extends TEFEditor {
 
-	
-	
-	public OclEditor() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	protected TEFDocumentProvider createDocumentProvider() {
 		return new OclDocumentProvider();

@@ -53,7 +53,7 @@ public class EcoreDocumentProvider extends EMFDocumentProvider {
 	}
 	
 	@Override
-	protected EditingDomain getEditingDomain() {
+	public EditingDomain getEditingDomain() {
 		return EcoreEditor.getSharedEditingDomain();
 	}
 	

@@ -17,7 +17,6 @@
 package hub.sam.tef.emf;
 
 import hub.sam.tef.documents.TEFDocument;
-import hub.sam.tef.documents.TEFDocumentProvider;
 import hub.sam.tef.emf.model.EMFModel;
 import hub.sam.tef.models.IModel;
 
@@ -34,8 +33,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.URIConverterImpl;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -50,11 +47,7 @@ import org.eclipse.ui.PlatformUI;
  * is a part of editing domain. The model is identified based on a URI obtained
  * from the editor input. 
  */
-public abstract class EMFTextDocumentProvider extends TEFDocumentProvider {
-	
-	protected abstract Iterable<EPackage> getPackage();
-	protected abstract Iterable<EFactory> getFactory();
-	protected abstract EditingDomain getEditingDomain();
+public abstract class EMFTextDocumentProvider extends AbstractEMFDocumentProvider {
 			
 	private IModel loadModel(Resource resource, EditingDomain domain) {
 		return new EMFModel(getFactory(), getPackage(), resource, domain);

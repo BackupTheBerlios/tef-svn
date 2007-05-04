@@ -11,9 +11,7 @@ import org.eclipse.emf.ocl.expressions.PropertyCallExp;
 import org.eclipse.emf.ocl.expressions.Variable;
 import org.eclipse.emf.ocl.expressions.VariableExp;
 import org.eclipse.emf.ocl.parser.SemanticException;
-import org.eclipse.emf.ocl.types.CollectionType;
 import org.eclipse.emf.ocl.types.TypesFactory;
-import org.eclipse.emf.ocl.types.TypesPackage;
 import org.eclipse.emf.ocl.utilities.PredefinedType;
 
 public class TypeHelper {

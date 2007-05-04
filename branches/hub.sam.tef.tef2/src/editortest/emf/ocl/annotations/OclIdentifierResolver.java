@@ -17,6 +17,7 @@ import java.util.Vector;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.examples.extlibrary.EXTLibraryPackage;
 import org.eclipse.emf.ocl.expressions.ExpressionsFactory;
@@ -32,8 +33,8 @@ import org.eclipse.emf.ocl.parser.EnvironmentFactory;
 import org.eclipse.emf.ocl.types.impl.TypeUtil;
 
 public class OclIdentifierResolver extends EMFIdentifierResolver {
-
-	private final IIdentifierResolver variableResolver = new VariableResolver();
+	
+	private final VariableResolver variableResolver = new VariableResolver();
 	private final IIdentifierResolver featureResolver = new FeatureResolver();	
 	
 	private EnvironmentFactory environmentFactory = new EcoreEnvironmentFactory(EPackage.Registry.INSTANCE);
@@ -146,5 +147,12 @@ public class OclIdentifierResolver extends EMFIdentifierResolver {
 		}
 		expressionVariableForEnvironmentVariable.put(vdcl, var);
 		return vdcl;
+	}
+	
+	public void setContext(EObject context) {
+		Variable selfVar = fExpressionsFactory.createVariable();
+		selfVar.setName("self");
+		selfVar.setType((EClassifier)context);
+		variableResolver.setSelfVar(selfVar);
 	}
 }

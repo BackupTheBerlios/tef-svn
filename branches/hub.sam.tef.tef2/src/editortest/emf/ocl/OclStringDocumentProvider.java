@@ -1,13 +1,13 @@
 package editortest.emf.ocl;
 
-import hub.sam.tef.emf.EMFTextDocumentProvider;
+import hub.sam.tef.emf.EMFStringDocumentProvider;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.text.IDocument;
 
-public class OclTextDocumentProvider extends EMFTextDocumentProvider {
+public class OclStringDocumentProvider extends EMFStringDocumentProvider {
 
 	private final OclDocumentProviderDelegator fDelegator = new OclDocumentProviderDelegator();
 	
@@ -30,6 +30,4 @@ public class OclTextDocumentProvider extends EMFTextDocumentProvider {
 	protected IDocument createEmptyDocument() {
 		return fDelegator.createEmptyDocument();
 	}
-
-
 }
