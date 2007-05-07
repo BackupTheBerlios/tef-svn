@@ -2,9 +2,9 @@ package editortest.emf.ocl.templates;
 
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
-import hub.sam.tef.templates.StringTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.ValueTemplate;
+import hub.sam.tef.templates.primitives.IdentifierTemplate;
 
 public class VariableTemplate extends ElementTemplate {
 
@@ -18,7 +18,7 @@ public class VariableTemplate extends ElementTemplate {
 			new SingleValueTemplate<String>(this, "name") {
 				@Override
 				protected ValueTemplate<String> createValueTemplate() {			
-					return new StringTemplate(this);
+					return new IdentifierTemplate(this);
 				};
 			}
 		};

@@ -34,7 +34,7 @@ public class TEFReconcilingStrategy implements IReconcilingStrategy {
 					}				
 				});
 			} catch (ReconciliationFailedException ex) {
-				System.out.println("RECONCILING FAILED: " + ex.getMessage());
+				System.out.println("RECONCILING FAILED: " + ex.getClass().getCanonicalName() + "[" + ex.getMessage() + "]");
 			}
 		}
 	}	

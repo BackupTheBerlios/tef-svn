@@ -14,13 +14,16 @@
  * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
  * MA 02111-1307 USA
  */
-package hub.sam.tef.templates;
+package hub.sam.tef.templates.primitives;
+
+import org.eclipse.jface.text.rules.IRule;
+import org.eclipse.jface.text.rules.IToken;
 
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
+import hub.sam.tef.templates.Template;
 
-public class IntegerTemplate extends PrimitiveValueTemplate<Integer>{
+public class IntegerTemplate extends PrimitiveValueLiteralTemplate<Integer>{
 	
 	private final Integer fDefaultValue;
 	
@@ -28,14 +31,10 @@ public class IntegerTemplate extends PrimitiveValueTemplate<Integer>{
 		super(template, template.getModelProvider().getModel().getType(Integer.class));
 		fDefaultValue = defaultValue;
 	}
-	
-	protected boolean verifyValue(String value) {		
-		return value.matches("-?[0-9]+");		
-	}
 
 	@Override
 	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {
-		return getModel().getCommandFactory().set(owner, property, -1);
+		return getModel().getCommandFactory().set(owner, property, fDefaultValue);
 	}			
 	
 	@Override
@@ -43,23 +42,14 @@ public class IntegerTemplate extends PrimitiveValueTemplate<Integer>{
 		return new Integer(value);
 	}
 
+	@Override
+	protected String getNonTerminal() {
+		return "`integer`";
+	}
 
 	@Override
-	public <T> T getAdapter(Class<T> adapter) {
-		if (ISyntaxProvider.class == adapter) {
-			return (T)new SyntaxProvider();
-		} else {
-			return super.getAdapter(adapter);
-		}
+	protected IRule getHightlightRule(IToken token) {
+		return null;
 	}
-	
-	class SyntaxProvider implements ISyntaxProvider {	
-		public String getNonTerminal() {
-			return "`integer`";
-		}
-
-		public String[][] getRules() {
-			return new String[][] {};
-		}
-	}
+		
 }

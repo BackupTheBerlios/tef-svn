@@ -21,10 +21,10 @@ import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.ReferenceTemplate;
 import hub.sam.tef.templates.SequenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
-import hub.sam.tef.templates.StringTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
+import hub.sam.tef.templates.primitives.IdentifierTemplate;
 
 public class EAnnotationTemplate extends EModelElementTemplate {
 
@@ -39,7 +39,7 @@ public class EAnnotationTemplate extends EModelElementTemplate {
 			new SingleValueTemplate<String>(this, "source") {
 				@Override
 				protected ValueTemplate<String> createValueTemplate() {
-					return new StringTemplate(this);
+					return new IdentifierTemplate(this);
 				}					
 			},						
 		};

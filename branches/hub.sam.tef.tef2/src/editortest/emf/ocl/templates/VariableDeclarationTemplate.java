@@ -6,11 +6,11 @@ import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.OptionalTemplate;
 import hub.sam.tef.templates.ReferenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
-import hub.sam.tef.templates.StringTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.WhitespaceTemplate;
+import hub.sam.tef.templates.primitives.IdentifierTemplate;
 
 public class VariableDeclarationTemplate extends ElementTemplate {
 
@@ -24,7 +24,7 @@ public class VariableDeclarationTemplate extends ElementTemplate {
 			new SingleValueTemplate<String>(this, "name") {
 				@Override
 				protected ValueTemplate<String> createValueTemplate() {			
-					return new StringTemplate(this);
+					return new IdentifierTemplate(this);
 				};
 			},
 			new SingleValueTemplate<IModelElement>(this, "type") {
@@ -47,7 +47,7 @@ public class VariableDeclarationTemplate extends ElementTemplate {
 															new SingleValueTemplate<String>(this, "name") {
 																@Override
 																protected ValueTemplate<String> createValueTemplate() {			
-																	return new StringTemplate(this);
+																	return new IdentifierTemplate(this);
 																};
 															}
 													};

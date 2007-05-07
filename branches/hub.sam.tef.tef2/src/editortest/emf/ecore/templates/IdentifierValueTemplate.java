@@ -16,19 +16,14 @@
  */
 package editortest.emf.ecore.templates;
 
-import hub.sam.tef.templates.StringTemplate;
 import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.primitives.IdentifierTemplate;
 
-public class IdentifierValueTemplate extends StringTemplate {
+public class IdentifierValueTemplate extends IdentifierTemplate {
 
 	
 	public IdentifierValueTemplate(Template template) {
 		super(template);
-	}
-
-	@Override
-	protected boolean verifyValue(String value) {
-		return value.matches("([a-zA-Z][a-zA-Z0-9_]*)?");
 	}
 
 }

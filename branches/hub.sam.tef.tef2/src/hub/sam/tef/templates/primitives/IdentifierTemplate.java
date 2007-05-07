@@ -14,32 +14,19 @@
  * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
  * MA 02111-1307 USA
  */
-package hub.sam.tef.templates;
+package hub.sam.tef.templates.primitives;
+
+import org.eclipse.jface.text.rules.IRule;
+import org.eclipse.jface.text.rules.IToken;
 
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
+import hub.sam.tef.templates.Template;
 
-public class StringTemplate extends PrimitiveValueTemplate<String>{
-
-	private final String fPattern;
+public class IdentifierTemplate extends PrimitiveValueLiteralTemplate<String> {
 	
-	public StringTemplate(Template template) {
+	public IdentifierTemplate(Template template) {
 		super(template, template.getModelProvider().getModel().getType(String.class));	
-		fPattern = null;
-	}
-	
-	public StringTemplate(Template template, final String pattern) {
-		super(template, template.getModelProvider().getModel().getType(String.class));
-		fPattern = pattern;
-	}
-
-	protected boolean verifyValue(String value) {
-		if (fPattern == null) {
-			return true;
-		} else {
-			return value.matches(fPattern);
-		}
 	}
 
 	@Override
@@ -51,24 +38,15 @@ public class StringTemplate extends PrimitiveValueTemplate<String>{
 	protected Object getObjectValueFromStringValue(String value) {
 		return value;
 	}
+	
+	@Override
+	protected String getNonTerminal() {
+		return "`identifier`";
+	}
 
 	@Override
-	public <T> T getAdapter(Class<T> adapter) {
-		if (ISyntaxProvider.class == adapter) {
-			return (T)new SyntaxProvider();
-		} else {
-			return super.getAdapter(adapter);
-		}
-	}
-	
-	class SyntaxProvider implements ISyntaxProvider {			
-		public String getNonTerminal() {
-			return "`identifier`";
-		}
-
-		public String[][] getRules() {
-			return new String[][]{};
-		}					
-	}
+	protected IRule getHightlightRule(IToken token) {
+		return null;
+	}		
 	
 }

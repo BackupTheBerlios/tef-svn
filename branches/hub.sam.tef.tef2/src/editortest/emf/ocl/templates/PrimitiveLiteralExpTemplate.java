@@ -5,18 +5,18 @@ import hub.sam.tef.templates.ChoiceTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.ValueTemplate;
 
-public class OclExpressionTemplate extends ChoiceTemplate {	
-	
-	public OclExpressionTemplate(Template template) {
-		super(template, template.getModel().getMetaElement("OCLExpression"));
+public class PrimitiveLiteralExpTemplate extends ChoiceTemplate {
+
+	public PrimitiveLiteralExpTemplate(Template template) {
+		super(template, template.getModel().getMetaElement("PrimitiveLiteralExp"));	
 	}
 
 	@Override
 	public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
 		return new ValueTemplate[] {
-				new CallExpTemplate(this),
-				new VariableExpTemplate(this),		
-				new LiteralExpTemplate(this),
+				new StringLiteralExpTemplate(this),
+				new IntegerLiteralExpTemplate(this),
+				new BooleanLiteralExpTemplate(this)
 		};
-	}
+	}	
 }
