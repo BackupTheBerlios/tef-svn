@@ -3,6 +3,7 @@ package editortest.emf.ocl.annotations;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ocl.expressions.IteratorExp;
 import org.eclipse.emf.ocl.expressions.OCLExpression;
@@ -32,13 +33,13 @@ public class TypeHelper {
 		} else if (expression instanceof PropertyCallExp) {
 			EStructuralFeature property = ((PropertyCallExp)expression).getReferredProperty();
 			if (property != null) {
-				return property.getEType();
+				return getType(property);
 			}
 			return null;
 		} else if (expression instanceof OperationCallExp) {
 			EOperation operation = ((OperationCallExp)expression).getReferredOperation();
 			if (operation != null) {
-				return operation.getEType();
+				return getType(operation);				
 			}
 			return null;
 		} else if (expression instanceof IteratorExp) {
@@ -61,9 +62,24 @@ public class TypeHelper {
 		if (classifier instanceof PredefinedType) {
 			return (PredefinedType)classifier;
 		} else  if (classifier.equals(ecore.getEBoolean()) || classifier.equals(ecore.getEBooleanObject())) {
-			return TypesFactory.eINSTANCE.createPrimitiveBoolean();
+			return TypesFactory.eINSTANCE.createPrimitiveBoolean();			
 		} else {
 			return null;
+		}
+	}
+	
+	public static EClassifier getType(ETypedElement element) {
+		EClassifier baseType = element.getEType();
+		if (element.getUpperBound() > 1 || element.getUpperBound() < 0) {
+			if (element.isOrdered()) {
+				return TypesFactory.eINSTANCE.createOrderedSetType(baseType);
+			} else if (element.isUnique()) {
+				return TypesFactory.eINSTANCE.createSetType(baseType);
+			} else {
+				return TypesFactory.eINSTANCE.createBagType(baseType);
+			}
+		} else {
+			return baseType;
 		}
 	}
 }
