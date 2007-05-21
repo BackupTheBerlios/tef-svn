@@ -12,6 +12,7 @@ import org.eclipse.emf.ocl.expressions.PropertyCallExp;
 import org.eclipse.emf.ocl.expressions.Variable;
 import org.eclipse.emf.ocl.expressions.VariableExp;
 import org.eclipse.emf.ocl.parser.SemanticException;
+import org.eclipse.emf.ocl.types.CollectionType;
 import org.eclipse.emf.ocl.types.TypesFactory;
 import org.eclipse.emf.ocl.utilities.PredefinedType;
 
@@ -23,8 +24,11 @@ public class TypeHelper {
 				EClassifier type = var.getType();
 				if (type == null) {
 					if (var.eContainer() instanceof IteratorExp) {
-						IteratorExp iteratorExp = (IteratorExp)var.eContainer();
-						return getTypeFor(iteratorExp.getSource());
+						IteratorExp iteratorExp = (IteratorExp)var.eContainer();						
+						OCLExpression source = iteratorExp.getSource();
+						if (source != null && getTypeFor(source) != null) {
+							return ((CollectionType)getTypeFor(source)).getElementType();
+						}
 					}
 				}
 				return type;	

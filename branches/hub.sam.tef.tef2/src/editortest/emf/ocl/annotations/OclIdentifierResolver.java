@@ -1,7 +1,6 @@
 package editortest.emf.ocl.annotations;
 
 import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
-import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.emf.EMFIdentifierResolver;
 import hub.sam.tef.emf.model.EMFMetaModelElement;
 import hub.sam.tef.emf.model.EMFModelElement;
@@ -35,7 +34,7 @@ import org.eclipse.emf.ocl.types.impl.TypeUtil;
 public class OclIdentifierResolver extends EMFIdentifierResolver {
 	
 	private final VariableResolver variableResolver = new VariableResolver();
-	private final IIdentifierResolver featureResolver = new FeatureResolver();	
+	private final FeatureResolver featureResolver = new FeatureResolver();	
 	
 	private EnvironmentFactory environmentFactory = new EcoreEnvironmentFactory(EPackage.Registry.INSTANCE);
 	private Environment environment = null;
@@ -154,5 +153,6 @@ public class OclIdentifierResolver extends EMFIdentifierResolver {
 		selfVar.setName("self");
 		selfVar.setType((EClassifier)context);
 		variableResolver.setSelfVar(selfVar);
+		featureResolver.setSelfVar(selfVar);
 	}
 }

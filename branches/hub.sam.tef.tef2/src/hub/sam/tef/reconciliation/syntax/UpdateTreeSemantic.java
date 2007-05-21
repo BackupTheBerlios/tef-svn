@@ -47,6 +47,9 @@ public class UpdateTreeSemantic implements Semantic {
 	
 	public Object doSemantic(Rule rule, List parseResults, List<Range> resultRanges) {		
 		Template template = fParserInterface.getTemplateForNonTerminal(rule.getNonterminal()); 
+		if (template == null) {
+			throw new RuntimeException("assert");
+		}
 		ASTElementNode result = new ASTElementNode(new TextASTElement(rule, template));
 				
 		int i = 0;		

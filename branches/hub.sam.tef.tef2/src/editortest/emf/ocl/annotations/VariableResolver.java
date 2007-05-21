@@ -16,9 +16,7 @@ import org.eclipse.emf.ocl.expressions.Variable;
 import org.eclipse.emf.ocl.uml.Constraint;
 
 
-public class VariableResolver implements IIdentifierResolver {
-
-	private EObject selfVar = null;
+public class VariableResolver extends AbstractOclIdentifierResolver implements IIdentifierResolver {
 	
 	public IModelElement resolveIdentifier(IModel model, ASTElementNode node,
 			IModelElement context, IModelElement topLevelElement,
@@ -53,16 +51,9 @@ public class VariableResolver implements IIdentifierResolver {
 
 	public void addToEnvironment(IModelElement element) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public void removeFromEnvironment(IModelElement element) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
-
-	public void setSelfVar(EObject context) {
-		this.selfVar = context;
-	}
-	
 }

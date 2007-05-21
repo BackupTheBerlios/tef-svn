@@ -21,7 +21,7 @@ import java.util.Vector;
 
 import editortest.emf.ocl.completion.OclOperationCallExpCompletion;
 import editortest.emf.ocl.completion.OclPropertyCallExpCompletion;
-import editortest.emf.ocl.completion.OclVariableExpCompletion;
+import editortest.emf.ocl.completion.OclSingleIdentifierSchemeCompletion;
 import fri.patterns.interpreter.parsergenerator.Parser;
 import fri.patterns.interpreter.parsergenerator.ParserTables;
 import hub.sam.tef.documents.IDocumentModelProvider;

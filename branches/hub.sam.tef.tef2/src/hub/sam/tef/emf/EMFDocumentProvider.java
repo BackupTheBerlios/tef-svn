@@ -29,9 +29,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.examples.extlibrary.Writer;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
+
+import editortest.emf.ocl.OclDocument;
 
 
 /**
@@ -58,7 +61,7 @@ public abstract class EMFDocumentProvider extends AbstractEMFDocumentProvider {
 			Resource resource = editingDomain.getResourceSet().getResource(resourceId, true);
 			IModel model = loadModel(resource, editingDomain);								
 			setDocumentContent(document, model, resourceId);
-
+					
 			return true;
 		}
 		return false;

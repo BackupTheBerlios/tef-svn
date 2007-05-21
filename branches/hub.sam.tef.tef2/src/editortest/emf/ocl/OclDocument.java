@@ -3,6 +3,7 @@ package editortest.emf.ocl;
 import hub.sam.tef.annotations.IAnnotationModelProvider;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.completion.ICompletionComputer;
+import hub.sam.tef.documents.DocumentModel;
 import hub.sam.tef.documents.TEFDocument;
 import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
 import hub.sam.tef.reconciliation.syntax.ExpressionLayout;
@@ -16,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
 import editortest.emf.ocl.annotations.OclIdentifierResolver;
 import editortest.emf.ocl.completion.OclOperationCallExpCompletion;
 import editortest.emf.ocl.completion.OclPropertyCallExpCompletion;
-import editortest.emf.ocl.completion.OclVariableExpCompletion;
+import editortest.emf.ocl.completion.OclSingleIdentifierSchemeCompletion;
 import editortest.emf.ocl.templates.ConstraintTemplate;
 
 public class OclDocument extends TEFDocument {
@@ -41,11 +42,12 @@ public class OclDocument extends TEFDocument {
 		Collection<ICompletionComputer> computers = new Vector<ICompletionComputer>();
 		computers.add(new OclPropertyCallExpCompletion());
 		computers.add(new OclOperationCallExpCompletion());
-		computers.add(new OclVariableExpCompletion());
+		computers.add(new OclSingleIdentifierSchemeCompletion());
 		return computers;
 	}
 	
-	public void setContext(EObject context) {
+	public void setContext(EObject context) {		
 		fIdentifierResolver.setContext(context);
+		((DocumentModel)getModelProvider()).reconcile();
 	}
 }

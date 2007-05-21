@@ -14,7 +14,7 @@ public class NavigationCallExpTemplate extends ChoiceTemplate {
 	@Override
 	public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
 		return new ValueTemplate[] {
-				new PropertyCallExpTemplate(this)
+				new PropertyCallExpTemplate(this) 
 		};
 	}
 

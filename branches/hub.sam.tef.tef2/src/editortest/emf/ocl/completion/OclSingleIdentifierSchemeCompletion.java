@@ -10,14 +10,15 @@ import java.util.Collection;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 
-public class OclVariableExpCompletion extends EmptyReductionCompletion {
+public class OclSingleIdentifierSchemeCompletion extends EmptyReductionCompletion {
 
 	@Override
 	public Rule getRule() {
-		return new Rule(new String[] { "VariableExp" });
+		return new Rule(new String[] { "SingleIdentifierScheme" });
 	}
 
 	public Collection<TEFCompletionProposal> createProposals(ASTElementNode completionNode, CompletionContext context) {
+		// TODO completions for self properties and types
 		return EMFCompletions.createProposals("Variable", context);
 	}
 }

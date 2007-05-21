@@ -24,6 +24,7 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.IType;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -134,7 +135,12 @@ public class EMFModel extends AbstractModel {
 	}
 
 	public ICollection getOutermostComposites(Object resourceId) {
-		return new EMFSequence(fDomain.getResourceSet().getResource((URI)resourceId, false).getContents());
+		Resource resource = fDomain.getResourceSet().getResource((URI)resourceId, false);
+		if (resource != null) {
+			return new EMFSequence(resource.getContents());
+		} else {
+			return new EMFSequence(new BasicEList());
+		}
 	}
 
 	public static Object getModelForEMFObject(Object emfObject) {

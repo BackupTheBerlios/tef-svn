@@ -45,7 +45,7 @@ public abstract class ValueTemplate<ModelType> extends Template {
 		return fType;
 	}
 	
-		public boolean isTemplateFor(ModelType model) {
+	public boolean isTemplateFor(ModelType model) {
 		return true;
 	}
 

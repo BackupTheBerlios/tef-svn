@@ -14,13 +14,15 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ocl.expressions.OCLExpression;
 import org.eclipse.emf.ocl.expressions.OperationCallExp;
 import org.eclipse.emf.ocl.expressions.PropertyCallExp;
+import org.eclipse.emf.ocl.expressions.Variable;
 import org.eclipse.emf.ocl.uml.Constraint;
 import org.eclipse.emf.ocl.utilities.PredefinedType;
 
 
-public class FeatureResolver implements IIdentifierResolver {
+public class FeatureResolver extends AbstractOclIdentifierResolver implements IIdentifierResolver {
 
 	public IModelElement resolveIdentifier(IModel model, ASTElementNode node,
 			IModelElement context, IModelElement topLevelElement,
@@ -29,8 +31,14 @@ public class FeatureResolver implements IIdentifierResolver {
 		EObject eContext = (EObject)((EMFModelElement)context).getEMFObject();
 		while (eContext != null) {
 			if (eContext instanceof PropertyCallExp) {
-				PropertyCallExp propertyCall = (PropertyCallExp)eContext;				
-				EClassifier sourceType = TypeHelper.getTypeFor(propertyCall.getSource());
+				PropertyCallExp propertyCall = (PropertyCallExp)eContext;						
+				OCLExpression source = propertyCall.getSource();
+				EClassifier sourceType = null;
+				if (source == null && selfVar != null) {
+					sourceType = ((Variable)selfVar).getType();
+				} else {
+					sourceType = TypeHelper.getTypeFor(source);
+				}
 				if (sourceType == null) {
 					System.out.println(getClass().getCanonicalName() + ": sourceType not set");
 					throw new CouldNotResolveIdentifierException("Could not resolve the reference because the type of the referee is unknown.");

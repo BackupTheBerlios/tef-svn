@@ -141,6 +141,14 @@ public class ASTElementNode extends ASTNode {
 		}
 	}
 	
+	public void changeNodeKey(Object oldKey, Object newKey) {
+		Integer index = fContentsMap.get(oldKey);
+		if (index != null) {
+			fContentsMap.remove(oldKey);
+			fContentsMap.put(newKey, index);
+		}
+	}
+	
 	public ASTNode getNode(int offset) {
 		int i = 0;
 		for (ASTNode content: fContents) {
