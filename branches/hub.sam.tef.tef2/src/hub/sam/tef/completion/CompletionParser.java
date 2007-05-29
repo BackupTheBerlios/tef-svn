@@ -5,8 +5,10 @@ import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 import java.io.IOException;
 import java.util.List;
 
+import fri.patterns.interpreter.parsergenerator.Lexer;
 import fri.patterns.interpreter.parsergenerator.Parser;
 import fri.patterns.interpreter.parsergenerator.ParserTables;
+import fri.patterns.interpreter.parsergenerator.Semantic;
 import fri.patterns.interpreter.parsergenerator.Token;
 import fri.patterns.interpreter.parsergenerator.Token.Range;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
@@ -48,7 +50,7 @@ public class CompletionParser extends Parser {
 
 	@Override
 	protected Token shift(Token token) throws IOException {
-		if (token.range.end.offset >= completionOffset && token.symbol.equals("`identifier`")) {
+		if (lastShiftedToken != null && token.range.end.offset >= completionOffset && token.symbol.equals("`identifier`")) {
 			Token result = new Token(Token.EPSILON, "", new Token.Range(
 					lastShiftedToken.range.end, lastShiftedToken.range.end)); 			
 			lastShiftedToken = token;
@@ -60,7 +62,7 @@ public class CompletionParser extends Parser {
 	}
 	
 	public String getIdentifierPrefix() {
-		if (lastShiftedToken.symbol.equals("`identifier`")) {
+		if (lastShiftedToken != null && lastShiftedToken.symbol.equals("`identifier`")) {
 			return (String)lastShiftedToken.text;
 		}
 		return "";
@@ -77,5 +79,13 @@ public class CompletionParser extends Parser {
 		int gotoState = fTables.getGotoState(state, ((ASTElementNode)topParseResult).getElement().getSymbol());
 		return gotoState != -1;
 	}
-		
+	
+	public void reset() {
+		//lastShiftedToken = null; ... continue here 25.5.07 There is still a bug regarding completions of emty strings
+	}
+
+	@Override
+	public boolean parse() throws IOException {		
+		return super.parse();
+	}		
 }

@@ -91,6 +91,9 @@ public final class DocumentModel implements IDisposable, IDocumentModelProvider,
 	}
 
 	public ASTElementNode getTreeRepresentation() {
+		if (treeRepresentation == null) {
+			initializeFromModel();
+		}
 		return treeRepresentation;
 	}
 

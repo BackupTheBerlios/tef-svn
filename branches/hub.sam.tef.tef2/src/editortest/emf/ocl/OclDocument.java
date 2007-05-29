@@ -15,6 +15,7 @@ import java.util.Vector;
 import org.eclipse.emf.ecore.EObject;
 
 import editortest.emf.ocl.annotations.OclIdentifierResolver;
+import editortest.emf.ocl.completion.OclCollectionOperationCompletion;
 import editortest.emf.ocl.completion.OclOperationCallExpCompletion;
 import editortest.emf.ocl.completion.OclPropertyCallExpCompletion;
 import editortest.emf.ocl.completion.OclSingleIdentifierSchemeCompletion;
@@ -23,6 +24,7 @@ import editortest.emf.ocl.templates.ConstraintTemplate;
 public class OclDocument extends TEFDocument {
 	
 	private final OclIdentifierResolver fIdentifierResolver = new OclIdentifierResolver();
+	private final OclSingleIdentifierSchemeCompletion fSingleIdentifierSchemeCompletion = new OclSingleIdentifierSchemeCompletion();
 	
 	@Override
 	public Template createTopLevelTemplate(IAnnotationModelProvider annotationModelProvider) {
@@ -42,12 +44,16 @@ public class OclDocument extends TEFDocument {
 		Collection<ICompletionComputer> computers = new Vector<ICompletionComputer>();
 		computers.add(new OclPropertyCallExpCompletion());
 		computers.add(new OclOperationCallExpCompletion());
-		computers.add(new OclSingleIdentifierSchemeCompletion());
+		computers.add(new OclCollectionOperationCompletion());
+		computers.add(fSingleIdentifierSchemeCompletion);
 		return computers;
 	}
 	
 	public void setContext(EObject context) {		
 		fIdentifierResolver.setContext(context);
-		((DocumentModel)getModelProvider()).reconcile();
+		fSingleIdentifierSchemeCompletion.setContext(context);
+		if (getModelProvider() != null) {
+			((DocumentModel)getModelProvider()).reconcile();
+		}
 	}
 }

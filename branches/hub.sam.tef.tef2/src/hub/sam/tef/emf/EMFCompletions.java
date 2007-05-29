@@ -1,7 +1,10 @@
 package hub.sam.tef.emf;
 
 import hub.sam.tef.completion.CompletionContext;
+import hub.sam.tef.completion.ICompletionDisplayStringProvider;
+import hub.sam.tef.completion.ICompletionFilter;
 import hub.sam.tef.completion.TEFCompletionProposal;
+import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
@@ -10,7 +13,13 @@ import java.util.Collection;
 import java.util.Vector;
 
 public class EMFCompletions {
+	
 	public static Collection<TEFCompletionProposal> createProposals(String metaModelElement, CompletionContext context) {
+		return createProposals(metaModelElement, context, null, null);
+	}
+	
+	public static Collection<TEFCompletionProposal> createProposals(String metaModelElement, CompletionContext context,
+			ICompletionFilter filter, ICompletionDisplayStringProvider provider) {
 		String identifierPrefix = context.getIdentifierPrefix();
 		Collection<TEFCompletionProposal> result = new Vector<TEFCompletionProposal>();
 		Collection<IModelElement> validElements = getValidElements(context.getDocumentModelProvider().getModel(), 
@@ -18,10 +27,17 @@ public class EMFCompletions {
 				context.getDocumentModelProvider().getTopLevelElement());
 		
 		for (IModelElement possibleElement: validElements) {
-			String name = (String)possibleElement.getValue("name");
+			String name = null;
+			if (provider == null) {
+				name = (String)possibleElement.getValue("name");
+			} else {
+				name = provider.getDisplayString(possibleElement);
+			}
 			if (name != null && name.startsWith(identifierPrefix) && ! name.equals(identifierPrefix)) {
-				result.add(new TEFCompletionProposal(name, 
-						name.substring(identifierPrefix.length(), name.length()), context.getCompletionOffset()));
+				if (filter == null || filter.accept(possibleElement)) { 
+					result.add(new TEFCompletionProposal(name, 
+							name.substring(identifierPrefix.length(), name.length()), context.getCompletionOffset()));
+				}
 			}
 		}
 		return result;
@@ -38,11 +54,13 @@ public class EMFCompletions {
 	
 	private static void collectValidElementsFromModel(IModelElement element, IMetaModelElement metaModelElement, 
 			Collection<IModelElement> values) {
-		if (element.getMetaElement().equals(metaModelElement)) {
+		if (element != null) {
+			if (element.getMetaElement().equals(metaModelElement)) {		
 			values.add(element);
-		}
-		for (Object o: element.getComponents()) {
-			collectValidElementsFromModel((IModelElement)o, metaModelElement, values);
+			}
+			for (Object o: element.getComponents()) {
+				collectValidElementsFromModel((IModelElement)o, metaModelElement, values);
+			}
 		}
 	}
 }

@@ -54,7 +54,7 @@ public class MulTemplate extends ElementTemplate {
 	}		
 	
 	private static final Collection<String> operationNames = Arrays.asList(new String[] {
-			"*", "/", "div", "=", ">=", "<=", "<>", "and", "xor", "implies"
+			"*", "/", "div", "=", ">=", "<=", "<>", ">", "<", "and", "xor", "implies"
 	});
 	
 	@Override

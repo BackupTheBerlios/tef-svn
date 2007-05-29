@@ -44,6 +44,7 @@ public class CompletionEngine {
 			UpdateTreeSemantic semantic = new UpdateTreeSemantic(fParserInterface, context.getContent());		
 					
 			CompletionParser parser = (CompletionParser)fParserInterface.getParser();
+			parser.reset();
 			parser.setCompletionOffset(context.getCompletionOffset());
 			fParserInterface.parse(context.getContent(), semantic);
 						

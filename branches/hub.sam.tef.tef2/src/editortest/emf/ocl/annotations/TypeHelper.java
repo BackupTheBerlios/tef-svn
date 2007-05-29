@@ -5,16 +5,21 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ocl.expressions.BooleanLiteralExp;
+import org.eclipse.emf.ocl.expressions.IntegerLiteralExp;
 import org.eclipse.emf.ocl.expressions.IteratorExp;
 import org.eclipse.emf.ocl.expressions.OCLExpression;
 import org.eclipse.emf.ocl.expressions.OperationCallExp;
 import org.eclipse.emf.ocl.expressions.PropertyCallExp;
+import org.eclipse.emf.ocl.expressions.RealLiteralExp;
+import org.eclipse.emf.ocl.expressions.StringLiteralExp;
 import org.eclipse.emf.ocl.expressions.Variable;
 import org.eclipse.emf.ocl.expressions.VariableExp;
 import org.eclipse.emf.ocl.parser.SemanticException;
 import org.eclipse.emf.ocl.types.CollectionType;
 import org.eclipse.emf.ocl.types.TypesFactory;
 import org.eclipse.emf.ocl.utilities.PredefinedType;
+import com.sun.org.apache.xerces.internal.impl.xs.util.StringListImpl;
 
 public class TypeHelper {
 	public static EClassifier getTypeFor(OCLExpression expression) {
@@ -56,6 +61,14 @@ public class TypeHelper {
 				// TODO
 				return null;
 			}
+		} else if (expression instanceof IntegerLiteralExp) {
+			return TypesFactory.eINSTANCE.createPrimitiveInteger();
+		} else if (expression instanceof StringLiteralExp) {
+			return TypesFactory.eINSTANCE.createPrimitiveString();
+		} else if (expression instanceof BooleanLiteralExp) {
+			return TypesFactory.eINSTANCE.createPrimitiveBoolean();
+		} else if (expression instanceof RealLiteralExp) {
+			return TypesFactory.eINSTANCE.createPrimitiveReal();
 		} else {
 			return null;
 		}
@@ -67,6 +80,10 @@ public class TypeHelper {
 			return (PredefinedType)classifier;
 		} else  if (classifier.equals(ecore.getEBoolean()) || classifier.equals(ecore.getEBooleanObject())) {
 			return TypesFactory.eINSTANCE.createPrimitiveBoolean();			
+		} else  if (classifier.equals(ecore.getEInt()) || classifier.equals(ecore.getEIntegerObject()) || classifier.equals(ecore.getELong()) || classifier.equals(ecore.getELongObject())) {
+				return TypesFactory.eINSTANCE.createPrimitiveInteger();
+		} else  if (classifier.equals(ecore.getEString())) {
+			return TypesFactory.eINSTANCE.createPrimitiveString();		
 		} else {
 			return null;
 		}
