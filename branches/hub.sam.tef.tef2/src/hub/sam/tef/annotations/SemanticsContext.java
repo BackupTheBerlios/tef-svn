@@ -13,6 +13,7 @@ public class SemanticsContext {
 	private final IModelElement fNewModel;
 	
 	private final IIdentifierResolver fResolver;
+	private final IChecker fChecker;
 
 	public SemanticsContext(final IDocumentModelProvider documentProvider, final ILanguageModelProvider languageModelProvider,
 			IModelElement newModel) {
@@ -21,6 +22,7 @@ public class SemanticsContext {
 		fLanguageModelProvider = languageModelProvider;
 		fNewModel = newModel;
 		fResolver = fLanguageModelProvider.getIdentityResolver();
+		fChecker = fLanguageModelProvider.getChecker();
 	}
 
 	public IAnnotationModelProvider getAnnotationModelProvider() {
@@ -33,6 +35,10 @@ public class SemanticsContext {
 		
 	public IIdentifierResolver getIdentifierResolver() {
 		return fResolver;
+	}
+	
+	public IChecker getChecker() {
+		return fChecker;
 	}
 	
 	public IModelElement getNewModel() {

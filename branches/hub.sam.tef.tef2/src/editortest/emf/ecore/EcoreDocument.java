@@ -16,14 +16,12 @@
  */
 package editortest.emf.ecore;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import hub.sam.tef.annotations.IAnnotationModelProvider;
+import hub.sam.tef.annotations.IChecker;
 import hub.sam.tef.annotations.IIdentifierResolver;
-import hub.sam.tef.completion.ICompletionComputer;
 import hub.sam.tef.documents.TEFDocument;
 import hub.sam.tef.emf.EMFIdentifierResolver;
+import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
 import hub.sam.tef.reconciliation.syntax.BlockLayout;
 import hub.sam.tef.templates.Template;
@@ -43,5 +41,13 @@ public class EcoreDocument extends TEFDocument {
 	@Override
 	protected AbstractLayoutManager createLayout() {
 		return new BlockLayout();
+	}
+
+	public IChecker getChecker() {
+		return new IChecker() {
+			public String check(IModelElement modelElement) {
+				return null;
+			}			
+		};
 	}
 }

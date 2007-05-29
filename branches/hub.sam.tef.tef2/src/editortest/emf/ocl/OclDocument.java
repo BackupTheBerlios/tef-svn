@@ -1,6 +1,7 @@
 package editortest.emf.ocl;
 
 import hub.sam.tef.annotations.IAnnotationModelProvider;
+import hub.sam.tef.annotations.IChecker;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.completion.ICompletionComputer;
 import hub.sam.tef.documents.DocumentModel;
@@ -14,6 +15,7 @@ import java.util.Vector;
 
 import org.eclipse.emf.ecore.EObject;
 
+import editortest.emf.ocl.annotations.OclChecker;
 import editortest.emf.ocl.annotations.OclIdentifierResolver;
 import editortest.emf.ocl.completion.OclCollectionOperationCompletion;
 import editortest.emf.ocl.completion.OclOperationCallExpCompletion;
@@ -23,6 +25,7 @@ import editortest.emf.ocl.templates.ConstraintTemplate;
 
 public class OclDocument extends TEFDocument {
 	
+	private final OclChecker fChecker = new OclChecker();
 	private final OclIdentifierResolver fIdentifierResolver = new OclIdentifierResolver();
 	private final OclSingleIdentifierSchemeCompletion fSingleIdentifierSchemeCompletion = new OclSingleIdentifierSchemeCompletion();
 	
@@ -33,6 +36,11 @@ public class OclDocument extends TEFDocument {
 
 	public IIdentifierResolver getIdentityResolver() {
 		return fIdentifierResolver;
+	}
+	
+
+	public IChecker getChecker() {
+		return fChecker;
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.util.Vector;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
 import hub.sam.tef.annotations.ErrorAnnotation;
+import hub.sam.tef.annotations.IChecker;
 import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.models.ICommand;
@@ -181,6 +182,16 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 
 	public void check(ASTElementNode representation, SemanticsContext context) {	
 		IModelElement modelElement = ((ModelASTElement)representation.getElement()).getModelElement();
+		
+		IChecker checker = context.getChecker();
+		if (checker != null) {
+			String error = checker.check(modelElement);
+			if (error != null) {
+				context.getAnnotationModelProvider().addAnnotation(new ErrorAnnotation(error),
+						new Position(representation.getAbsoluteOffset(0), representation.getLength()));
+			}
+		}
+		
 		if (modelElement instanceof InternalModelElement) {			
 			// already handled in createReferenceModel
 		} else {

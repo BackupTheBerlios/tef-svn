@@ -103,4 +103,14 @@ public class TypeHelper {
 			return baseType;
 		}
 	}
+
+	public static boolean isAssignableFrom(EClassifier requiredType, EClassifier actualType) {		
+		Class requiredInstanceClass = requiredType.getInstanceClass();
+		Class actualInstanceClass = actualType.getInstanceClass();
+		if (requiredInstanceClass != null && actualInstanceClass != null) {
+			return requiredInstanceClass.isAssignableFrom(actualInstanceClass);
+		} else {
+			return requiredType.equals(actualType);
+		}		
+	}	
 }
