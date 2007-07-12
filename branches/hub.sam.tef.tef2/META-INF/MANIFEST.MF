@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.ui;visibility:=reexport,
  org.junit,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.jdt.ui;visibility:=reexport,
- org.eclipse.emf.examples.library;visibility:=reexport
+ org.eclipse.emf.examples.library;visibility:=reexport,
+ hub.sam.tef.tdl;visibility:=reexport
 Eclipse-LazyStart: true
 Export-Package: editortest.emf.ecore,
  editortest.emf.ocl,
@@ -32,8 +33,9 @@ Export-Package: editortest.emf.ecore,
  hub.sam.tef.models.extensions,
  hub.sam.tef.reconciliation.syntax,
  hub.sam.tef.reconciliation.treerepresentation,
+ hub.sam.tef.tdl.delegators,
  hub.sam.tef.templates,
- hub.sam.util,
+ hub.sam.tef.templates.primitives,
  hub.sam.util.container,
  hub.sam.util.strings,
  hub.sam.util.trees

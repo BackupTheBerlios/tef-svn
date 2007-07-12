@@ -1,23 +1,18 @@
 package editortest.emf.ocl.templates;
 
-import editortest.emf.ocl.templates.IteratorExpTemplate1.MySyntaxProvider;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.syntax.ExpressionLayout;
-import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
-import hub.sam.tef.templates.ElementTemplate;
-import hub.sam.tef.templates.ElementTemplateSemantics;
 import hub.sam.tef.templates.EnumerationTemplate;
-import hub.sam.tef.templates.SequenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.WhitespaceTemplate;
 
-public class IteratorExpTemplate2 extends ElementTemplate {
+public class IteratorExpTemplate2 extends AbstractIteratorExpTemplate {
 
 	public IteratorExpTemplate2(Template template) {
-		super(template, template.getModel().getMetaElement("IteratorExp"));	
+		super(template, "2");	
 	}
 
 	@Override
@@ -52,23 +47,5 @@ public class IteratorExpTemplate2 extends ElementTemplate {
 		};
 	}
 	
-	@Override
-	public <T> T getAdapter(Class<T> adapter) {
-		if (ISyntaxProvider.class == adapter) {
-			return (T)new MySyntaxProvider(this);
-		} else {
-			return super.getAdapter(adapter);
-		}
-	}
 	
-	class MySyntaxProvider extends ElementTemplateSemantics {
-		public MySyntaxProvider(ElementTemplate elementTemplate) {
-			super(elementTemplate);		
-		}
-		
-		@Override
-		public String getNonTerminal() {	
-			return super.getNonTerminal() + "2";
-		}				
-	}
 }

@@ -14,10 +14,10 @@ import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.WhitespaceTemplate;
 import editortest.emf.ecore.templates.EIdentifierTemplate;
 
-public class OperationCallExp3Template extends ElementTemplate {
+public class OperationCallExp3Template extends AbstractOperationCallExpTemplate {
 
 	public OperationCallExp3Template(Template template) {
-		super(template, template.getModel().getMetaElement("OperationCallExp"));	
+		super(template, "3");	
 	}
 
 	@Override
@@ -45,25 +45,4 @@ public class OperationCallExp3Template extends ElementTemplate {
 				new TerminalTemplate(this, ")")
 		};
 	}	
-	
-	@Override
-	public <T> T getAdapter(Class<T> adapter) {
-		if (ISyntaxProvider.class == adapter) {
-			return (T)new MySyntaxProvider(this);
-		} else {
-			return super.getAdapter(adapter);
-		}
-	}
-	
-	class MySyntaxProvider extends ElementTemplateSemantics {
-		public MySyntaxProvider(ElementTemplate elementTemplate) {
-			super(elementTemplate);		
-		}
-		
-		@Override
-		public String getNonTerminal() {	
-			return super.getNonTerminal() + "3";
-		}				
-	}
-
 }

@@ -25,7 +25,7 @@ import editortest.emf.ocl.templates.ConstraintTemplate;
 
 public class OclDocument extends TEFDocument {
 	
-	private final OclChecker fChecker = new OclChecker();
+	//private final OclChecker fChecker = new OclChecker();
 	private final OclIdentifierResolver fIdentifierResolver = new OclIdentifierResolver();
 	private final OclSingleIdentifierSchemeCompletion fSingleIdentifierSchemeCompletion = new OclSingleIdentifierSchemeCompletion();
 	
@@ -37,11 +37,11 @@ public class OclDocument extends TEFDocument {
 	public IIdentifierResolver getIdentityResolver() {
 		return fIdentifierResolver;
 	}
-	
-
-	public IChecker getChecker() {
-		return fChecker;
-	}
+		
+	public IChecker getChecker() {		
+		//return fChecker;
+		return null;
+	}	
 
 	@Override
 	protected AbstractLayoutManager createLayout() {

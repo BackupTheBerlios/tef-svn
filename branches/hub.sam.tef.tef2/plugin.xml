@@ -97,22 +97,6 @@
           org.eclipse.emf.edit.provider.IItemPropertySource" />
   </extension>
   
-    <extension
-    point = "org.eclipse.ui.newWizards">
-    <category
-      id = "org.eclipse.emf.ecore.Wizard.category.ID"
-      name="%_UI_Wizard_category">
-    </category>
-    <wizard
-      id = "editortest.emf.expressions.emfmodel.presentation.ExpressionsModelWizardID"
-      name = "%_UI_ExpressionsModelWizard_label"
-      class = "editortest.emf.expressions.emfmodel.presentation.ExpressionsModelWizard"
-      category = "org.eclipse.emf.ecore.Wizard.category.ID"
-      icon = "icons/full/obj16/ExpressionsModelFile.gif">
-      <description>%_UI_ExpressionsModelWizard_description</description>
-      <selection class = "org.eclipse.core.resources.IResource" />
-    </wizard>
-  </extension>
 
   <extension
         point="org.eclipse.ui.popupMenus">

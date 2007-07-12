@@ -1,4 +1,4 @@
-package hub.sam.util;
+package hub.sam.tef;
 
 public interface IAdaptable {
 

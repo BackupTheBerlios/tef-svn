@@ -87,7 +87,11 @@ public class ReconciliationUnit {
 			}
 		} catch (Exception ex) {			
 			if (newModel != null) {
-				fDocument.getModelProvider().getModel().getCommandFactory().delete(newModel).execute();
+				try {
+					fDocument.getModelProvider().getModel().getCommandFactory().delete(newModel).execute();
+				} catch (Exception ex2) {
+					throw new ReconciliationFailedException("Reconciliation failed (" + ex.getMessage() + ") and recovery from failure failed(" + ex2.getMessage() + ")");
+				}
 			}
 			throw new ReconciliationFailedException(ex.getMessage());
 		}		

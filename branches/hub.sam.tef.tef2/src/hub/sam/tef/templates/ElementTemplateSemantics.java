@@ -180,17 +180,30 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		return result;
 	}
 
+	/**
+	 * Checks according to a possibly checker registered with the language model and or the check
+	 * callback provided by the element template.
+	 */
 	public void check(ASTElementNode representation, SemanticsContext context) {	
 		IModelElement modelElement = ((ModelASTElement)representation.getElement()).getModelElement();
 		
-		IChecker checker = context.getChecker();
-		if (checker != null) {
-			String error = checker.check(modelElement);
+		IChecker checker = context.getChecker();		
+		try {
+			String error = (checker == null) ? null : checker.check(modelElement);
 			if (error != null) {
 				context.getAnnotationModelProvider().addAnnotation(new ErrorAnnotation(error),
 						new Position(representation.getAbsoluteOffset(0), representation.getLength()));
 			}
-		}
+			error = fElementTemplate.check(modelElement);
+			if (error != null) {
+				context.getAnnotationModelProvider().addAnnotation(new ErrorAnnotation(error),
+						new Position(representation.getAbsoluteOffset(0), representation.getLength()));
+			}
+		} catch (Exception ex) {
+			context.getAnnotationModelProvider().addAnnotation(
+					new ErrorAnnotation("Error during model checking: " + ex.getMessage()),
+					new Position(representation.getAbsoluteOffset(0), representation.getLength()));
+		}		
 		
 		if (modelElement instanceof InternalModelElement) {			
 			// already handled in createReferenceModel

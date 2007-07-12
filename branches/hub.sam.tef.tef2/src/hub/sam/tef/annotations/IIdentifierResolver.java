@@ -31,6 +31,11 @@ public interface IIdentifierResolver {
 			IModelElement topLevelElement, 
 			IMetaModelElement expectedType, String property) throws CouldNotResolveIdentifierException;
 	
+	/**
+	 * This method is called during reference model creation. Each model element tree upwise is
+	 * added to the environment and removed once reference model creation leaves the branch containing
+	 * this element.
+	 */
 	public void addToEnvironment(IModelElement element);
 	
 	public void removeFromEnvironment(IModelElement element);

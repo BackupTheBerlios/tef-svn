@@ -10,7 +10,7 @@ public abstract class ValueTemplateSemantics implements ISyntaxProvider {
 		this.fTemplate = template;
 	}
 	
-	public String getNonTerminal() {
+	public String getNonTerminal() {		
 		return fTemplate.getType().toString();
 	}
 }

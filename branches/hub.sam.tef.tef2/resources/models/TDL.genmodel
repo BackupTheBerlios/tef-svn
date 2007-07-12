@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/hub.sam.tef.tdl/src"
+    modelPluginID="hub.sam.tef.tdl" modelName="TDL" importerID="org.eclipse.emf.importer.ecore"
+    usedGenPackages="../../../../plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
+  <foreignModel>TDL.ecore</foreignModel>
+  <genPackages prefix="tdl" basePackage="hub.sam.tef" disposableProviderFactory="true"
+      ecorePackage="TDL.ecore#/">
+    <genClasses ecoreClass="TDL.ecore#//Syntax">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TDL.ecore#//Syntax/templates"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TDL.ecore#//Syntax/topLevelTemplate"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="TDL.ecore#//TDLTemplate">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TDL.ecore#//TDLTemplate/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="TDL.ecore#//TDLValueTemplate"/>
+    <genClasses ecoreClass="TDL.ecore#//TDLElementTemplate">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TDL.ecore#//TDLElementTemplate/metaElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TDL.ecore#//TDLElementTemplate/templates"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="TDL.ecore#//TemplateValue"/>
+    <genClasses ecoreClass="TDL.ecore#//TemplateRef">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TDL.ecore#//TemplateRef/template"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="TDL.ecore#//TDLPropertyTemplate">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TDL.ecore#//TDLPropertyTemplate/property"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TDL.ecore#//TDLPropertyTemplate/valueTemplate"/>
+    </genClasses>
+    <genClasses ecoreClass="TDL.ecore#//TDLSingleValueTemplate"/>
+    <genClasses ecoreClass="TDL.ecore#//TDLSequenceTemplate">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TDL.ecore#//TDLSequenceTemplate/separator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TDL.ecore#//TDLSequenceTemplate/separateLast"/>
+    </genClasses>
+    <genClasses ecoreClass="TDL.ecore#//TDLTerminalTemplate">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TDL.ecore#//TDLTerminalTemplate/terminal"/>
+    </genClasses>
+    <genClasses ecoreClass="TDL.ecore#//TDLChoiceTemplate">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TDL.ecore#//TDLChoiceTemplate/alternatives"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="TDL.ecore#//TDLPrimitiveValueTemplate"/>
+    <genClasses ecoreClass="TDL.ecore#//TDLIdentifierTemplate"/>
+    <genClasses ecoreClass="TDL.ecore#//TDLIntegerTemplate"/>
+  </genPackages>
+</genmodel:GenModel>

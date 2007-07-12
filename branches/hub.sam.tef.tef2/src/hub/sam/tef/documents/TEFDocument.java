@@ -16,10 +16,13 @@
  */
 package hub.sam.tef.documents;
 
+import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
 import hub.sam.tef.annotations.IAnnotationModelProvider;
+import hub.sam.tef.annotations.IChecker;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
 import hub.sam.tef.completion.ICompletionComputer;
+import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
@@ -151,10 +154,6 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 		this.changed = false;
 	}
 
-	public IIdentifierResolver getIdentityResolver() {
-		return null;
-	}
-
 	synchronized public void setModelContent(ASTElementNode tree, IModelElement model) {
 		changed = tree == null;
 		documentModel.update(tree, model);
@@ -207,6 +206,12 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 		return layout;
 	}
 	
+	/**
+	 * This method collects all the completions defined by the templates of the provided language.
+	 * 
+	 * At the moment, concrete language provider simply return a list of the completions. This is wrong. 
+	 * This should be final. TODO
+	 */
 	public Collection<ICompletionComputer> getCompletions() {
 		return Collections.EMPTY_LIST;
 	}
@@ -214,4 +219,31 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 	public void dispose() {
 		documentModel.dispose();
 	}
+
+	/**
+	 * A checker is only optional.
+	 */
+	public IChecker getChecker() {
+		return null;
+	}	
+	
+	private final static IIdentifierResolver emptyResolver = new IIdentifierResolver() {
+		public void addToEnvironment(IModelElement element) {				
+		}
+
+		public void removeFromEnvironment(IModelElement element) {				
+		}
+
+		public IModelElement resolveIdentifier(IModel model, ASTElementNode node, IModelElement context, IModelElement topLevelElement, IMetaModelElement expectedType, String property) throws CouldNotResolveIdentifierException {			
+			throw new CouldNotResolveIdentifierException("name resolution not implemented");
+		}			
+	};
+	
+	/**
+	 * A identifier resolver is optional
+	 */
+	public IIdentifierResolver getIdentityResolver() {
+		return emptyResolver;
+	}
+
 }

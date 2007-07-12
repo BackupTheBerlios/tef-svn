@@ -16,11 +16,11 @@
  */
 package hub.sam.tef.templates;
 
+import hub.sam.tef.IAdaptable;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
 import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
-import hub.sam.util.IAdaptable;
 
 /**
  * A Template describes how a model elements is viewed. It creates the initial views

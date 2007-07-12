@@ -97,12 +97,18 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	protected boolean isIdentifierProperty(String property) {
 		return false;
 	}
-
+	
 	@Override
 	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {	
 		return null;
 	}
 	
+	/**
+	 * During reconciliation a model is created without real, but fake
+	 * references. These fake references target "mock" objects, which are
+	 * created using this method. These "mock" object have to be
+	 * {@link InternalModelElement}.
+	 */
 	public IModelElement createMockObject() {
 		InternalModelElement mock = new InternalModelElement(getMetaElement());
 		for (Template template: getTemplates()) {
@@ -118,6 +124,15 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		return null;
 	}
 	
+	/**
+	 * Callback method that returns null of the modelElement does not contain any errors. Returns an
+	 * error description otherwise.
+	 */
+	public String check(IModelElement modelElement) {
+		return null;
+	}
+	
+	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		if (ISyntaxProvider.class == adapter || IElementSyntaxProvider.class == adapter) {
 			return (T) new ElementTemplateSemantics(this);

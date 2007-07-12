@@ -18,6 +18,8 @@ import org.eclipse.emf.ocl.expressions.VariableExp;
 import org.eclipse.emf.ocl.parser.SemanticException;
 import org.eclipse.emf.ocl.types.CollectionType;
 import org.eclipse.emf.ocl.types.TypesFactory;
+import org.eclipse.emf.ocl.types.impl.PrimitiveIntegerImpl;
+import org.eclipse.emf.ocl.types.impl.PrimitiveRealImpl;
 import org.eclipse.emf.ocl.utilities.PredefinedType;
 import com.sun.org.apache.xerces.internal.impl.xs.util.StringListImpl;
 
@@ -32,7 +34,12 @@ public class TypeHelper {
 						IteratorExp iteratorExp = (IteratorExp)var.eContainer();						
 						OCLExpression source = iteratorExp.getSource();
 						if (source != null && getTypeFor(source) != null) {
-							return ((CollectionType)getTypeFor(source)).getElementType();
+							EClassifier typeForSource = getTypeFor(source);
+							if (typeForSource instanceof CollectionType) {
+								return ((CollectionType)getTypeFor(source)).getElementType();
+							} else {
+								return typeForSource; // signle valued property interpreted as collection								
+							}
 						}
 					}
 				}
@@ -107,10 +114,13 @@ public class TypeHelper {
 	public static boolean isAssignableFrom(EClassifier requiredType, EClassifier actualType) {		
 		Class requiredInstanceClass = requiredType.getInstanceClass();
 		Class actualInstanceClass = actualType.getInstanceClass();
+		if (requiredType instanceof PrimitiveRealImpl && actualType instanceof PrimitiveIntegerImpl) {
+			return true;
+		}
 		if (requiredInstanceClass != null && actualInstanceClass != null) {
 			return requiredInstanceClass.isAssignableFrom(actualInstanceClass);
 		} else {
 			return requiredType.equals(actualType);
-		}		
+		} 		
 	}	
 }
