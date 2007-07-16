@@ -17,11 +17,14 @@
 package hub.sam.tef.templates;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
 import hub.sam.tef.annotations.ISemanticProvider;
+import hub.sam.tef.annotations.IdentifierResolutionNotImplementedException;
 import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
+import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
 import hub.sam.tef.reconciliation.syntax.IElementSyntaxProvider;
@@ -131,6 +134,26 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	public String check(IModelElement modelElement) {
 		return null;
 	}
+	
+	/**
+	 * Callback method that returnes a resolved identifier. Throws a {@link CouldNotResolveIdentifierException} if the
+	 * identifier could not be resolved. 
+	 * 
+	 * @param model The overall model (EditingDomain)
+	 * @param node The parse tree node of the element that has to be resolved
+	 * @param context The model element that contains the reference to be resolved
+	 * @param topLevelElement The toplevel model element of the current model
+	 * @param expectedType The expected type of the resolved element
+	 * @param property The property that the reference is a value for
+	 * @return The resolved element (can be null)
+	 * @throws CouldNotResolveIdentifierException
+	 */
+	public IModelElement resolveIdentifier(IModel model, ASTElementNode node, IModelElement context, 
+			IModelElement topLevelElement, 
+			IMetaModelElement expectedType, String property) throws CouldNotResolveIdentifierException {
+		throw new IdentifierResolutionNotImplementedException("resolution not implemented");
+	}
+			
 	
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {

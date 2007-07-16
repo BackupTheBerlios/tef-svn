@@ -28,6 +28,13 @@
             icon="icons/full/obj16/Plus.gif"
             id="tef.emf.ocl.texteditor"
             name="TEF OCL Text Editor"/>
+       <editor
+             class="hub.sam.tef.tdl.TDLEditor"
+             default="false"
+             extensions="tdl"
+             icon="icons/full/obj16/ExpressionsModelFile.gif"
+             id="hub.sam.tef.tdl.editor"
+             name="TDL Editor"/>
    </extension>
    
    <extension point="org.eclipse.ui.editors.annotationTypes">

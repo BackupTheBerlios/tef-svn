@@ -85,6 +85,7 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 		}
 	}	
 				
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		if (ISyntaxProvider.class == adapter) {

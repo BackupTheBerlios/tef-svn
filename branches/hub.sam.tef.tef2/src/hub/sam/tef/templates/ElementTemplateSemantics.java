@@ -8,6 +8,7 @@ import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
 import hub.sam.tef.annotations.ErrorAnnotation;
 import hub.sam.tef.annotations.IChecker;
 import hub.sam.tef.annotations.ISemanticProvider;
+import hub.sam.tef.annotations.IdentifierResolutionNotImplementedException;
 import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
@@ -146,9 +147,15 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 			result = ((ModelASTElement)tree.getElement()).getModelElement();			
 		} else if (parent != null && !isComposite) {		
 			try {
-				result = context.getIdentifierResolver().resolveIdentifier(fElementTemplate.getModel(),
-						(ASTElementNode)tree, parent, context.getNewModel(),
-						((ReferenceTemplate)tree.getParent().getElement().getTemplate()).getTypeModel(), property);
+				try {
+					result = fElementTemplate.resolveIdentifier(fElementTemplate.getModel(),
+							(ASTElementNode)tree, parent, context.getNewModel(),
+							((ReferenceTemplate)tree.getParent().getElement().getTemplate()).getTypeModel(), property);
+				} catch (IdentifierResolutionNotImplementedException ex) {
+					result = context.getIdentifierResolver().resolveIdentifier(fElementTemplate.getModel(),
+							(ASTElementNode)tree, parent, context.getNewModel(),
+							((ReferenceTemplate)tree.getParent().getElement().getTemplate()).getTypeModel(), property);
+				}
 			} catch (CouldNotResolveIdentifierException ex) {
 				context.getAnnotationModelProvider().addAnnotation(new ErrorAnnotation(ex.getMessage()),
 						new Position(tree.getAbsoluteOffset(0), tree.getLength()));
