@@ -16,6 +16,10 @@ import fri.patterns.interpreter.parsergenerator.Token;
 
 public class Rule implements Serializable
 {
+	
+	public static boolean isScanTerminal(String symbol) {
+		return symbol.charAt(0) == Token.COMMAND_QUOTE;
+	}
 	public static boolean isTerminal(String symbol) {
 		return symbol.charAt(0) == Token.COMMAND_QUOTE || symbol.charAt(0) == Token.CHAR_QUOTE ||
 				symbol.charAt(0) == Token.STRING_QUOTE;
