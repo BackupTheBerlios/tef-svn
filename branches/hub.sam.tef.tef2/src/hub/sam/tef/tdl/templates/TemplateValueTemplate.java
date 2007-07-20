@@ -15,7 +15,7 @@ public class TemplateValueTemplate extends ChoiceTemplate {
 	@Override
 	public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
 		return new ValueTemplate[] {
-				new TDLTemplateTemplate(this),
+				new TDLTemplateInfixTemplate(this),
 				new TemplateRefTemplate(this)
 		};
 	}

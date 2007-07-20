@@ -28,6 +28,5 @@ public class EMFIdentifierTemplate extends ElementTemplate {
 	@Override
 	protected String getAlternativeSymbol() {
 		return "ENamedElement_identifier";
-	}
-
+	}	
 }

@@ -63,8 +63,11 @@ public final class DocumentModel implements IDisposable, IDocumentModelProvider,
 	
 	public void reconcile() {
 		try {
-			ReconciliationResults result = new ReconciliationUnit().run(fDocument);
-			update(result.getTopLevelTreeNode(), result.getTopLevelElement());
+			String content = fDocument.get();
+			if (content != null && !content.equals("")) {
+				ReconciliationResults result = new ReconciliationUnit().run(fDocument);
+				update(result.getTopLevelTreeNode(), result.getTopLevelElement());
+			}
 		} catch (ReconciliationFailedException ex) {
 			System.out.println("initial reconciliation failed");
 		}	

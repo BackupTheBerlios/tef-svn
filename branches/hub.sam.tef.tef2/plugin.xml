@@ -35,6 +35,13 @@
              icon="icons/full/obj16/ExpressionsModelFile.gif"
              id="hub.sam.tef.tdl.editor"
              name="TDL Editor"/>
+       <editor
+             class="hub.sam.tef.tdl.TDLTextEditor"
+             default="false"
+             extensions="tdlt"
+             icon="icons/full/obj16/ExpressionsModelFile.gif"
+             id="hub.sam.tef.tdl.texteditor"
+             name="TDL Editor"/>
    </extension>
    
    <extension point="org.eclipse.ui.editors.annotationTypes">

@@ -8,16 +8,40 @@ import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
 import java.util.Collection;
 import java.util.Vector;
 
 public class EMFCompletions {
 	
+	public static Collection<TEFCompletionProposal> createProposals(String metaClassName, String idAttributeName,	CompletionContext context) {
+		Collection<TEFCompletionProposal> result = new Vector<TEFCompletionProposal>();
+		IModel model = context.getDocumentModelProvider().getModel();
+		for (IModelElement metaClassInstance : model.getElements(model
+				.getMetaElement(metaClassName))) {
+			String name = (String) metaClassInstance.getValue(idAttributeName);
+			if (name != null && name.startsWith(context.getIdentifierPrefix())) {
+				result.add(new TEFCompletionProposal(name, name.substring(
+						context.getIdentifierPrefix().length(), name.length()),
+						context.getCompletionOffset()));
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 *  This operation apparently only look for elements in the document toplevel and below elements.
+	 */
+	@Deprecated
 	public static Collection<TEFCompletionProposal> createProposals(String metaModelElement, CompletionContext context) {
 		return createProposals(metaModelElement, context, null, null);
 	}
 	
+	/**
+	 *  This operation apparently only look for elements in the document toplevel and below elements.
+	 */
+	@Deprecated
 	public static Collection<TEFCompletionProposal> createProposals(String metaModelElement, CompletionContext context,
 			ICompletionFilter filter, ICompletionDisplayStringProvider provider) {
 		String identifierPrefix = context.getIdentifierPrefix();

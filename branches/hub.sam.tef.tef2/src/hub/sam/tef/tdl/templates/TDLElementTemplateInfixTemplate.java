@@ -2,9 +2,7 @@ package hub.sam.tef.tdl.templates;
 
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.syntax.BlockLayout;
-import hub.sam.tef.reconciliation.syntax.ExpressionLayout;
 import hub.sam.tef.templates.ElementTemplate;
-import hub.sam.tef.templates.OptionalTemplate;
 import hub.sam.tef.templates.ReferenceTemplate;
 import hub.sam.tef.templates.SequenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
@@ -12,21 +10,21 @@ import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.WhitespaceTemplate;
-import hub.sam.tef.templates.primitives.IdentifierTemplate;
-import hub.sam.tef.templates.primitives.StringLiteralTemplate;
 
-public class TDLElementTemplateTemplate extends ElementTemplate {
+public class TDLElementTemplateInfixTemplate extends ElementTemplate {
 
 	
-	public TDLElementTemplateTemplate(Template template) {
+	public TDLElementTemplateInfixTemplate(Template template) {
 		super(template, template.getModel().getMetaElement("TDLElementTemplate"));	
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-			new WhitespaceTemplate(this, BlockLayout.INDENT),
+			new TerminalTemplate(this, "("),
+			new WhitespaceTemplate(this, BlockLayout.EMPTY),
 			new TerminalTemplate(this, "element"),
+			/*
 			new WhitespaceTemplate(this, BlockLayout.SPACE),			
 			new SingleValueTemplate<String>(this, "name") {
 				@Override
@@ -34,6 +32,7 @@ public class TDLElementTemplateTemplate extends ElementTemplate {
 					return new IdentifierTemplate(this);
 				}			
 			},
+			*/
 			new WhitespaceTemplate(this, BlockLayout.SPACE),
 			new TerminalTemplate(this, "for"),
 			new WhitespaceTemplate(this, BlockLayout.SPACE),
@@ -47,32 +46,7 @@ public class TDLElementTemplateTemplate extends ElementTemplate {
 						}						
 					};
 				}				
-			},				
-			/*
-			new SingleValueTemplate<String>(this, "alternativeSymbol") {
-				@Override
-				protected ValueTemplate<String> createValueTemplate() {
-					return new OptionalTemplate<String>(this, this.getModel().getType(String.class)) {
-							@Override
-							public Template[] createOptionTemplate() {
-								return new Template[] {
-									new WhitespaceTemplate(this, BlockLayout.EMPTY),
-									new TerminalTemplate(this, ","),
-									new WhitespaceTemplate(this, BlockLayout.SPACE),
-									new TerminalTemplate(this, "as"),
-									new WhitespaceTemplate(this, BlockLayout.SPACE),
-									new StringLiteralTemplate(this)																									
-								};
-							}
-
-							@Override
-							public String getAlternativeSymbol() {
-								return "Element_alternativeSymbol_opt";
-							}											
-					};
-				}				
-			},	
-			*/		
+			},
 			new WhitespaceTemplate(this, BlockLayout.SPACE),
 			new TerminalTemplate(this, "{"),
 			new WhitespaceTemplate(this, BlockLayout.BEGIN_BLOCK),
@@ -85,8 +59,14 @@ public class TDLElementTemplateTemplate extends ElementTemplate {
 			new WhitespaceTemplate(this, BlockLayout.END_BLOCK),
 			new WhitespaceTemplate(this, BlockLayout.INDENT),
 			new TerminalTemplate(this, "}"),
-			new WhitespaceTemplate(this, BlockLayout.STATEMENT)
+			new WhitespaceTemplate(this, BlockLayout.EMPTY),
+			new TerminalTemplate(this, ")"),			
 		};
 	}
 
+	@Override
+	protected String getAlternativeSymbol() {
+		return "TDLElementTemplate_infix";
+	}
+	
 }

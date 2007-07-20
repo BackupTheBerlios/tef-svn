@@ -93,7 +93,7 @@ public class TerminalTemplate extends Template implements ISyntaxProvider, ISynt
 		Collection<IRule> result = new Vector<IRule>();		
 		if (fTerminalText.matches("[a-zA-Z]*")) {
 			IToken token = new Token(
-					new TextAttribute(new Color(Display.getCurrent(), new RGB(120,120,0)), null, SWT.BOLD));
+					new TextAttribute(getColor(), null, SWT.BOLD));
 			WordRule rule = new WordRule(new IWordDetector() {
 				public boolean isWordPart(char c) {
 					return Character.isJavaIdentifierStart(c);
@@ -107,6 +107,10 @@ public class TerminalTemplate extends Template implements ISyntaxProvider, ISynt
 			result.add(rule);
 		}
 		return result;
+	}
+	
+	protected Color getColor() {
+		return new Color(Display.getCurrent(), new RGB(120,120,0));
 	}
 
 	@Override

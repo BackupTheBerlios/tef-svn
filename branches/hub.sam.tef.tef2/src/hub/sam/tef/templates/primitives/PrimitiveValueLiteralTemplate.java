@@ -55,10 +55,14 @@ public abstract class PrimitiveValueLiteralTemplate<ModelType> extends ValueTemp
 	}
 	
 	protected abstract Object getObjectValueFromStringValue(String value);
+	
+	protected String getStringValueFromObjectValue(Object value) {
+		return value.toString();
+	}
 
 	class TreeRepresentationProvider implements IASTProvider {
 		public ASTNode createTreeRepresentation(IModelElement owner, String property, Object model, boolean isComposite, AbstractLayoutManager layout) {
-			return new PrimitiveTreeRepresentation((model == null) ? "unknown" : model);
+			return new PrimitiveTreeRepresentation((model == null) ? "unknown" : getStringValueFromObjectValue(model));
 		}
 
 		public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {

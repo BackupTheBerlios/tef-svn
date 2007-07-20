@@ -1,6 +1,5 @@
 package hub.sam.tef.tdl.templates;
 
-import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.syntax.BlockLayout;
 import hub.sam.tef.templates.ElementTemplate;
@@ -11,43 +10,55 @@ import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.WhitespaceTemplate;
+import hub.sam.tef.templates.primitives.IdentifierTemplate;
 
-public class SyntaxTemplate extends ElementTemplate {
+public class TDLChoiceTemplateTemplate extends ElementTemplate {
 
 	
-	public SyntaxTemplate(IDocumentModelProvider modelProvider) {
-		super(modelProvider, modelProvider.getModel().getMetaElement("Syntax"));	
+	public TDLChoiceTemplateTemplate(Template template) {
+		super(template, template.getModel().getMetaElement("TDLChoiceTemplate"));	
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-				new TerminalTemplate(this, "syntax"),
+				new WhitespaceTemplate(this, BlockLayout.INDENT),
+				new TerminalTemplate(this, "choice"),
 				new WhitespaceTemplate(this, BlockLayout.SPACE),
-				new TerminalTemplate(this, "toplevel"),
+				new SingleValueTemplate<String>(this, "name") {
+					@Override
+					protected ValueTemplate<String> createValueTemplate() {
+						return new IdentifierTemplate(this);
+					}					
+				},
 				new WhitespaceTemplate(this, BlockLayout.SPACE),
-				new SingleValueTemplate<IModelElement>(this, "topLevelTemplate") {
+				new TerminalTemplate(this, "for"),
+				new WhitespaceTemplate(this, BlockLayout.SPACE),
+				new SingleValueTemplate<IModelElement>(this, "metaElement") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
-						return new ReferenceTemplate(this, getModel().getMetaElement("TemplateValue")) {
+						return new ReferenceTemplate(this, getModel().getMetaElement("EClass")) {
 							@Override
 							protected ElementTemplate getElementTemplate() {
-								return new TDLTemplateIdentifierTemplate(this);
-							}							
+								return new EMFIdentifierTemplate(this);
+							}						
 						};
-					}					
+					}				
 				},
 				new WhitespaceTemplate(this, BlockLayout.SPACE),
 				new TerminalTemplate(this, "{"),
 				new WhitespaceTemplate(this, BlockLayout.BEGIN_BLOCK),
-				new SequenceTemplate<IModelElement>(this, "templates", null, false) {
+				new SequenceTemplate<IModelElement>(this, "alternatives", null, false) {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new TDLTemplateTemplate(this);
-					}					
+					}				
 				},
 				new WhitespaceTemplate(this, BlockLayout.END_BLOCK),
-				new TerminalTemplate(this, "}")
+				new WhitespaceTemplate(this, BlockLayout.INDENT),
+				new TerminalTemplate(this, "}"),
+				new WhitespaceTemplate(this, BlockLayout.STATEMENT)
 		};
 	}
+
 }

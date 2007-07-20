@@ -16,7 +16,7 @@
  */
 package hub.sam.tef.tdl;
 
-import hub.sam.tef.emf.EMFDocumentProvider;
+import hub.sam.tef.emf.EMFTextDocumentProvider;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 import org.eclipse.jface.text.IDocument;
 
-public class TDLDocumentProvider extends EMFDocumentProvider {
+public class TDLTextDocumentProvider extends EMFTextDocumentProvider {
 
 	private final EPackage fPackage = tdlPackage.eINSTANCE;
 	private final EFactory fFactory = tdlFactory.eINSTANCE;

@@ -28,10 +28,19 @@ public abstract class SingleReductionCompletion implements ICompletionComputer {
 					return false;
 				}
 			} else if (parseResult instanceof String) {
-				if (!("'" + parseResult + "'").equals(rulePrefix[i])) {
+				if (Rule.isTerminal(rulePrefix[i])) {
+					if (Rule.isScanTerminal(rulePrefix[i])) {
+						// TODO complex terminal symbols ala `identifier` or `number`	
+						
+					} else {
+						if (!("'" + parseResult + "'").equals(rulePrefix[i])) {
+							return false;
+						}
+					}
+				} else {
 					return false;
 				}
-				// TODO complex terminal symbols ala `identifier` or `number`
+				
 			} else {
 				throw new RuntimeException("assert");
 			}					

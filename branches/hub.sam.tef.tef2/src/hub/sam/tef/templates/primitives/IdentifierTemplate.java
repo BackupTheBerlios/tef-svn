@@ -26,7 +26,7 @@ import hub.sam.tef.templates.Template;
 public class IdentifierTemplate extends PrimitiveValueLiteralTemplate<String> {
 	
 	public IdentifierTemplate(Template template) {
-		super(template, template.getModelProvider().getModel().getType(String.class));	
+		super(template, template.getModel().getType(String.class));	
 	}
 
 	@Override

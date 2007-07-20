@@ -32,20 +32,18 @@ import hub.sam.tef.reconciliation.treerepresentation.ModelASTElement;
 public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {		
 
 	private final IMetaModelElement fTypeModel;
-	private final ElementTemplate fIdentifierTemplate;
+	private ElementTemplate fIdentifierTemplate;
 	private final String fSymbol;
 	
 	public ReferenceTemplate(Template template, IMetaModelElement typeModel, String symbol) {
 		super(template, typeModel);
 		this.fTypeModel = typeModel;		
-		this.fIdentifierTemplate = getElementTemplate();
 		this.fSymbol = symbol;
 	}
 	
 	public ReferenceTemplate(Template template, IMetaModelElement typeModel) {
 		super(template, typeModel);
-		this.fTypeModel = typeModel;		
-		this.fIdentifierTemplate = getElementTemplate();
+		this.fTypeModel = typeModel;	
 		this.fSymbol = null;
 	}	
 	
@@ -57,12 +55,19 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	
 	@Override
 	public Template[] getNestedTemplates() {
-		return new Template[] { fIdentifierTemplate };
+		return new Template[] { getIdentifierTemplate() };
+	}
+	
+	private ElementTemplate getIdentifierTemplate() {
+		if (fIdentifierTemplate == null) {
+			fIdentifierTemplate = getElementTemplate();
+		}
+		return fIdentifierTemplate;
 	}
 	
 	@Override
 	public ICommand getCommandToCreateADefaultValue(final IModelElement owner, String property, boolean composite) {
-		IModelElement mock = fIdentifierTemplate.createMockObject(); 		
+		IModelElement mock = getIdentifierTemplate().createMockObject(); 		
 		return getModel().getCommandFactory().set(owner, property, mock);
 	}
 	
@@ -94,7 +99,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		}
 
 		public String[][] getRules() {
-			return new String[][] {{ getNonTerminal(), fIdentifierTemplate.getAdapter(ISyntaxProvider.class).getNonTerminal() }};
+			return new String[][] {{ getNonTerminal(), getIdentifierTemplate().getAdapter(ISyntaxProvider.class).getNonTerminal() }};
 		}			
 	}
 	
@@ -103,21 +108,21 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 			ModelASTElement contents = new ModelASTElement(ReferenceTemplate.this, (IModelElement)model);
 			ASTElementNode treeRepresentation = new ASTElementNode(contents);
 			
-			treeRepresentation.addNodeObject(fIdentifierTemplate.getAdapter(IASTProvider.class).
+			treeRepresentation.addNodeObject(getIdentifierTemplate().getAdapter(IASTProvider.class).
 					createTreeRepresentation(owner, notused, model, false, layout));						
 			
 			return treeRepresentation;
 		}
 
 		public Object createCompositeModel(IModelElement owner, String property, ASTNode tree, boolean isComposite) {				
-			IModelElement result =  (IModelElement)fIdentifierTemplate.getAdapter(IASTProvider.class).
+			IModelElement result =  (IModelElement)getIdentifierTemplate().getAdapter(IASTProvider.class).
 					createCompositeModel(owner, property, ((ASTElementNode)tree).getChildNodes().get(0), false);			
 			tree.setElement(new ModelASTElement(ReferenceTemplate.this, result));
 			return result;
 		}
 
 		public Object createReferenceModel(IModelElement owner, String property, ASTNode tree, boolean isComposite, SemanticsContext context) {
-			IModelElement result = (IModelElement)fIdentifierTemplate.getAdapter(IASTProvider.class).
+			IModelElement result = (IModelElement)getIdentifierTemplate().getAdapter(IASTProvider.class).
 					createReferenceModel(owner, property, ((ASTElementNode)tree).getChildNodes().get(0), false, context);						
 			return result;
 		}			
@@ -126,7 +131,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	
 	class SemanticProvider implements ISemanticProvider {		
 		public void check(ASTElementNode representation, SemanticsContext context) {			
-			fIdentifierTemplate.getAdapter(ISemanticProvider.class).check(representation.getChildNodes().get(0), context);
+			getIdentifierTemplate().getAdapter(ISemanticProvider.class).check(representation.getChildNodes().get(0), context);
 		}		
 	}
 	

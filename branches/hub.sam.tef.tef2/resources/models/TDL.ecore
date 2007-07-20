@@ -11,6 +11,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TDLTemplate" abstract="true" eSuperTypes="#//TemplateValue">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alternativeSymbol" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TDLValueTemplate" abstract="true" eSuperTypes="#//TDLTemplate"/>
   <eClassifiers xsi:type="ecore:EClass" name="TDLElementTemplate" eSuperTypes="#//TDLValueTemplate">
@@ -43,9 +44,19 @@
   <eClassifiers xsi:type="ecore:EClass" name="TDLChoiceTemplate" eSuperTypes="#//TDLValueTemplate">
     <eStructuralFeatures xsi:type="ecore:EReference" name="alternatives" upperBound="-1"
         eType="#//TemplateValue" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metaElement" lowerBound="1"
+        eType="ecore:EClass ../../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TDLPrimitiveValueTemplate" abstract="true"
       eSuperTypes="#//TDLValueTemplate"/>
   <eClassifiers xsi:type="ecore:EClass" name="TDLIdentifierTemplate" eSuperTypes="#//TDLPrimitiveValueTemplate"/>
   <eClassifiers xsi:type="ecore:EClass" name="TDLIntegerTemplate" eSuperTypes="#//TDLPrimitiveValueTemplate"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TDLReferenceTemplate" eSuperTypes="#//TDLValueTemplate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elementTemplate" lowerBound="1"
+        eType="#//TemplateValue" defaultValueLiteral="" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metaElement" lowerBound="1"
+        eType="ecore:EClass ../../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TDLStringLiteralTemplate" eSuperTypes="#//TDLPrimitiveValueTemplate"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TDLBooleanLiteralTemplate" eSuperTypes="#//TDLPrimitiveValueTemplate"/>
 </ecore:EPackage>

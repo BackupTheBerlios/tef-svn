@@ -56,59 +56,67 @@ public abstract class EMFTextDocumentProvider extends AbstractEMFDocumentProvide
 	@Override
 	protected boolean setDocumentContent(IDocument document, IEditorInput editorInput, String encoding) throws CoreException {
 		if (editorInput instanceof IStorageEditorInput) {			
-			IStorage storage= ((IStorageEditorInput) editorInput).getStorage();
-			InputStream contentStream= storage.getContents();
-			Reader in= null;
-			String contents = null;
-			try {
-
-				if (encoding == null)
-					encoding= getDefaultEncoding();
-
-				in= new BufferedReader(new InputStreamReader(contentStream, encoding), DEFAULT_FILE_SIZE);
-				StringBuffer buffer= new StringBuffer(DEFAULT_FILE_SIZE);
-				char[] readBuffer= new char[2048];
-				int n= in.read(readBuffer);
-				while (n > 0) {
-					buffer.append(readBuffer, 0, n);
-					n= in.read(readBuffer);
-				}
-
-				contents = buffer.toString();
-
-			} catch (IOException x) {
-				String message= (x.getMessage() != null ? x.getMessage() : ""); //$NON-NLS-1$
-				IStatus s= new Status(IStatus.ERROR, PlatformUI.PLUGIN_ID, IStatus.OK, message, x);
-				throw new CoreException(s);
-			} finally {
-				try {
-					if (in != null)
-						in.close();
-					else
-						contentStream.close();
-				} catch (IOException x) {
-				}
-			}
-			
-				
-			EditingDomain editingDomain = getEditingDomain();
-			URI resourceId = null;
-			try {
-				resourceId = new URIConverterImpl().normalize(URI.createURI("file://" + File.createTempFile("teftempfile", ".xml").getAbsolutePath()));
-			} catch (IOException ex) {
-				throw new RuntimeException(ex);
-			}
-			
-			Resource resource = editingDomain.getResourceSet().createResource(resourceId);
-			//resource = prepareResource(resource);
-			if (editingDomain.isReadOnly(resource)) {
-				throw new RuntimeException("try to edit a read only resource");
-			}
-			IModel model = loadModel(resource, editingDomain);											
-			((TEFDocument)document).setInitialTextContext(model, resourceId, contents);
-			return true;
+			return setDocumentContent(document, ((IStorageEditorInput)editorInput).getStorage(), encoding);
 		}
 		return false;
+	}
+	
+	/**
+	 * Reads the content from a file and interprets it as text file.
+	 * @param storage For example a IFile.
+	 * @param encoding Can be null.
+	 */
+	public boolean setDocumentContent(IDocument document, IStorage storage, String encoding) throws CoreException {
+		InputStream contentStream= storage.getContents();
+		Reader in= null;
+		String contents = null;
+		try {
+
+			if (encoding == null)
+				encoding= getDefaultEncoding();
+
+			in= new BufferedReader(new InputStreamReader(contentStream, encoding), DEFAULT_FILE_SIZE);
+			StringBuffer buffer= new StringBuffer(DEFAULT_FILE_SIZE);
+			char[] readBuffer= new char[2048];
+			int n= in.read(readBuffer);
+			while (n > 0) {
+				buffer.append(readBuffer, 0, n);
+				n= in.read(readBuffer);
+			}
+
+			contents = buffer.toString();
+
+		} catch (IOException x) {
+			String message= (x.getMessage() != null ? x.getMessage() : ""); //$NON-NLS-1$
+			IStatus s= new Status(IStatus.ERROR, PlatformUI.PLUGIN_ID, IStatus.OK, message, x);
+			throw new CoreException(s);
+		} finally {
+			try {
+				if (in != null)
+					in.close();
+				else
+					contentStream.close();
+			} catch (IOException x) {
+			}
+		}
+		
+			
+		EditingDomain editingDomain = getEditingDomain();
+		URI resourceId = null;
+		try {
+			resourceId = new URIConverterImpl().normalize(URI.createURI("file://" + File.createTempFile("teftempfile", ".xml").getAbsolutePath()));
+		} catch (IOException ex) {
+			throw new RuntimeException(ex);
+		}
+		
+		Resource resource = editingDomain.getResourceSet().createResource(resourceId);
+		//resource = prepareResource(resource);
+		if (editingDomain.isReadOnly(resource)) {
+			throw new RuntimeException("try to edit a read only resource");
+		}
+		IModel model = loadModel(resource, editingDomain);											
+		((TEFDocument)document).setInitialTextContext(model, resourceId, contents);
+		return true;
 	}
 	
 	protected ElementInfo getElementInfo(Object element) {

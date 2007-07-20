@@ -17,8 +17,10 @@ public class TDLTemplateTemplate extends ChoiceTemplate {
 	public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
 		return new ValueTemplate[] {
 			new TDLElementTemplateTemplate(this),
+			new TDLChoiceTemplateTemplate(this),
 			new TDLSingleValueTemplateTemplate(this),
-			new TDLIdentifierTemplateTemplate(this)
+			new TDLSequenceTemplateTemplate(this),
+			new TDLTerminalTemplateTemplate(this)
 		};
 	}
 

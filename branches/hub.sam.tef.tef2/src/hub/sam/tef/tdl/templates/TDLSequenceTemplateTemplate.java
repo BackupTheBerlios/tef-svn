@@ -9,19 +9,21 @@ import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.WhitespaceTemplate;
+import hub.sam.tef.templates.primitives.BooleanLiteralTemplate;
+import hub.sam.tef.templates.primitives.StringLiteralTemplate;
 
-public class TDLSingleValueTemplateTemplate extends ElementTemplate {
+public class TDLSequenceTemplateTemplate extends ElementTemplate {
 
 	
-	public TDLSingleValueTemplateTemplate(Template template) {
-		super(template, template.getModel().getMetaElement("TDLSingleValueTemplate"));	
+	public TDLSequenceTemplateTemplate(Template template) {
+		super(template, template.getModel().getMetaElement("TDLSequenceTemplate"));	
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
 			new WhitespaceTemplate(this, BlockLayout.INDENT),			
-			new TerminalTemplate(this, "single"),
+			new TerminalTemplate(this, "sequence"),
 			new WhitespaceTemplate(this, BlockLayout.SPACE),
 			new TerminalTemplate(this, "for"),
 			new WhitespaceTemplate(this, BlockLayout.SPACE),
@@ -45,6 +47,26 @@ public class TDLSingleValueTemplateTemplate extends ElementTemplate {
 				@Override
 				protected ValueTemplate<IModelElement> createValueTemplate() {
 					return new TemplateValueTemplate(this);
+				}				
+			},
+			new TerminalTemplate(this, ","),
+			new WhitespaceTemplate(this, BlockLayout.SPACE),
+			new TerminalTemplate(this, "seperator"),
+			new WhitespaceTemplate(this, BlockLayout.SPACE),
+			new SingleValueTemplate<String>(this, "separator") {
+				@Override
+				protected ValueTemplate<String> createValueTemplate() {
+					return new StringLiteralTemplate(this);
+				}				
+			},
+			new TerminalTemplate(this, ","),
+			new WhitespaceTemplate(this, BlockLayout.SPACE),
+			new TerminalTemplate(this, "last"),
+			new WhitespaceTemplate(this, BlockLayout.SPACE),
+			new SingleValueTemplate<Boolean>(this, "separateLast") {
+				@Override
+				protected ValueTemplate<Boolean> createValueTemplate() {
+					return new BooleanLiteralTemplate(this);
 				}				
 			},
 			new WhitespaceTemplate(this, BlockLayout.EMPTY),

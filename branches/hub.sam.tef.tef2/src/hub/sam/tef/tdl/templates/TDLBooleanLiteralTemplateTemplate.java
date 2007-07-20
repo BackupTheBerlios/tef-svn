@@ -8,16 +8,16 @@ import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 
-public class TDLIdentifierTemplateTemplate extends ElementTemplate {
+public class TDLBooleanLiteralTemplateTemplate extends ElementTemplate {
 
-	public TDLIdentifierTemplateTemplate(Template template) {
-		super(template, template.getModel().getMetaElement("TDLIdentifierTemplate"));
+	public TDLBooleanLiteralTemplateTemplate(Template template) {
+		super(template, template.getModel().getMetaElement("TDLBooleanLiteralTemplate"));
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-				new TerminalTemplate(this, "IDENTIFIER") { 
+				new TerminalTemplate(this, "BOOLEAN") { 
 					protected Color getColor() {
 						return new Color(Display.getCurrent(), new RGB(120,0,120));
 					}	

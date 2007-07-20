@@ -37,13 +37,13 @@ public class TDLTemplateIdentifierTemplate extends ElementTemplate {
 	
 
 	@Override
-	public IModelElement resolveIdentifier(IModel model, ASTElementNode node, IModelElement context, IModelElement topLevelElement, IMetaModelElement expectedType, String property) throws CouldNotResolveIdentifierException {
-		String name = node.getNode("name").getContent();
-		for(IModelElement template: (ICollection<IModelElement>)context.getValue("templates")) {
+	public IModelElement resolveIdentifier(IModel model, ASTElementNode node, IModelElement context, IModelElement topLevelElement, IMetaModelElement expectedType, String property) throws CouldNotResolveIdentifierException {		
+		String name = node.getNode("name").getContent();			
+		for(IModelElement template: (ICollection<IModelElement>)topLevelElement.getValue("templates")) {
 			if (name != null && name.equals(template.getValue("name"))) {
 				return template;
 			}
 		}
-		throw new CouldNotResolveIdentifierException("There is no template with the name " + name);
-	}
+		throw new CouldNotResolveIdentifierException("There is no template with the name " + name);		
+	}	
 }

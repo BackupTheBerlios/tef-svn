@@ -10,25 +10,26 @@ import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.WhitespaceTemplate;
 
-public class TDLSingleValueTemplateTemplate extends ElementTemplate {
+public class TDLReferenceTemplateTemplate extends ElementTemplate {
 
 	
-	public TDLSingleValueTemplateTemplate(Template template) {
-		super(template, template.getModel().getMetaElement("TDLSingleValueTemplate"));	
+	public TDLReferenceTemplateTemplate(Template template) {
+		super(template, template.getModel().getMetaElement("TDLReferenceTemplate"));	
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-			new WhitespaceTemplate(this, BlockLayout.INDENT),			
-			new TerminalTemplate(this, "single"),
+			new TerminalTemplate(this, "("),
+			new WhitespaceTemplate(this, BlockLayout.EMPTY),			
+			new TerminalTemplate(this, "ref"),
 			new WhitespaceTemplate(this, BlockLayout.SPACE),
 			new TerminalTemplate(this, "for"),
 			new WhitespaceTemplate(this, BlockLayout.SPACE),
-			new SingleValueTemplate<IModelElement>(this, "property") {
+			new SingleValueTemplate<IModelElement>(this, "metaElement") {
 				@Override
 				protected ValueTemplate<IModelElement> createValueTemplate() {
-					return new ReferenceTemplate(this, getModel().getMetaElement("EStructuralFeature")) {
+					return new ReferenceTemplate(this, getModel().getMetaElement("EClass")) {
 						@Override
 						protected ElementTemplate getElementTemplate() {
 							return new EMFIdentifierTemplate(this);
@@ -41,15 +42,14 @@ public class TDLSingleValueTemplateTemplate extends ElementTemplate {
 			new WhitespaceTemplate(this, BlockLayout.SPACE),
 			new TerminalTemplate(this, "with"),
 			new WhitespaceTemplate(this, BlockLayout.SPACE),
-			new SingleValueTemplate<IModelElement>(this, "valueTemplate") {
+			new SingleValueTemplate<IModelElement>(this, "elementTemplate") {
 				@Override
 				protected ValueTemplate<IModelElement> createValueTemplate() {
 					return new TemplateValueTemplate(this);
 				}				
 			},
 			new WhitespaceTemplate(this, BlockLayout.EMPTY),
-			new TerminalTemplate(this, ";"),
-			new WhitespaceTemplate(this, BlockLayout.STATEMENT),
+			new TerminalTemplate(this, ")")			
 		};
 	}
 
