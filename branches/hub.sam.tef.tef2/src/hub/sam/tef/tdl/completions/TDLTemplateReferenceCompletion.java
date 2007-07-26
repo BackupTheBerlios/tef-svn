@@ -21,7 +21,7 @@ public class TDLTemplateReferenceCompletion extends SingleReductionCompletion {
 		return new String[] { "'@'" };
 	}
 
-	public Collection<TEFCompletionProposal> createProposals(ASTElementNode completionNode, CompletionContext context) {
+	public Collection<TEFCompletionProposal> createProposals(ASTElementNode completionNode, CompletionContext context) {		
 		return EMFCompletions.createProposals("TDLTemplate", "name", context);
 	}
 

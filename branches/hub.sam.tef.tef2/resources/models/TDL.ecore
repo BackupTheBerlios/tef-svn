@@ -8,6 +8,8 @@
         eType="#//TDLTemplate" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="topLevelTemplate" lowerBound="1"
         eType="#//TDLTemplate"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ecoreModel" eType="#//EcoreModelDescriptor"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TDLTemplate" abstract="true" eSuperTypes="#//TemplateValue">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
@@ -59,4 +61,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TDLStringLiteralTemplate" eSuperTypes="#//TDLPrimitiveValueTemplate"/>
   <eClassifiers xsi:type="ecore:EClass" name="TDLBooleanLiteralTemplate" eSuperTypes="#//TDLPrimitiveValueTemplate"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EcoreModelDescriptor">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pathToModel" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
 </ecore:EPackage>

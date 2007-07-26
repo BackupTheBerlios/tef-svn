@@ -177,5 +177,10 @@ public class EMFModel extends AbstractModel {
 
 	public boolean isActive() {
 		return true;
+	}
+
+	public EditingDomain getDomain() {
+		return fDomain;
 	}	
+	
 }

@@ -16,12 +16,17 @@
  */
 package hub.sam.tef.templates;
 
+import java.util.Collection;
+
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
 import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.annotations.IdentifierResolutionNotImplementedException;
+import hub.sam.tef.completion.CompletionContext;
+import hub.sam.tef.completion.TEFCompletionProposal;
 import hub.sam.tef.documents.IDocumentModelProvider;
+import hub.sam.tef.emf.EMFCompletions;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
@@ -152,6 +157,35 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 			IModelElement topLevelElement, 
 			IMetaModelElement expectedType, String property) throws CouldNotResolveIdentifierException {
 		throw new IdentifierResolutionNotImplementedException("resolution not implemented");
+	}
+	
+	/**
+	 * If {@link this#getPropertiesWithCompletion()} returns a property, this
+	 * callback has to provide proposals for this completion.
+	 * @param property The property that values are to be completed for.
+	 * @param completionNode The AST node that characterizes the element that the completion is requested on.
+	 * @param context Contains additional information about the current model, and place of the completion request.
+	 * @return A collection of proposals.
+	 */
+	public Collection<TEFCompletionProposal> createCompletionProposals(
+			String property,
+			ASTElementNode completionNode, 
+			CompletionContext context) {		
+		return null;
+	}
+	
+	/**
+	 * Callback that determines for what properties this element provides code completion.
+	 */
+	public String[] getPropertiesWithCompletion() {
+		return new String[] {};
+	}
+
+	/**
+	 * Call back to vary the standard completion behaviour ... TODO.
+	 */
+	public String[] getRulePrefixForCompletion(String property) {
+		return null;
 	}
 			
 	

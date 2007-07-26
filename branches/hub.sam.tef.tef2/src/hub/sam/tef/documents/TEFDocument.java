@@ -21,6 +21,7 @@ import hub.sam.tef.annotations.IAnnotationModelProvider;
 import hub.sam.tef.annotations.IChecker;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
+import hub.sam.tef.completion.ElementTemplateCompletion;
 import hub.sam.tef.completion.ICompletionComputer;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
@@ -32,12 +33,14 @@ import hub.sam.tef.reconciliation.treerepresentation.IASTElement;
 import hub.sam.tef.reconciliation.treerepresentation.IASTProvider;
 import hub.sam.tef.reconciliation.treerepresentation.IndexASTSelector;
 import hub.sam.tef.reconciliation.treerepresentation.ModelASTElement;
+import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.util.strings.Change;
 import hub.sam.util.strings.Changes;
 import hub.sam.util.trees.IChildSelector;
 import hub.sam.util.trees.TreeIterator;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -210,10 +213,19 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 	 * This method collects all the completions defined by the templates of the provided language.
 	 * 
 	 * At the moment, concrete language provider simply return a list of the completions. This is wrong. 
-	 * This should be final. TODO
+	 * This should be final. TODO cache
 	 */
 	public Collection<ICompletionComputer> getCompletions() {
-		return Collections.EMPTY_LIST;
+		Collection<ICompletionComputer> completions = new ArrayList<ICompletionComputer>();
+		for (Template tpl: Template.collectTemplates(getTopLevelTemplate())) {
+			if (tpl instanceof ElementTemplate) {
+				ElementTemplate elementTpl = (ElementTemplate)tpl;
+				for(String property: elementTpl.getPropertiesWithCompletion()) {
+					completions.add(new ElementTemplateCompletion(elementTpl, property));
+				}
+			}
+		}
+		return completions;
 	}
 
 	public void dispose() {

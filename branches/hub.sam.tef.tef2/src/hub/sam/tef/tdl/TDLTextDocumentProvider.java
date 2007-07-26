@@ -66,7 +66,7 @@ public class TDLTextDocumentProvider extends EMFTextDocumentProvider {
 	}
 	
 	@Override
-	protected IDocument createEmptyDocument()  {
+	public IDocument createEmptyDocument()  {
 		return new TDLDocument();		
 	}
 	

@@ -16,10 +16,16 @@
  */
 package hub.sam.tef.templates;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+
+import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.IAdaptable;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
 import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.models.IModel;
+import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
 /**
@@ -96,5 +102,29 @@ public abstract class Template implements IAdaptable {
 		return getId().hashCode();
 	}
 	
+	/**
+	 * Returns all the directly or indirectly nested templates of a template, plus the template itself.
+	 */
+	public static Collection<Template> collectTemplates(Template tpl) {
+		Collection<Template> result = new ArrayList<Template>();
+		collectTemplate(tpl, result, new HashSet<String>(), new HashSet<String>());
+		return result;
+	}
 	
+	private static void collectTemplate(Template template, Collection<Template> collection, Collection<String> collectedNonTerminals, Collection<String> visitedNonTerminals) {		
+		ISyntaxProvider syntaxProvider = template.getAdapter(ISyntaxProvider.class);
+		if (syntaxProvider != null && ! collectedNonTerminals.contains(syntaxProvider.getNonTerminal())) {
+			collection.add(template);
+			collectedNonTerminals.add(syntaxProvider.getNonTerminal());
+		}
+		for(Template nestedTemplate: template.getNestedTemplates()) {
+			ISyntaxProvider nestedSyntaxProvider = nestedTemplate.getAdapter(ISyntaxProvider.class);
+			if (nestedSyntaxProvider != null && ! visitedNonTerminals.contains(nestedSyntaxProvider.getNonTerminal())) {
+				if (nestedTemplate instanceof ElementTemplate || nestedTemplate instanceof EmtpyElementTemplate) {
+					visitedNonTerminals.add(nestedSyntaxProvider.getNonTerminal());
+				}
+				collectTemplate(nestedTemplate, collection, collectedNonTerminals, visitedNonTerminals);			
+			}
+		}
+	}
 }
