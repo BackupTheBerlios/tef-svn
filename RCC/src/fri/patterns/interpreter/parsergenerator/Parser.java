@@ -306,6 +306,7 @@ public class Parser implements Serializable
 		stateStack.push(new Integer(0));	// push first state on stack
 		Integer action = ParserTables.SHIFT;	// some allowed initial value
 		Token token = getNextToken();	// start reading input
+		setActualToken(token);
 		if (DEBUG) {
 			dump("initial token symbol >"+token.symbol+"<, text >"+token.text+"<");
 		}
@@ -334,6 +335,10 @@ public class Parser implements Serializable
 		}
 		
 		return detectError(token, top(), action);
+	}
+	
+	protected void setActualToken(Token token) {
+		
 	}
 	
 	class MyAction {
