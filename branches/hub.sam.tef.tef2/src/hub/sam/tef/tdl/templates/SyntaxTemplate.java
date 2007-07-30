@@ -1,15 +1,10 @@
 package hub.sam.tef.tdl.templates;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.EditingDomain;
-
 import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.emf.model.EMFModel;
 import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.syntax.BlockLayout;
-import hub.sam.tef.reconciliation.syntax.ExpressionLayout;
 import hub.sam.tef.tdl.EcoreModelDescriptor;
 import hub.sam.tef.tdl.Syntax;
 import hub.sam.tef.templates.ElementTemplate;
@@ -21,8 +16,10 @@ import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.WhitespaceTemplate;
-import hub.sam.tef.templates.primitives.IdentifierTemplate;
 import hub.sam.tef.templates.primitives.StringLiteralTemplate;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.edit.domain.EditingDomain;
 
 public class SyntaxTemplate extends ElementTemplate {
 
@@ -108,5 +105,6 @@ public class SyntaxTemplate extends ElementTemplate {
 			}
 		}
 		return null;
-	}		
+	}
+	
 }

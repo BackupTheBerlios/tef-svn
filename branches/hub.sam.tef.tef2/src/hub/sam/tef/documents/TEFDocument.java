@@ -21,7 +21,7 @@ import hub.sam.tef.annotations.IAnnotationModelProvider;
 import hub.sam.tef.annotations.IChecker;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
-import hub.sam.tef.completion.ElementTemplateCompletion;
+import hub.sam.tef.completion.StandardReferenceCompletion;
 import hub.sam.tef.completion.ICompletionComputer;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
@@ -209,6 +209,7 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 		return layout;
 	}
 	
+	private Collection<ICompletionComputer> completionsCache = null;
 	/**
 	 * This method collects all the completions defined by the templates of the provided language.
 	 * 
@@ -216,16 +217,15 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 	 * This should be final. TODO cache
 	 */
 	public Collection<ICompletionComputer> getCompletions() {
-		Collection<ICompletionComputer> completions = new ArrayList<ICompletionComputer>();
-		for (Template tpl: Template.collectTemplates(getTopLevelTemplate())) {
-			if (tpl instanceof ElementTemplate) {
-				ElementTemplate elementTpl = (ElementTemplate)tpl;
-				for(String property: elementTpl.getPropertiesWithCompletion()) {
-					completions.add(new ElementTemplateCompletion(elementTpl, property));
+		//if (completionsCache == null) {		
+			completionsCache = new ArrayList<ICompletionComputer>();
+			for (Template tpl: Template.collectTemplates(getTopLevelTemplate())) {
+				if (tpl instanceof ElementTemplate) {
+					completionsCache.addAll(((ElementTemplate)tpl).getCompletions());
 				}
 			}
-		}
-		return completions;
+		//}
+		return completionsCache;
 	}
 
 	public void dispose() {

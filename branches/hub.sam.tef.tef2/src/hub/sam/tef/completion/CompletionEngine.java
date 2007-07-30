@@ -53,7 +53,7 @@ public class CompletionEngine {
 			boolean completionOk = completion.reduceParseStack(parser);
 			Collection<TEFCompletionProposal> proposals = new HashSet<TEFCompletionProposal>();
 			if (completionOk) {
-				if (parser.hasValidStack()) {
+				if (parser.hasValidStack()) {					
 					proposals.addAll(completion.createProposals((ASTElementNode)parser.getParseResult(0), context));
 				}
 			}

@@ -18,14 +18,14 @@ import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 /**
  * This is a single reduction completion which is automatically derived from an element template.
  */
-public class ElementTemplateCompletion extends SingleReductionCompletion {
+public class StandardReferenceCompletion extends SingleReductionCompletion {
 
 	private Rule fRule = null;
 	private String[] fRulePrefix = null;
 	private final ElementTemplate fTemplate;
 	private final String fProperty;
 	
-	public ElementTemplateCompletion(ElementTemplate tpl, String property) {
+	public StandardReferenceCompletion(ElementTemplate tpl, String property) {
 		this.fTemplate = tpl;
 		this.fProperty = property;			
 	}
@@ -70,7 +70,7 @@ public class ElementTemplateCompletion extends SingleReductionCompletion {
 	}
 
 	public Collection<TEFCompletionProposal> createProposals(ASTElementNode completionNode, CompletionContext context) {
-		return fTemplate.createCompletionProposals(fProperty, completionNode, context);
+		return fTemplate.createPropertyCompletionProposals(fProperty, completionNode, context);
 	}
 
 	

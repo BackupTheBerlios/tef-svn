@@ -24,5 +24,4 @@ public class TDLBooleanLiteralTemplateTemplate extends ElementTemplate {
 				}
 		};
 	}
-
 }

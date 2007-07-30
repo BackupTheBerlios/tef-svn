@@ -16,7 +16,9 @@
  */
 package hub.sam.tef.completion;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Vector;
 
 import editortest.emf.ocl.completion.OclOperationCallExpCompletion;
@@ -28,6 +30,9 @@ import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.documents.ILanguageModelProvider;
 import hub.sam.tef.documents.TEFDocument;
 import hub.sam.tef.reconciliation.syntax.ParserInterface;
+import hub.sam.tef.templates.ElementTemplate;
+import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.TerminalTemplate;
 
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -39,6 +44,7 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 public class TEFCompletionProcessor implements IContentAssistProcessor {
 	
 	private ParserInterface fParserInterface;
+	private Collection<String> keywords = null;
 	
 	public TEFCompletionProcessor() {
 		super();	
@@ -74,6 +80,41 @@ public class TEFCompletionProcessor implements IContentAssistProcessor {
 		Collection<ICompletionProposal> result = new Vector<ICompletionProposal>();
 		for (ICompletionComputer computer: computers) {
 			result.addAll(engine.collectCompletionsFromCompletionComputer(computer, context));			
+		}
+		
+		if (keywords == null) {
+			keywords = new HashSet<String>();		
+			for (Template tpl: Template.collectTemplates(languageProvider.getTopLevelTemplate())) {
+				if (tpl instanceof TerminalTemplate) {
+					String terminalText = ((TerminalTemplate)tpl).getTerminalText();
+					if (terminalText.matches("[a-zA-Z]*")) {
+						keywords.add(terminalText);
+					}
+				}
+			}
+		}
+		
+		StringBuffer prefixBuffer = new StringBuffer();
+		int i = documentOffset - 1;
+		char charAtIndex = 'a';
+		while((i>=0)) {
+			charAtIndex = modelProvider.getText().charAt(i);
+			if (charAtIndex > 'A' && 
+					charAtIndex < 'z') {
+				prefixBuffer.insert(0, charAtIndex);
+			} else {
+				break;
+			}
+			i--;						
+		}
+		String prefix = prefixBuffer.toString();
+		
+		System.out.print("222222" + prefix);
+		for (String keyword: keywords) {			
+			if (keyword.startsWith(prefix)) {
+				result.add(new TEFCompletionProposal(keyword, keyword.substring(prefix.length(),
+						keyword.length()), context.getCompletionOffset()));
+			}
 		}
 				
 		return result.toArray(new ICompletionProposal[] {}); 

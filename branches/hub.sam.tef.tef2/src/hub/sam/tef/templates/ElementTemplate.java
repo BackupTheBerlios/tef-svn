@@ -16,17 +16,15 @@
  */
 package hub.sam.tef.templates;
 
-import java.util.Collection;
-
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
 import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.annotations.IdentifierResolutionNotImplementedException;
 import hub.sam.tef.completion.CompletionContext;
+import hub.sam.tef.completion.ICompletionComputer;
+import hub.sam.tef.completion.StandardReferenceCompletion;
 import hub.sam.tef.completion.TEFCompletionProposal;
 import hub.sam.tef.documents.IDocumentModelProvider;
-import hub.sam.tef.emf.EMFCompletions;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
@@ -36,6 +34,9 @@ import hub.sam.tef.reconciliation.syntax.IElementSyntaxProvider;
 import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 import hub.sam.tef.reconciliation.treerepresentation.IASTProvider;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * A special ValueTemplate used for elements, whereby elements are container for
@@ -167,7 +168,7 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	 * @param context Contains additional information about the current model, and place of the completion request.
 	 * @return A collection of proposals.
 	 */
-	public Collection<TEFCompletionProposal> createCompletionProposals(
+	public Collection<TEFCompletionProposal> createPropertyCompletionProposals(
 			String property,
 			ASTElementNode completionNode, 
 			CompletionContext context) {		
@@ -180,7 +181,7 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	public String[] getPropertiesWithCompletion() {
 		return new String[] {};
 	}
-
+	
 	/**
 	 * Call back to vary the standard completion behaviour ... TODO.
 	 */
@@ -188,6 +189,14 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		return null;
 	}
 			
+	
+	public Collection<ICompletionComputer> getCompletions() {
+		Collection<ICompletionComputer> completions = new ArrayList<ICompletionComputer>();
+		for(String property: getPropertiesWithCompletion()) {
+			completions.add(new StandardReferenceCompletion(this, property));
+		}
+		return completions;
+	}
 	
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {

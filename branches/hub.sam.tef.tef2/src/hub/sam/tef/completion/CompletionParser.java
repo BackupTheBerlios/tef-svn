@@ -19,10 +19,16 @@ public class CompletionParser extends Parser {
 	private int completionOffset = -1;
 	
 	private Token lastShiftedToken = null;	
+	private Token actualToken = null;
 	
 	public CompletionParser(ParserTables tables) {
 		super(tables);
 		this.fTables = tables;
+	}	
+
+	@Override
+	protected void setActualToken(Token token) {
+		actualToken = token;
 	}
 
 	public Object getParseResult(int i) {
@@ -64,6 +70,8 @@ public class CompletionParser extends Parser {
 	public String getIdentifierPrefix() {
 		if (lastShiftedToken != null && lastShiftedToken.symbol.equals("`identifier`")) {
 			return (String)lastShiftedToken.text;
+		} else if (actualToken.symbol.equals("`identifier`")) {
+			return (String)actualToken.text;
 		}
 		return "";
 	}

@@ -1,8 +1,14 @@
 package hub.sam.tef.tdl.templates;
 
+import java.util.Collection;
+
+import hub.sam.tef.completion.CompletionContext;
+import hub.sam.tef.completion.TEFCompletionProposal;
+import hub.sam.tef.emf.EMFCompletions;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.syntax.BlockLayout;
 import hub.sam.tef.reconciliation.syntax.ExpressionLayout;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.OptionalTemplate;
 import hub.sam.tef.templates.ReferenceTemplate;
@@ -89,4 +95,14 @@ public class TDLElementTemplateTemplate extends ElementTemplate {
 		};
 	}
 
+	@Override
+	public String[] getPropertiesWithCompletion() {
+		return new String[] { "metaElement" };
+	}
+
+	@Override
+	public Collection<TEFCompletionProposal> createPropertyCompletionProposals(String property, 
+			ASTElementNode completionNode, CompletionContext context) {		
+		return EMFCompletions.createProposals("EClass", "name", context);
+	}
 }
