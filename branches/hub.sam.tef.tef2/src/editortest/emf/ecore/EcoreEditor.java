@@ -16,10 +16,10 @@
  */
 package editortest.emf.ecore;
 
-import hub.sam.tef.TEFEditor;
+import hub.sam.tef.AbstractTEFEditor;
 import hub.sam.tef.documents.TEFDocumentProvider;
 
-public class EcoreEditor extends TEFEditor {
+public class EcoreEditor extends AbstractTEFEditor {
 
 	@Override
 	protected TEFDocumentProvider createDocumentProvider() {

@@ -36,10 +36,10 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
  */
 public class TEFOccurencesUpdater implements ISelectionChangedListener {
 	
-	private final TEFEditor fEditor;
+	private final AbstractTEFEditor fEditor;
 	private Annotation[] oldOccurenceAnnotations = new Annotation[] {};
 	
-	public TEFOccurencesUpdater(TEFEditor editor) {
+	public TEFOccurencesUpdater(AbstractTEFEditor editor) {
 		((IPostSelectionProvider)editor.getSelectionProvider()).addPostSelectionChangedListener(this);
 		this.fEditor = editor;
 	}

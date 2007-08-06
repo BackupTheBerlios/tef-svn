@@ -57,7 +57,7 @@ public class TDLChoiceTemplateTemplate extends ElementTemplate {
 				new SequenceTemplate<IModelElement>(this, "alternatives", null, false) {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
-						return new TDLTemplateTemplate(this);
+						return new TemplateValueTemplate(this);
 					}				
 				},
 				new WhitespaceTemplate(this, BlockLayout.END_BLOCK),

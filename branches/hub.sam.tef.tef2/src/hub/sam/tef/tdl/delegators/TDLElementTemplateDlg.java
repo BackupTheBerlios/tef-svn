@@ -37,4 +37,9 @@ public class TDLElementTemplateDlg extends ElementTemplate {
 		return result.toArray(new Template[] {});
 	}
 
+	@Override
+	protected String getAlternativeSymbol() {
+		return tdlElementTemplate.getName();
+	}
+
 }

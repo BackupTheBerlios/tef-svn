@@ -27,7 +27,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -53,21 +52,26 @@ public abstract class EMFTextDocumentProvider extends AbstractEMFDocumentProvide
 		return new EMFModel(getFactory(), getPackage(), resource, domain);
 	}
 	
+	/*
+	 * This is used by the eclipse framework to put contents into the document.
+	 */
 	@Override
 	protected boolean setDocumentContent(IDocument document, IEditorInput editorInput, String encoding) throws CoreException {
-		if (editorInput instanceof IStorageEditorInput) {			
-			return setDocumentContent(document, ((IStorageEditorInput)editorInput).getStorage(), encoding);
+		if (editorInput instanceof IStorageEditorInput) {
+			// we enter the content manually override the normal eclipse behaviour, which is tailored for
+			// normal text files.
+			return setDocumentContentManually(document,
+					((IStorageEditorInput) editorInput).getStorage()
+							.getContents(), encoding);
 		}
 		return false;
 	}
 	
 	/**
-	 * Reads the content from a file and interprets it as text file.
-	 * @param storage For example a IFile.
-	 * @param encoding Can be null.
+	 * This can be used to set the document contents manually not using the normal eclipse framework
+	 * to do it.
 	 */
-	public boolean setDocumentContent(IDocument document, IStorage storage, String encoding) throws CoreException {
-		InputStream contentStream= storage.getContents();
+	public boolean setDocumentContentManually(IDocument document, InputStream contentStream, String encoding) throws CoreException {
 		Reader in= null;
 		String contents = null;
 		try {
@@ -117,7 +121,7 @@ public abstract class EMFTextDocumentProvider extends AbstractEMFDocumentProvide
 		IModel model = loadModel(resource, editingDomain);											
 		((TEFDocument)document).setInitialTextContext(model, resourceId, contents);
 		return true;
-	}
+	}	
 	
 	protected ElementInfo getElementInfo(Object element) {
 		ElementInfo info = super.getElementInfo(element);

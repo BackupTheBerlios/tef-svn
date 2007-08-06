@@ -1,5 +1,6 @@
 package hub.sam.tef.completion;
 
+import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 import hub.sam.tef.templates.ElementTemplate;
@@ -12,8 +13,6 @@ import hub.sam.tef.templates.WhitespaceTemplate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
-
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 
 /**
  * This is a single reduction completion which is automatically derived from an element template.

@@ -36,9 +36,9 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 
 
-public abstract class TEFEditor extends TextEditor {	
+public abstract class AbstractTEFEditor extends TextEditor {	
 	
-	public TEFEditor() {
+	public AbstractTEFEditor() {
 		super();				
 		setSourceViewerConfiguration(createSourceViewerConfiguration());
 		setDocumentProvider(createDocumentProvider());		

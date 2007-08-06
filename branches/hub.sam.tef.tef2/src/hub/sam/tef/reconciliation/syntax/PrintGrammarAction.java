@@ -1,6 +1,6 @@
 package hub.sam.tef.reconciliation.syntax;
 
-import hub.sam.tef.TEFEditor;
+import hub.sam.tef.AbstractTEFEditor;
 import hub.sam.tef.documents.TEFDocument;
 
 import org.eclipse.jface.action.IAction;
@@ -17,7 +17,7 @@ public class PrintGrammarAction implements IEditorActionDelegate {
 	}
 
 	public void run(IAction action) {
-		new ParserInterface(((TEFDocument)((TEFEditor)editor).getDocument()).getTopLevelTemplate()).printGrammar();
+		new ParserInterface(((TEFDocument)((AbstractTEFEditor)editor).getDocument()).getTopLevelTemplate()).printGrammar();
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {

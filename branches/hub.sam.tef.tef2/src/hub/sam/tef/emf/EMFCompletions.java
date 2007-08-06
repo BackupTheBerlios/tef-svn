@@ -4,11 +4,9 @@ import hub.sam.tef.completion.CompletionContext;
 import hub.sam.tef.completion.ICompletionDisplayStringProvider;
 import hub.sam.tef.completion.ICompletionFilter;
 import hub.sam.tef.completion.TEFCompletionProposal;
-import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
 import java.util.Collection;
 import java.util.Vector;
@@ -16,15 +14,22 @@ import java.util.Vector;
 public class EMFCompletions {
 	
 	public static Collection<TEFCompletionProposal> createProposals(String metaClassName, String idAttributeName,	CompletionContext context) {
+		return createProposals(metaClassName, idAttributeName, context, null);
+	}
+	
+	public static Collection<TEFCompletionProposal> createProposals(String metaClassName, String idAttributeName,	CompletionContext context,
+			ICompletionFilter filter) {
 		Collection<TEFCompletionProposal> result = new Vector<TEFCompletionProposal>();
 		IModel model = context.getDocumentModelProvider().getModel();
 		for (IModelElement metaClassInstance : model.getElements(model
 				.getMetaElement(metaClassName))) {
 			String name = (String) metaClassInstance.getValue(idAttributeName);
 			if (name != null && name.startsWith(context.getIdentifierPrefix())) {
-				result.add(new TEFCompletionProposal(name, name.substring(
-						context.getIdentifierPrefix().length(), name.length()),
-						context.getCompletionOffset()));
+				if (filter == null || filter.accept(metaClassInstance)) {
+					result.add(new TEFCompletionProposal(name, name.substring(
+							context.getIdentifierPrefix().length(), name.length()),
+							context.getCompletionOffset()));
+				}
 			}
 		}
 		return result;

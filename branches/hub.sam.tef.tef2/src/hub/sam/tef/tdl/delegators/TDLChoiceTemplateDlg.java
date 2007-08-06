@@ -39,5 +39,9 @@ public class TDLChoiceTemplateDlg extends ChoiceTemplate {
 		return result.toArray(new ValueTemplate[] {});
 	}
 
+	@Override
+	public String getAlternativeSymbol() {
+		return choiceTemplate.getName();
+	}
 	
 }

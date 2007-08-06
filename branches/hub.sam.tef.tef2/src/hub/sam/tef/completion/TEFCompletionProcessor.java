@@ -98,7 +98,11 @@ public class TEFCompletionProcessor implements IContentAssistProcessor {
 		int i = documentOffset - 1;
 		char charAtIndex = 'a';
 		while((i>=0)) {
-			charAtIndex = modelProvider.getText().charAt(i);
+			try {
+				charAtIndex = modelProvider.getText().charAt(i);
+			} catch (StringIndexOutOfBoundsException ex) {
+				break;
+			}
 			if (charAtIndex > 'A' && 
 					charAtIndex < 'z') {
 				prefixBuffer.insert(0, charAtIndex);

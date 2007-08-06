@@ -16,10 +16,10 @@
  */
 package hub.sam.tef.tdl;
 
-import hub.sam.tef.TEFEditor;
+import hub.sam.tef.AbstractTEFEditor;
 import hub.sam.tef.documents.TEFDocumentProvider;
 
-public class TDLEditor extends TEFEditor {
+public class TDLEditor extends AbstractTEFEditor {
 
 	@Override
 	protected TEFDocumentProvider createDocumentProvider() {
