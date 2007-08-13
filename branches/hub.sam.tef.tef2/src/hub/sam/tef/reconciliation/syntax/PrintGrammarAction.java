@@ -21,7 +21,7 @@ public class PrintGrammarAction implements IEditorActionDelegate {
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
-		action.setEnabled(true); // always on
+		action.setEnabled(editor instanceof AbstractTEFEditor);
 	}
 
 }

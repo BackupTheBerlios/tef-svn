@@ -13,13 +13,12 @@ import hub.sam.tef.reconciliation.treerepresentation.IASTProvider;
 import hub.sam.tef.reconciliation.treerepresentation.ModelASTElement;
 
 public abstract class EmtpyElementTemplate extends ValueTemplate<IModelElement> {
-	private final Template[] fTemplates;
+	private Template[] fTemplates;
 	private final IMetaModelElement fMetaModelElement;
 	
 	public EmtpyElementTemplate(Template template, IMetaModelElement metaModelElement) {
 		super(template, metaModelElement);
-		this.fMetaModelElement = metaModelElement;
-		this.fTemplates = createTemplates();
+		this.fMetaModelElement = metaModelElement;		
 	}
 
 	/**
@@ -30,6 +29,9 @@ public abstract class EmtpyElementTemplate extends ValueTemplate<IModelElement> 
 	
 	@Override
 	public Template[] getNestedTemplates() {
+		if (fTemplates == null) {
+			fTemplates = createTemplates();
+		}
 		return fTemplates;
 	}
 	
@@ -40,7 +42,7 @@ public abstract class EmtpyElementTemplate extends ValueTemplate<IModelElement> 
 	@Override
 	public boolean isTemplateFor(IModelElement model) {
 		if (model instanceof IModelElement) {
-			for (Template subTemplate: fTemplates) {
+			for (Template subTemplate: getNestedTemplates()) {
 				if (subTemplate instanceof ValueTemplate) {				
 					return ((ValueTemplate)subTemplate).isTemplateFor(model);
 				}
@@ -91,10 +93,10 @@ public abstract class EmtpyElementTemplate extends ValueTemplate<IModelElement> 
 
 		public String[][] getRules() {
 			
-			String[] result = new String[fTemplates.length + 1];
+			String[] result = new String[getNestedTemplates().length + 1];
 			result[0] = getNonTerminal();
 			int i = 1;
-			for(Template subTemplate: fTemplates) {
+			for(Template subTemplate: getNestedTemplates()) {
 				result[i++] = subTemplate.getAdapter(ISyntaxProvider.class).getNonTerminal();
 			}
 			return new String[][] { result };					
@@ -108,7 +110,7 @@ public abstract class EmtpyElementTemplate extends ValueTemplate<IModelElement> 
 			}
 			ModelASTElement contents = new ModelASTElement(EmtpyElementTemplate.this, (IModelElement)model);
 			ASTElementNode treeRepresentation = new ASTElementNode(contents);
-			for (Template subTemplate: fTemplates) {
+			for (Template subTemplate: getNestedTemplates()) {
 				if (subTemplate instanceof ValueTemplate) {
 					treeRepresentation.addNodeObject(subTemplate.getAdapter(IASTProvider.class).
 							createTreeRepresentation(owner, notused, model, true, layout));

@@ -99,17 +99,6 @@
 	  </specification>
    </extension>
    
-  <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
-    <factory 
-       uri = "null" 
-       class = "editortest.emf.expressions.emfmodel.provider.ExpressionsItemProviderAdapterFactory" 
-       supportedTypes = 
-         "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
-          org.eclipse.emf.edit.provider.IStructuredItemContentProvider
-          org.eclipse.emf.edit.provider.ITreeItemContentProvider
-          org.eclipse.emf.edit.provider.IItemLabelProvider
-          org.eclipse.emf.edit.provider.IItemPropertySource" />
-  </extension>
   
 
   <extension
@@ -132,6 +121,53 @@
               id="tef.emf.ocl.editor.actions.PrintGrammar"
               label="Print grammar"
               menubarPath="tef.emf.ocl.editor.contextmenu/typeGroup"/>
+       
+        <menu
+              id="hub.sam.tef.tdl.actions"
+              label="TDL">
+           <groupMarker name="hub.sam.tef.tdl.groupMarker"/>
+        </menu> <menu
+              id="hub.sam.tef.tdl.actions"
+              label="TDL">
+           <groupMarker name="hub.sam.tef.tdl.groupMarker1"/>
+        </menu>
+        <action
+              class="hub.sam.tef.tdl.ShowGrammarAction"
+              id="hub.sam.tef.tdl.showGrammar"
+              label="Show Grammar"
+              menubarPath="hub.sam.tef.tdl.actions/hub.sam.tef.tdl.groupMarker"/>
      </viewerContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.newWizards">
+     <category
+           id="hub.sam.tef.TEFPlugin"
+           name="TEF Wizards"/>
+     <wizard
+           category="hub.sam.tef.TEFPlugin"
+           class="hub.sam.tef.pde.NewTDLTextWizard"
+           icon="icons/sample.gif"
+           id="hub.sam.tef.pde.NewTDLTextWizard"
+           name="New TDL Text"/>
+  </extension>
+  <extension
+        point="org.eclipse.pde.ui.templates">
+     <template
+           class="hub.sam.tef.pde.TextEditorTemplate"
+           contributingId="org.eclipse.ui.editors"
+           id="hub.sam.tef.texteditortemplate"
+           name="Text Editor"/>
+  </extension>
+  <extension
+        point="org.eclipse.pde.ui.newExtension">
+     <category
+           id="hub.sam.tef.templates"
+           name="TEF Templates"/>
+     <wizard
+           availableAsShortcut="false"
+           category="hub.sam.tef.templates"
+           id="hub.sam.tef.texteditorwizard"
+           name="TEF Text Editor"
+           template="hub.sam.tef.texteditortemplate"/>
   </extension>  
 </plugin>

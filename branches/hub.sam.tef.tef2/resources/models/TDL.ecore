@@ -16,12 +16,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="alternativeSymbol" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TDLValueTemplate" abstract="true" eSuperTypes="#//TDLTemplate"/>
-  <eClassifiers xsi:type="ecore:EClass" name="TDLElementTemplate" eSuperTypes="#//TDLValueTemplate">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="metaElement" lowerBound="1"
-        eType="ecore:EClass ../../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="templates" upperBound="-1"
-        eType="#//TemplateValue" containment="true"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TDLElementTemplate" eSuperTypes="#//TDLEmptyElementTemplate"/>
   <eClassifiers xsi:type="ecore:EClass" name="TemplateValue" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="TemplateRef" eSuperTypes="#//TemplateValue">
     <eStructuralFeatures xsi:type="ecore:EReference" name="template" lowerBound="1"
@@ -43,11 +38,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="terminal" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TDLChoiceTemplate" eSuperTypes="#//TDLValueTemplate">
+  <eClassifiers xsi:type="ecore:EClass" name="TDLChoiceTemplate" eSuperTypes="#//TDLElementValueTemplate">
     <eStructuralFeatures xsi:type="ecore:EReference" name="alternatives" upperBound="-1"
         eType="#//TemplateValue" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="metaElement" lowerBound="1"
-        eType="ecore:EClass ../../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TDLPrimitiveValueTemplate" abstract="true"
       eSuperTypes="#//TDLValueTemplate"/>
@@ -64,5 +57,13 @@
   <eClassifiers xsi:type="ecore:EClass" name="EcoreModelDescriptor">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="pathToModel" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TDLEmptyElementTemplate" eSuperTypes="#//TDLElementValueTemplate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="templates" upperBound="-1"
+        eType="#//TemplateValue" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TDLElementValueTemplate" eSuperTypes="#//TDLValueTemplate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metaElement" lowerBound="1"
+        eType="ecore:EClass ../../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
   </eClassifiers>
 </ecore:EPackage>

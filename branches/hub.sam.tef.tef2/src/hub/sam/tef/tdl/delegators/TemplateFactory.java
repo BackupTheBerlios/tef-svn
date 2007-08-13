@@ -9,6 +9,8 @@ import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.tdl.TDLBooleanLiteralTemplate;
 import hub.sam.tef.tdl.TDLChoiceTemplate;
 import hub.sam.tef.tdl.TDLElementTemplate;
+import hub.sam.tef.tdl.TDLElementValueTemplate;
+import hub.sam.tef.tdl.TDLEmptyElementTemplate;
 import hub.sam.tef.tdl.TDLIdentifierTemplate;
 import hub.sam.tef.tdl.TDLIntegerTemplate;
 import hub.sam.tef.tdl.TDLPrimitiveValueTemplate;
@@ -66,6 +68,21 @@ public class TemplateFactory {
 			if (result == null) {							
 				if (tdlTemplate instanceof TDLElementTemplate) {							
 					result = new TDLElementTemplateDlg(father, (TDLElementTemplate)tdlTemplate, this);
+				} else if (tdlTemplate instanceof TDLEmptyElementTemplate) {
+					loop: for (Object nestedTemplate: ((TDLEmptyElementTemplate)tdlTemplate).getTemplates()) {
+						if (nestedTemplate instanceof TemplateRef) {
+							nestedTemplate = ((TemplateRef)nestedTemplate).getTemplate();
+						}
+						if (nestedTemplate instanceof TDLElementValueTemplate) {
+							result = new TDLEmptyElementTemplateDlg(father, (TDLEmptyElementTemplate)tdlTemplate, 
+									((TDLElementValueTemplate)nestedTemplate).getMetaElement(), this);
+							break loop;
+						}
+					}					
+					if (result == null) {
+						throw new TDLException("Empty element template " + 
+								((TDLEmptyElementTemplate)tdlTemplate).getName() + " does not contain an element tempalte");
+					}
 				} else if (tdlTemplate instanceof TDLChoiceTemplate) {
 					result = new TDLChoiceTemplateDlg(father, (TDLChoiceTemplate)tdlTemplate, this);
 				} else if (tdlTemplate instanceof TDLSingleValueTemplate) {
