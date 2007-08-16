@@ -1,5 +1,6 @@
 package editortest.emf.ocl.annotations;
 
+import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.emf.model.EMFModel;
@@ -9,6 +10,7 @@ import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -40,8 +42,13 @@ public class FeatureResolver extends AbstractOclIdentifierResolver implements II
 					sourceType = TypeHelper.getTypeFor(source);
 				}
 				if (sourceType == null) {
-					System.out.println(getClass().getCanonicalName() + ": sourceType not set");
-					throw new CouldNotResolveIdentifierException("Could not resolve the reference because the type of the referee is unknown.");
+					CouldNotResolveIdentifierException ex = new CouldNotResolveIdentifierException(
+							"Could not resolve the reference because the type of the referee is unknown.");
+					TEFPlugin.getDefault().getLog().log(new Status(Status.WARNING,
+							TEFPlugin.PLUGIN_ID, Status.OK, 
+							getClass().getCanonicalName() + ": sourceType not set",
+							null));	
+					throw ex;
 				}
 				if (sourceType instanceof EClass) {
 					EClass sourceClass = (EClass)sourceType;
@@ -60,8 +67,12 @@ public class FeatureResolver extends AbstractOclIdentifierResolver implements II
 				EClassifier sourceType =  TypeHelper.getTypeFor(operationCall.getSource());
 				
 				if (sourceType == null) {
-					System.out.println(getClass().getCanonicalName() + ": sourceType not set");
-					throw new CouldNotResolveIdentifierException("Could not resolve the reference because the type of the referee is unknown.");
+					CouldNotResolveIdentifierException ex = new CouldNotResolveIdentifierException("Could not resolve the reference because the type of the referee is unknown.");
+					TEFPlugin.getDefault().getLog().log(new Status(Status.WARNING,
+							TEFPlugin.PLUGIN_ID, Status.OK, 
+							getClass().getCanonicalName() + ": sourceType not set",
+							null));	
+					throw ex;
 				}
 				
 				PredefinedType predefinedSourceType = TypeHelper.getPredefinedType(sourceType);

@@ -1,5 +1,6 @@
 package hub.sam.tef.reconciliation.syntax;
 
+import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.EmtpyElementTemplate;
 import hub.sam.tef.templates.Template;
@@ -8,6 +9,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+
+import org.eclipse.core.runtime.Status;
 
 import fri.patterns.interpreter.parsergenerator.Lexer;
 import fri.patterns.interpreter.parsergenerator.Parser;
@@ -38,7 +41,8 @@ public class ParserInterface {
 		
 		collectAllRules(template, new HashSet<String>());
 		fSyntax.addRule(new Rule(new String[] { Token.IGNORED, "`whitespaces`" }));
-		System.out.println(fSyntax.toString());
+		TEFPlugin.getDefault().getLog().log(new Status(Status.INFO,
+				TEFPlugin.PLUGIN_ID, Status.OK, "Grammar for editor: \n" + fSyntax.toString(), null));			
 	}
 	
 	/**

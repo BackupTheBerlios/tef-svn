@@ -1,5 +1,8 @@
 package hub.sam.tef.models;
 
+import org.eclipse.core.runtime.Status;
+
+import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.models.extensions.DelegateCommandFactory;
 
 public abstract class AbstractModel implements IModel {
@@ -28,13 +31,19 @@ public abstract class AbstractModel implements IModel {
 	public void replaceOutermostComposite(Object resourceId, IModelElement oldElement, IModelElement newElement) {		
 		ICollection outermostComposites = getOutermostComposites(resourceId);
 		if (!outermostComposites.contains(oldElement)) {
-			System.out.println("ERROR: old composite is not part of the model");
+			TEFPlugin.getDefault().getLog().log(new Status(Status.ERROR,
+					TEFPlugin.PLUGIN_ID, Status.OK, 
+					"old composite is not part of the model",
+					null));			
 		}
 		int size = outermostComposites.size();
 		getCommandFactory().remove(outermostComposites, oldElement).execute();		
 		getCommandFactory().add(getOutermostComposites(resourceId), newElement).execute();
 		if (getOutermostComposites(resourceId).size() > size) {
-			System.out.println("ERROR: composite was edit and not replaced");
+			TEFPlugin.getDefault().getLog().log(new Status(Status.ERROR,
+					TEFPlugin.PLUGIN_ID, Status.OK, 
+					"composite was edit and not replaced",
+					null));			
 		}
 	}
 

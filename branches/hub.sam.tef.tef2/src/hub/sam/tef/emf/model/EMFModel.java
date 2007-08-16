@@ -16,6 +16,7 @@
  */
 package hub.sam.tef.emf.model;
 
+import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.models.AbstractModel;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.ICommandFactory;
@@ -30,6 +31,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -125,12 +127,16 @@ public class EMFModel extends AbstractModel {
 					return new EMFMetaModelElement((EClass)classifier);
 				} else {
 					// TODO
-					System.err.println("Non class meta-element requested.");
+					TEFPlugin.getDefault().getLog().log(
+							new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
+									Status.CANCEL, "Non class meta-element requested.", null));
 					return null;
 				}
 			}
 		}
-		System.err.println("Non existing meta-element requested.");
+		TEFPlugin.getDefault().getLog().log(
+				new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
+						Status.CANCEL, "Non class meta-element requested.", null));
 		return null;
 	}
 

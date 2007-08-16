@@ -1,8 +1,10 @@
 package hub.sam.tef.reconciliation.syntax;
 
+import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 import hub.sam.tef.reconciliation.treerepresentation.IASTChangedListener;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorActionDelegate;
@@ -35,7 +37,8 @@ public class TestParseAction implements IEditorActionDelegate {
 		}
 
 		public void contentChanged(int start, int length, String text) {
-			System.out.println("REPLACE:" + content.substring(start, start+length) + ":" + text);
+			TEFPlugin.getDefault().getLog().log(new Status(Status.INFO,
+					TEFPlugin.PLUGIN_ID, Status.OK, "replace:" + content.substring(start, start+length) + ":" + text, null));	
 			content = representation.getContent();
 		}
 	}

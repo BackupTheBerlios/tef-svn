@@ -1,5 +1,6 @@
 package hub.sam.tef.documents;
 
+import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.annotations.IAnnotationModelProvider;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
@@ -15,6 +16,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModelExtension;
@@ -68,8 +70,11 @@ public final class DocumentModel implements IDisposable, IDocumentModelProvider,
 				ReconciliationResults result = new ReconciliationUnit().run(fDocument);
 				update(result.getTopLevelTreeNode(), result.getTopLevelElement());
 			}
-		} catch (ReconciliationFailedException ex) {
-			System.out.println("initial reconciliation failed");
+		} catch (ReconciliationFailedException ex) {			
+			TEFPlugin.getDefault().getLog().log(new Status(Status.WARNING,
+					TEFPlugin.PLUGIN_ID, Status.OK, 
+					"initial reconciliation failed",
+					ex));
 		}	
 	}
 	

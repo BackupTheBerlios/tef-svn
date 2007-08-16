@@ -5,6 +5,7 @@ import hub.sam.tef.reconciliation.ReconciliationFailedException;
 import hub.sam.tef.reconciliation.ReconciliationResults;
 import hub.sam.tef.reconciliation.ReconciliationUnit;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.reconciler.DirtyRegion;
@@ -24,8 +25,9 @@ public class TEFReconcilingStrategy implements IReconcilingStrategy {
 	}
 
 	public void reconcile()  {				
-		if (fDocument.needsReconciling()) {
-			System.out.println("reconciling: parsing");
+		if (fDocument.needsReconciling()) {			
+			TEFPlugin.getDefault().getLog().log(new Status(Status.INFO,
+					TEFPlugin.PLUGIN_ID, Status.OK, "reconciling, parsing", null));
 			try {
 				final ReconciliationResults result = fReconciliationUnit.run(fDocument);
 				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {				
@@ -34,7 +36,10 @@ public class TEFReconcilingStrategy implements IReconcilingStrategy {
 					}				
 				});
 			} catch (ReconciliationFailedException ex) {
-				System.out.println("RECONCILING FAILED: " + ex.getClass().getCanonicalName() + "[" + ex.getMessage() + "]");
+				TEFPlugin.getDefault().getLog().log(new Status(Status.WARNING,
+						TEFPlugin.PLUGIN_ID, Status.OK, 
+						"reconciling failed: " + ex.getClass().getCanonicalName() + "[" + ex.getMessage() + "]",
+						ex));				
 			}
 		}
 	}	

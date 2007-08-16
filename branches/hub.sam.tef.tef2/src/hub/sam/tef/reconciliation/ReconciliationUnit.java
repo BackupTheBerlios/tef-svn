@@ -19,6 +19,7 @@ package hub.sam.tef.reconciliation;
 import fri.patterns.interpreter.parsergenerator.Semantic;
 import fri.patterns.interpreter.parsergenerator.Token.Range;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.annotations.ErrorAnnotation;
 import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.annotations.SemanticsContext;
@@ -32,6 +33,7 @@ import hub.sam.tef.templates.Template;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.internal.ui.text.correction.NewMethodCompletionProposal;
 import org.eclipse.jface.text.Position;
 
@@ -54,26 +56,36 @@ public class ReconciliationUnit {
 		IModelElement newModel = null;
 		try {
 			String content = fDocument.get();
-			UpdateTreeSemantic semantic = new UpdateTreeSemantic(parserInterface, content);
-			System.out.println("reconciling: parsing 2 ");
-			if (parserInterface.parse(content, semantic)) {
-				System.out.println("reconciling: parsing 3 ");
+			UpdateTreeSemantic semantic = new UpdateTreeSemantic(parserInterface, content);			
+			TEFPlugin.getDefault().getLog().log(
+					new Status(Status.INFO, TEFPlugin.PLUGIN_ID,
+							Status.OK, "reconciling, parsing step 2", null));
+			if (parserInterface.parse(content, semantic)) {				
+				TEFPlugin.getDefault().getLog().log(
+						new Status(Status.INFO, TEFPlugin.PLUGIN_ID,
+								Status.OK, "reconciling, parsing step 3", null));
 				fDocument.getModelProvider().resetModelElementOccurences();
 				// the current content can be parsed (contains no syntax errors)																										
 				final ASTElementNode newAST = semantic.getCurrentResult();
 				// build a new model
-				System.out.println("reconciling: composite");
+				TEFPlugin.getDefault().getLog().log(
+						new Status(Status.INFO, TEFPlugin.PLUGIN_ID,
+								Status.OK, "reconciling, composite", null));
 				newModel = (IModelElement)fDocument.getTopLevelTemplate().getAdapter(
 						IASTProvider.class).createCompositeModel(null, null, newAST, true);
 				
 				final SemanticsContext semanticContext = new SemanticsContext(fDocument.getModelProvider(), fDocument,
 						newModel);
-				
-				System.out.println("reconciling: reference");
+								
+				TEFPlugin.getDefault().getLog().log(
+						new Status(Status.INFO, TEFPlugin.PLUGIN_ID,
+								Status.OK, "reconciling, reference", null));
 				fDocument.getTopLevelTemplate().getAdapter(
 						IASTProvider.class).createReferenceModel(null, null, newAST, true, semanticContext);
-				
-				System.out.println("reconciling: check");
+								
+				TEFPlugin.getDefault().getLog().log(
+						new Status(Status.INFO, TEFPlugin.PLUGIN_ID,
+								Status.OK, "reconciling, check", null));
 				// check the model and create error annotations				
 				newAST.getElement().getTemplate().getAdapter(ISemanticProvider.class).
 						check(newAST, semanticContext);								
@@ -90,7 +102,11 @@ public class ReconciliationUnit {
 				try {
 					fDocument.getModelProvider().getModel().getCommandFactory().delete(newModel).execute();
 				} catch (Exception ex2) {
-					throw new ReconciliationFailedException("Reconciliation failed (" + ex.getMessage() + ") and recovery from failure failed(" + ex2.getMessage() + ")");
+					TEFPlugin.getDefault().getLog().log(
+							new Status(Status.WARNING, TEFPlugin.PLUGIN_ID,
+									Status.OK, "Reconciliation failed (" + ex.getMessage() + ") and recovery from " +
+											"failure failed(" + ex2.getMessage() + ")", ex));
+					throw new ReconciliationFailedException();
 				}
 			}
 			throw new ReconciliationFailedException(ex.getMessage());

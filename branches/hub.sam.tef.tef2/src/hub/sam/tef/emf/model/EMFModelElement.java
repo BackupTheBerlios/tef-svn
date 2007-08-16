@@ -16,6 +16,7 @@
  */
 package hub.sam.tef.emf.model;
 
+import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.models.AbstractModelElement;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IMetaModelElement;
@@ -24,6 +25,7 @@ import hub.sam.tef.models.IModelChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
@@ -67,7 +69,8 @@ public class EMFModelElement  extends AbstractModelElement {
 			case Notification.REMOVING_ADAPTER:
 				break;
 			default:
-				System.err.println("Unhandles notification " + notification);
+				TEFPlugin.getDefault().getLog().log(new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
+							Status.CANCEL, "Unhandles notification " + notification, null));
 				break;
 			}
 		}
