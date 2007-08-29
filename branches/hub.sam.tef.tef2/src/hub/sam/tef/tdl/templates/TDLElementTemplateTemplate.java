@@ -53,7 +53,30 @@ public class TDLElementTemplateTemplate extends ElementTemplate {
 						}						
 					};
 				}				
-			},				
+			},	
+			new SingleValueTemplate<IModelElement>(this, "identifierProperty") {
+				@Override
+				protected ValueTemplate<IModelElement> createValueTemplate() {
+					return new OptionalTemplate(this, this.getModel().getMetaElement("EStructuralFeature")) {
+							@Override
+							public Template[] createOptionTemplate() {
+								return new Template[] {
+									new WhitespaceTemplate(this, BlockLayout.EMPTY),
+									new TerminalTemplate(this, ","),										
+									new WhitespaceTemplate(this, BlockLayout.SPACE),
+									new TerminalTemplate(this, "idprop"),
+									new WhitespaceTemplate(this, BlockLayout.SPACE),									
+									new ReferenceTemplate(this, getModel().getMetaElement("EStructuralFeature")) {
+										@Override
+										protected ElementTemplate getElementTemplate() {
+											return new EMFIdentifierTemplate(this);
+										}																		
+									}
+								};
+							}				
+					};
+				}				
+			},	
 			/*
 			new SingleValueTemplate<String>(this, "alternativeSymbol") {
 				@Override
@@ -105,4 +128,9 @@ public class TDLElementTemplateTemplate extends ElementTemplate {
 			ASTElementNode completionNode, CompletionContext context) {		
 		return EMFCompletions.createProposals("EClass", "name", context);
 	}
+
+	@Override
+	protected boolean isIdentifierProperty(String property) {
+		return "name".equals(property);
+	}	
 }

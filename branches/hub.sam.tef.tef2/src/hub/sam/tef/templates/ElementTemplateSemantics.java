@@ -216,7 +216,7 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 			// already handled in createReferenceModel
 		} else {
 			context.addModelElementOccurence(modelElement, 
-					new Position(representation.getAbsoluteOffset(0), representation.getLength()));
+					representation.getElement().getTemplate().getPositionForOccurenceMarker(representation));
 		}
 		
 		for (Template subTemaplte: fElementTemplate.getNestedTemplates()) {

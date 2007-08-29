@@ -121,7 +121,7 @@ public abstract class TEFEMFTextEditor extends AbstractTEFEditor {
 										
 						final InputStream tdl = getBundle().getEntry(getTemplateDefinitionBundleResourcePath()).openStream();
 						URI resource = getMetaModelResource();				
-						documentProvider.getSharedEditingDomain().getResourceSet().getResource(resource, true);		
+						documentProvider.getEditingDomain().getResourceSet().getResource(resource, true);		
 						
 						try {
 							documentProvider.setDocumentContentManually(document, tdl, null);

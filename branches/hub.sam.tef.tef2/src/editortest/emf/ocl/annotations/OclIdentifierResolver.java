@@ -25,7 +25,6 @@ import org.eclipse.emf.ocl.expressions.IteratorExp;
 import org.eclipse.emf.ocl.expressions.LetExp;
 import org.eclipse.emf.ocl.expressions.OCLExpression;
 import org.eclipse.emf.ocl.expressions.Variable;
-import org.eclipse.emf.ocl.internal.l10n.OCLMessages;
 import org.eclipse.emf.ocl.parser.EcoreEnvironmentFactory;
 import org.eclipse.emf.ocl.parser.Environment;
 import org.eclipse.emf.ocl.parser.EnvironmentFactory;
@@ -136,9 +135,7 @@ public class OclIdentifierResolver extends EMFIdentifierResolver {
 		boolean result = environment.addElement(name, vdcl, explicitFlag);
 		if (!result) {
 			if (name != null) {
-				String message = OCLMessages.bind(
-						OCLMessages.VariableUsed_ERROR_,
-						name);
+				String message = "variable not found (?)";
 				// TODO ERROR(rule, message);
 			} else {
 				// TODO ERROR(rule, OCLMessages.VariableDeclaration_ERROR_);

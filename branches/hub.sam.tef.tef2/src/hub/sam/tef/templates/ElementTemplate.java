@@ -33,10 +33,13 @@ import hub.sam.tef.models.extensions.InternalModelElement;
 import hub.sam.tef.reconciliation.syntax.IElementSyntaxProvider;
 import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
+import hub.sam.tef.reconciliation.treerepresentation.ASTNode;
 import hub.sam.tef.reconciliation.treerepresentation.IASTProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.eclipse.jface.text.Position;
 
 /**
  * A special ValueTemplate used for elements, whereby elements are container for
@@ -106,7 +109,24 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	protected boolean isIdentifierProperty(String property) {
 		return false;
 	}
-	
+		
+	@Override
+	public Position getPositionForOccurenceMarker(ASTElementNode node) {
+		loop: for (Template subTemplate: getNestedTemplates()) {
+			if (subTemplate instanceof PropertyTemplate) {
+				PropertyTemplate subPropertyTemplate = (PropertyTemplate)subTemplate;
+				if (isIdentifierProperty(subPropertyTemplate.getProperty())) {
+					ASTNode identifierNode = node.getNode(subPropertyTemplate.getProperty());
+					if (identifierNode != null) {
+						return new Position(identifierNode.getAbsoluteOffset(0), identifierNode.getLength());
+					}
+					break loop;
+				}
+			}
+		}
+		return super.getPositionForOccurenceMarker(node);
+	}
+
 	@Override
 	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {	
 		return null;

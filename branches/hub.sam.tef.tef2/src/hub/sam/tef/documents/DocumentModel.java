@@ -2,8 +2,10 @@ package hub.sam.tef.documents;
 
 import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.annotations.IAnnotationModelProvider;
+import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.models.ISequence;
 import hub.sam.tef.reconciliation.ReconciliationFailedException;
 import hub.sam.tef.reconciliation.ReconciliationResults;
 import hub.sam.tef.reconciliation.ReconciliationUnit;
@@ -52,8 +54,14 @@ public final class DocumentModel implements IDisposable, IDocumentModelProvider,
 		fLanguageModel = languageModel;
 	}	
 	
-	public void initializeFromModel() {
-		topLevelModelElement = (IModelElement)fModel.getOutermostCompositesOfEditedResource().iterator().next();
+	public void initializeFromModel() {		
+		ICollection outermostComposites = fModel.getOutermostCompositesOfEditedResource();
+		if (outermostComposites.size() == 0) {
+			throw new RuntimeException("Model is emtpy");
+		} else if (outermostComposites.size() > 1) {
+			throw new RuntimeException("Model contains more than one top-level element.");
+		}
+		topLevelModelElement = (IModelElement)outermostComposites.iterator().next();
 		treeRepresentation = (ASTElementNode)fLanguageModel.getTopLevelTemplate().getAdapter(IASTProvider.class).
 				createTreeRepresentation(null, null, topLevelModelElement, true, fLanguageModel.getLayout());
 		initializeFromText(treeRepresentation.getContent());

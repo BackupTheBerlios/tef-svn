@@ -35,6 +35,7 @@ public abstract class AbstractEMFDocumentProvider extends TEFDocumentProvider {
 		return new ComposedAdapterFactory(factories);
 	}
 	  
+	@Deprecated
 	public static AdapterFactoryEditingDomain getSharedEditingDomain() {
 		if (sharedEditingDomain == null) {
 			BasicCommandStack commandStack = new BasicCommandStack();	

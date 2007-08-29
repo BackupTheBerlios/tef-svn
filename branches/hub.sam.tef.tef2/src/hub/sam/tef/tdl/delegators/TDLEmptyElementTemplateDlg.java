@@ -33,6 +33,5 @@ public class TDLEmptyElementTemplateDlg extends EmtpyElementTemplate {
 	@Override
 	public String getAlternativeSymbol() {
 		return tdlElementTemplate.getName();
-	}
-
+	}	
 }

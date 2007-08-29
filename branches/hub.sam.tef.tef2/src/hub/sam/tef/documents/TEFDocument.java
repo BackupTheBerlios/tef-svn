@@ -178,7 +178,14 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 	synchronized public Map<Annotation, Position> createNewOccurenceAnnotations(ISourceViewer viewer) {										
 		int cursorPosition = viewer.getTextWidget().getCaretOffset();			
 		IChildSelector<ASTElementNode> selector = new IndexASTSelector(cursorPosition, 0);		
-		ASTElementNode selectedTreeNode = TreeIterator.select(selector, documentModel.getTreeRepresentation());
+		ASTElementNode selectedTreeNode = null; 
+
+		try {
+			selectedTreeNode = TreeIterator.select(selector, documentModel.getTreeRepresentation());
+		} catch (RuntimeException ex) {
+			// This might fail for a newly opened or created text document
+			return new HashMap<Annotation, Position>();
+		}
 		
 		IModelElement modelElement = null;		
 		IASTElement selectedTreeContents = selectedTreeNode.getElement();
@@ -189,15 +196,16 @@ public abstract class TEFDocument extends Document implements ILanguageModelProv
 		}
 		
 		Map<Annotation, Position> result = new HashMap<Annotation, Position>();
-		if (modelElement != null && template.getAdapter(IPresentationOptionsProvider.class).markOccurences(selectedTreeNode, cursorPosition - selectedTreeNode.getAbsoluteOffset(0))) {					
-			Collection<Position> positions =  documentModel.getOccurences(modelElement);					
-			for(Position position: positions) {
-				result.put(new Annotation("hub.sam.tef.occurence", false, null), position);
+		if (modelElement != null && template.getAdapter(IPresentationOptionsProvider.class)
+						.markOccurences(selectedTreeNode, cursorPosition - selectedTreeNode.getAbsoluteOffset(0))) {
+			Collection<Position> positions = documentModel.getOccurences(modelElement);
+			for (Position position : positions) {
+				result.put(new Annotation("hub.sam.tef.occurence", false, null),position);
 			}
 			return result;
 		} else {
 			return result;
-		}
+		}		
 	}
 
 	protected abstract AbstractLayoutManager createLayout();

@@ -113,7 +113,6 @@ public class TEFCompletionProcessor implements IContentAssistProcessor {
 		}
 		String prefix = prefixBuffer.toString();
 		
-		System.out.print("222222" + prefix);
 		for (String keyword: keywords) {			
 			if (keyword.startsWith(prefix)) {
 				result.add(new TEFCompletionProposal(keyword, keyword.substring(prefix.length(),

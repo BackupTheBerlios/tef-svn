@@ -77,4 +77,9 @@ public class TDLChoiceTemplateTemplate extends ElementTemplate {
 			ASTElementNode completionNode, CompletionContext context) {		
 		return EMFCompletions.createProposals("EClass", "name", context);
 	}
+	
+	@Override
+	protected boolean isIdentifierProperty(String property) {
+		return "name".equals(property);
+	}	
 }

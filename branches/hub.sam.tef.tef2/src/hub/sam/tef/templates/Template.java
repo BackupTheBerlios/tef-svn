@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.eclipse.jface.text.Position;
+
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.IAdaptable;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
@@ -100,6 +102,10 @@ public abstract class Template implements IAdaptable {
 	@Override
 	public int hashCode() {
 		return getId().hashCode();
+	}
+	
+	public Position getPositionForOccurenceMarker(ASTElementNode node) {
+		return new Position(node.getAbsoluteOffset(0), node.getLength());
 	}
 	
 	/**

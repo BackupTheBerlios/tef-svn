@@ -42,4 +42,13 @@ public class TDLElementTemplateDlg extends ElementTemplate {
 		return tdlElementTemplate.getName();
 	}
 
+	@Override
+	protected boolean isIdentifierProperty(String property) {
+		if (tdlElementTemplate.getIdentifierProperty() != null) {			
+			return tdlElementTemplate.getIdentifierProperty().getName().equals(property);
+		} else {
+			return super.isIdentifierProperty(property);
+		}
+	}
+
 }

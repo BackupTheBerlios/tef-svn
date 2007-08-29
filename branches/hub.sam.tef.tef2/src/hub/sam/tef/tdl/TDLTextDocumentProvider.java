@@ -72,12 +72,12 @@ public class TDLTextDocumentProvider extends EMFTextDocumentProvider {
 	
 	@Override
 	public EditingDomain getEditingDomain() {
-		return getSharedEditingDomain();
+		return getMySharedEditingDomain();
 	}
 	
-	private static AdapterFactoryEditingDomain sharedEditingDomain = null;
+	private AdapterFactoryEditingDomain sharedEditingDomain = null;
 
-	private static ComposedAdapterFactory createAdaptorFactory() {
+	private ComposedAdapterFactory createAdaptorFactory() {
 		List factories = new ArrayList();
 		factories.add(new ResourceItemProviderAdapterFactory());
 		factories.add(new EcoreItemProviderAdapterFactory());
@@ -85,7 +85,7 @@ public class TDLTextDocumentProvider extends EMFTextDocumentProvider {
 		return new ComposedAdapterFactory(factories);
 	}
 	  
-	public static AdapterFactoryEditingDomain getSharedEditingDomain() {
+	private AdapterFactoryEditingDomain getMySharedEditingDomain() {
 		if (sharedEditingDomain == null) {
 			BasicCommandStack commandStack = new BasicCommandStack();	
 			sharedEditingDomain = new AdapterFactoryEditingDomain(

@@ -1,9 +1,11 @@
 package editortest.emf.ocl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -54,7 +56,6 @@ public class OclDocumentProviderDelegator {
 	}
 		
 	protected EditingDomain getEditingDomain() {
-		/*
 		if (sharedEditingDomain == null) {
 			// Create the command stack that will notify this editor as commands
 			// are executed.
@@ -65,8 +66,7 @@ public class OclDocumentProviderDelegator {
 			sharedEditingDomain = new AdapterFactoryEditingDomain(createAdaptorFactory(), commandStack, new HashMap());
 		}
 		return sharedEditingDomain;
-		*/
-		return EcoreEditor.getSharedEditingDomain();
+		//return EcoreEditor.getSharedEditingDomain();
 	}	
 	
 	protected IDocument createEmptyDocument() {
