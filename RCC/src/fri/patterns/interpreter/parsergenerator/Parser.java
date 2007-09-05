@@ -3,7 +3,6 @@ package fri.patterns.interpreter.parsergenerator;
 import java.util.*;
 import java.io.*;
 
-import sun.rmi.runtime.GetThreadPoolAction;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 
 /**
