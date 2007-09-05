@@ -34,16 +34,17 @@ import hub.sam.tef.templates.Template;
 import java.util.List;
 
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.internal.ui.text.correction.NewMethodCompletionProposal;
 import org.eclipse.jface.text.Position;
 
 public class ReconciliationUnit {
 	
+	private static final int PARSE_ERROR_MARKER_SIZE = 7;
 	private ParserInterface fParserInterface;
 
 	public ReconciliationResults run(TEFDocument fDocument) throws ReconciliationFailedException {
 		ParserInterface parserInterface = getParserInterface(fDocument.getTopLevelTemplate());
 		parserInterface.parse(fDocument.get(), new Semantic() {
+			@SuppressWarnings("unchecked")
 			public Object doSemantic(Rule rule, List parseResults, List<Range> resultRanges) {				
 				return null;
 			}
@@ -92,9 +93,13 @@ public class ReconciliationUnit {
 																				
 				return new ReconciliationResults(newModel, newAST);
 			} else {
+				int lastOffset = getParserInterface(fDocument.getTopLevelTemplate()).getLastOffset();
+				lastOffset += (content.length() > lastOffset) ? 1 : 0; 
+				int firstOffset = (lastOffset > PARSE_ERROR_MARKER_SIZE)? 
+						lastOffset - PARSE_ERROR_MARKER_SIZE: 0;
 				fDocument.getModelProvider().getAnnotationModelProvider().
 						addAnnotation(new ErrorAnnotation("Could not parse the document."), 
-								new Position(0, getParserInterface(fDocument.getTopLevelTemplate()).getLastOffset()));
+								new Position(firstOffset, lastOffset - firstOffset));
 				return new ReconciliationResults(null, null);
 			}
 		} catch (Exception ex) {			
