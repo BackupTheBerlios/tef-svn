@@ -1,5 +1,5 @@
-syntax toplevel ModelTpl, ecorepath "/$projectName$/resources/expressions.ecore" {	
-    element FuncTpl for Function {
+syntax toplevel ModelTpl, ecorepath "/tef-test/resources/expressions.ecore" {	
+    element FuncTpl for Function, idprop name {
         single for name, with IDENTIFIER;
         "(";
         sequence for parameters, with @ParamTpl, seperator ",", last false;

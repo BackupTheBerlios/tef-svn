@@ -1,6 +1,6 @@
 package hub.sam.tef.tdl.delegators;
 
-import hub.sam.tef.tdl.TDLSingleValueTemplate;
+import hub.sam.tef.tdl.model.TDLSingleValueTemplate;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.ValueTemplate;

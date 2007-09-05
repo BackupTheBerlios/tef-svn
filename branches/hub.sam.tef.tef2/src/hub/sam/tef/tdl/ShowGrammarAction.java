@@ -8,6 +8,7 @@ import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.syntax.ParserInterface;
 import hub.sam.tef.tdl.delegators.TemplateFactory;
+import hub.sam.tef.tdl.model.Syntax;
 import hub.sam.tef.templates.Template;
 
 import org.eclipse.jface.action.IAction;
@@ -51,8 +52,7 @@ public class ShowGrammarAction implements IEditorActionDelegate {
 
 			public void resetModelElementOccurences() {
 			}			
-		},
-				((Syntax)((EMFModelElement)syntaxAsElement).getEMFObject()).getTopLevelTemplate());		
+		}, ((Syntax)((EMFModelElement)syntaxAsElement).getEMFObject()).getTopLevelTemplate());		
 		new ParserInterface(topLevelTemplate).printGrammar();
 	}
 

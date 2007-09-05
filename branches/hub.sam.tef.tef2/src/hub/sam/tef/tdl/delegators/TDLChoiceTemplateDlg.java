@@ -1,14 +1,14 @@
 package hub.sam.tef.tdl.delegators;
 
-import java.util.ArrayList;
-
 import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.tdl.TDLChoiceTemplate;
-import hub.sam.tef.tdl.TemplateValue;
+import hub.sam.tef.tdl.model.TDLChoiceTemplate;
+import hub.sam.tef.tdl.model.TemplateValue;
 import hub.sam.tef.templates.ChoiceTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.ValueTemplate;
+
+import java.util.ArrayList;
 
 public class TDLChoiceTemplateDlg extends ChoiceTemplate {
 	

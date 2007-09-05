@@ -1,6 +1,6 @@
 package hub.sam.tef.tdl.delegators;
 
-import hub.sam.tef.tdl.TDLSequenceTemplate;
+import hub.sam.tef.tdl.model.TDLSequenceTemplate;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.SequenceTemplate;
 import hub.sam.tef.templates.ValueTemplate;

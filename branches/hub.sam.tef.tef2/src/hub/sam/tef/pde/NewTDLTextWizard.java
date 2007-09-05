@@ -143,7 +143,7 @@ public class NewTDLTextWizard extends Wizard implements INewWizard {
 
 	private void throwCoreException(String message) throws CoreException {
 		IStatus status =
-			new Status(IStatus.ERROR, "hub.sam.tef.TEFPlugin", IStatus.OK, message, null);
+			new Status(IStatus.ERROR, "hub.sam.tef", IStatus.OK, message, null);
 		throw new CoreException(status);
 	}
 

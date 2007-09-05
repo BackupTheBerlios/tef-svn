@@ -17,6 +17,8 @@
 package hub.sam.tef.tdl;
 
 import hub.sam.tef.emf.EMFTextDocumentProvider;
+import hub.sam.tef.tdl.model.TDLFactory;
+import hub.sam.tef.tdl.model.TDLPackage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,8 +40,8 @@ import org.eclipse.jface.text.IDocument;
 
 public class TDLTextDocumentProvider extends EMFTextDocumentProvider {
 
-	private final EPackage fPackage = tdlPackage.eINSTANCE;
-	private final EFactory fFactory = tdlFactory.eINSTANCE;
+	private final EPackage fPackage = TDLPackage.eINSTANCE;
+	private final EFactory fFactory = TDLFactory.eINSTANCE;
 	
 	//private final EPackage fSuperSimplePackage = supersimplePackage.eINSTANCE;
 	//private final EFactory fSuperSimpleFactory = supersimpleFactory.eINSTANCE;

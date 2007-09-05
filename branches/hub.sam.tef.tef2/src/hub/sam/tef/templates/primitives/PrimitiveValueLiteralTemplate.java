@@ -50,11 +50,15 @@ public abstract class PrimitiveValueLiteralTemplate<ModelType> extends ValueTemp
 			return PrimitiveValueLiteralTemplate.this.getNonTerminal();
 		}
 		public String[][] getRules() {
-			return new String[][] {};
+			return PrimitiveValueLiteralTemplate.this.getRules();
 		}
 	}
 	
 	protected abstract Object getObjectValueFromStringValue(String value);
+	
+	protected String[][] getRules() {
+		return new String[][] {};
+	}
 	
 	protected String getStringValueFromObjectValue(Object value) {
 		return value.toString();

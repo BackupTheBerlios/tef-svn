@@ -7,10 +7,10 @@ import hub.sam.tef.emf.EMFTextDocumentProvider;
 import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
-import hub.sam.tef.tdl.Syntax;
 import hub.sam.tef.tdl.TDLDocument;
 import hub.sam.tef.tdl.TDLTextDocumentProvider;
 import hub.sam.tef.tdl.delegators.TemplateFactory;
+import hub.sam.tef.tdl.model.Syntax;
 import hub.sam.tef.templates.Template;
 
 import java.io.IOException;

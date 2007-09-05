@@ -1,7 +1,7 @@
 package hub.sam.tef.tdl.delegators;
 
-import hub.sam.tef.tdl.TDLEmptyElementTemplate;
-import hub.sam.tef.tdl.TemplateValue;
+import hub.sam.tef.tdl.model.TDLEmptyElementTemplate;
+import hub.sam.tef.tdl.model.TemplateValue;
 import hub.sam.tef.templates.EmtpyElementTemplate;
 import hub.sam.tef.templates.Template;
 

@@ -16,23 +16,18 @@
  */
 package hub.sam.tef.completion;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Vector;
-
-import editortest.emf.ocl.completion.OclOperationCallExpCompletion;
-import editortest.emf.ocl.completion.OclPropertyCallExpCompletion;
-import editortest.emf.ocl.completion.OclSingleIdentifierSchemeCompletion;
 import fri.patterns.interpreter.parsergenerator.Parser;
 import fri.patterns.interpreter.parsergenerator.ParserTables;
 import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.documents.ILanguageModelProvider;
 import hub.sam.tef.documents.TEFDocument;
 import hub.sam.tef.reconciliation.syntax.ParserInterface;
-import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Vector;
 
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;

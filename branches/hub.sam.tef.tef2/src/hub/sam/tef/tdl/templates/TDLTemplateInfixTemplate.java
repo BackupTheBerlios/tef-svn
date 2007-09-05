@@ -20,6 +20,7 @@ public class TDLTemplateInfixTemplate extends ChoiceTemplate {
 			new TDLReferenceTemplateTemplate(this),
 			new TDLIdentifierTemplateTemplate(this),
 			new TDLIntegerTemplateTemplate(this),
+			new TDLUnsignedIntegerTemplateTemplate(this),
 			new TDLStringLiteralTemplateTemplate(this),
 			new TDLBooleanLiteralTemplateTemplate(this)
 		};

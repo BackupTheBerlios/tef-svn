@@ -12,22 +12,6 @@
             icon="icons/full/obj16/EcoreModelFile.gif"
             id="tef.emf.ecore.editor"
             name="TEF ECore Editor"/>
-      <editor
-            class="editortest.emf.ocl.OclEditor"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            default="false"
-            extensions="uml"
-            icon="icons/full/obj16/Plus.gif"
-            id="tef.emf.ocl.editor"
-            name="TEF OCL Editor"/>
-       <editor
-            class="editortest.emf.ocl.OclTextEditor"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            default="false"
-            extensions="tuml"
-            icon="icons/full/obj16/Plus.gif"
-            id="tef.emf.ocl.texteditor"
-            name="TEF OCL Text Editor"/>
        <editor
              class="hub.sam.tef.tdl.TDLEditor"
              default="false"

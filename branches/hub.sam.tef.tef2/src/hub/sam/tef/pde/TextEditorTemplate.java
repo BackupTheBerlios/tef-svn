@@ -49,7 +49,7 @@ public class TextEditorTemplate extends OptionTemplateSection {
 			IPluginReference[] dep = new IPluginReference[4];
 			dep[0] = new PluginReference("org.eclipse.core.runtime", null, 0); //$NON-NLS-1$
 			dep[1] = new PluginReference("org.eclipse.ui", null, 0); //$NON-NLS-1$
-			dep[2] = new PluginReference("hub.sam.tef.TEFPlugin", null, 0); //$NON-NLS-1$
+			dep[2] = new PluginReference("hub.sam.tef", null, 0); //$NON-NLS-1$
 			dep[3] = new PluginReference(getStringOption(MODEL_PLUGIN_ID), null, 0);
 			return dep;
 		}

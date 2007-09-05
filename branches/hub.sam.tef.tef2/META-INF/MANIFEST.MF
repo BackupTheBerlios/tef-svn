@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: hub.sam.tef.TEFPlugin
-Bundle-SymbolicName: hub.sam.tef.TEFPlugin;singleton:=true
+Bundle-Name: Textual Editor Framework
+Bundle-SymbolicName: hub.sam.tef;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: hub.sam.tef.TEFPlugin
 Bundle-Localization: plugin
@@ -13,39 +13,16 @@ Require-Bundle: org.eclipse.ui;visibility:=reexport,
  org.eclipse.ui.ide;visibility:=reexport,
  org.eclipse.core.resources;visibility:=reexport,
  org.eclipse.emf.ecore.editor;visibility:=reexport,
- org.eclipse.emf.ocl;visibility:=reexport,
  fri.patterns.interpreter.parsergenerator;visibility:=reexport,
  org.junit,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.jdt.ui;visibility:=reexport,
  org.eclipse.emf.examples.library;visibility:=reexport,
- hub.sam.tef.tdl;visibility:=reexport,
  org.eclipse.emf.importer.ecore,
  org.eclipse.emf.importer,
  org.eclipse.pde.ui
 Eclipse-LazyStart: true
-Export-Package: editortest.emf.ecore;
-  uses:="hub.sam.tef,
-   hub.sam.tef.reconciliation.syntax,
-   org.eclipse.jface.text,
-   hub.sam.tef.emf,
-   hub.sam.tef.annotations,
-   hub.sam.tef.documents,
-   hub.sam.tef.templates,
-   org.eclipse.emf.edit.domain",
- editortest.emf.ocl;
-  uses:="org.eclipse.jface.text,
-   org.eclipse.jface.text.source,
-   org.eclipse.ui,
-   hub.sam.tef.templates,
-   hub.sam.tef,
-   hub.sam.tef.reconciliation.syntax,
-   hub.sam.tef.emf,
-   hub.sam.tef.annotations,
-   org.eclipse.emf.ecore,
-   hub.sam.tef.documents,
-   org.eclipse.emf.edit.domain",
- hub.sam.tef;
+Export-Package: hub.sam.tef;
   uses:="org.eclipse.jface.text,
    org.eclipse.jface.text.reconciler,
    org.eclipse.jface.text.source,
@@ -146,6 +123,7 @@ Export-Package: editortest.emf.ecore;
    hub.sam.tef.documents,
    hub.sam.tef.templates,
    hub.sam.tef.tdl",
+ hub.sam.tef.tdl.model,
  hub.sam.tef.templates;
   uses:="org.eclipse.jface.text,
    hub.sam.util.container,

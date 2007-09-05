@@ -1,34 +1,35 @@
 package hub.sam.tef.tdl.delegators;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
-
 import hub.sam.tef.documents.IDocumentModelProvider;
-import hub.sam.tef.tdl.TDLBooleanLiteralTemplate;
-import hub.sam.tef.tdl.TDLChoiceTemplate;
-import hub.sam.tef.tdl.TDLElementTemplate;
-import hub.sam.tef.tdl.TDLElementValueTemplate;
-import hub.sam.tef.tdl.TDLEmptyElementTemplate;
-import hub.sam.tef.tdl.TDLIdentifierTemplate;
-import hub.sam.tef.tdl.TDLIntegerTemplate;
-import hub.sam.tef.tdl.TDLPrimitiveValueTemplate;
-import hub.sam.tef.tdl.TDLReferenceTemplate;
-import hub.sam.tef.tdl.TDLSequenceTemplate;
-import hub.sam.tef.tdl.TDLSingleValueTemplate;
-import hub.sam.tef.tdl.TDLStringLiteralTemplate;
-import hub.sam.tef.tdl.TDLTemplate;
-import hub.sam.tef.tdl.TDLTerminalTemplate;
-import hub.sam.tef.tdl.TemplateRef;
-import hub.sam.tef.tdl.TemplateValue;
+import hub.sam.tef.tdl.model.TDLBooleanLiteralTemplate;
+import hub.sam.tef.tdl.model.TDLChoiceTemplate;
+import hub.sam.tef.tdl.model.TDLElementTemplate;
+import hub.sam.tef.tdl.model.TDLElementValueTemplate;
+import hub.sam.tef.tdl.model.TDLEmptyElementTemplate;
+import hub.sam.tef.tdl.model.TDLIdentifierTemplate;
+import hub.sam.tef.tdl.model.TDLIntegerTemplate;
+import hub.sam.tef.tdl.model.TDLPrimitiveValueTemplate;
+import hub.sam.tef.tdl.model.TDLReferenceTemplate;
+import hub.sam.tef.tdl.model.TDLSequenceTemplate;
+import hub.sam.tef.tdl.model.TDLSingleValueTemplate;
+import hub.sam.tef.tdl.model.TDLStringLiteralTemplate;
+import hub.sam.tef.tdl.model.TDLTemplate;
+import hub.sam.tef.tdl.model.TDLTerminalTemplate;
+import hub.sam.tef.tdl.model.TDLUnsignedIntegerTemplate;
+import hub.sam.tef.tdl.model.TemplateRef;
+import hub.sam.tef.tdl.model.TemplateValue;
+import hub.sam.tef.tdl.templates.TDLUnsignedIntegerTemplateTemplate;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.primitives.BooleanLiteralTemplate;
 import hub.sam.tef.templates.primitives.IdentifierTemplate;
 import hub.sam.tef.templates.primitives.IntegerTemplate;
 import hub.sam.tef.templates.primitives.StringLiteralTemplate;
+import hub.sam.tef.templates.primitives.UnsignedIntegerTemplate;
+
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A syntax description can define a template once and use it over and over again. We use this
@@ -56,6 +57,8 @@ public class TemplateFactory {
 				return new IdentifierTemplate(father);
 			} else if (tdlTemplate instanceof TDLIntegerTemplate) {
 				return new IntegerTemplate(father, 0);
+			} else if (tdlTemplate instanceof TDLUnsignedIntegerTemplate) {
+				return new UnsignedIntegerTemplate(father, 0);
 			} else if (tdlTemplate instanceof TDLStringLiteralTemplate) {
 				return new StringLiteralTemplate(father);
 			} else if (tdlTemplate instanceof TDLBooleanLiteralTemplate) {

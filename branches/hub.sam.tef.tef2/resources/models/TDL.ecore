@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="tdl"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="model"
     nsURI="http://www.dontcare.com" nsPrefix="tdl">
   <eClassifiers xsi:type="ecore:EClass" name="Syntax">
     <eStructuralFeatures xsi:type="ecore:EReference" name="templates" upperBound="-1"
@@ -70,4 +70,5 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="metaElement" lowerBound="1"
         eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TDLUnsignedIntegerTemplate" eSuperTypes="#//TDLPrimitiveValueTemplate"/>
 </ecore:EPackage>
