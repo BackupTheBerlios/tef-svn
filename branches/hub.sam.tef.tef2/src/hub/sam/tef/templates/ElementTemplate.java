@@ -20,6 +20,7 @@ import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
 import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.annotations.IdentifierResolutionNotImplementedException;
+import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.completion.CompletionContext;
 import hub.sam.tef.completion.ICompletionComputer;
 import hub.sam.tef.completion.StandardReferenceCompletion;
@@ -157,7 +158,7 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	 * Callback method that returns null of the modelElement does not contain any errors. Returns an
 	 * error description otherwise.
 	 */
-	public String check(IModelElement modelElement) {
+	public String check(IModelElement modelElement, SemanticsContext context) {
 		return null;
 	}
 	

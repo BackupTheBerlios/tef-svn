@@ -1,5 +1,6 @@
 package hub.sam.tef.tdl.templates;
 
+import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.emf.model.EMFModel;
 import hub.sam.tef.emf.model.EMFModelElement;
@@ -90,16 +91,24 @@ public class SyntaxTemplate extends ElementTemplate {
 		};
 	}
 
+	/**
+	 * The TDL syntax element can reference a meta-model by URI. Here we load the
+	 * according meta-model into the editing domain. This makes all meta-model elements
+	 * available for templates to reference them.
+	 */
 	@Override
-	public String check(IModelElement modelElement) {
+	public String check(IModelElement modelElement, SemanticsContext context) {
 		Syntax sytax = (Syntax)((EMFModelElement)modelElement).getEMFObject();
 		EcoreModelDescriptor ecoreModel = sytax.getEcoreModel();
 		if (ecoreModel != null) {			
 			String pathString = ecoreModel.getPathToModel();
 			try {
 				EditingDomain domain = ((EMFModel)getModel()).getDomain();			
-				URI resource = URI.createURI(pathString);					
-				 domain.getResourceSet().getResource(resource, true);
+				URI resource = URI.createURI(pathString);			
+				if (domain.getResourceSet().getResource(resource, false) == null) {
+					domain.getResourceSet().getResource(resource, true);
+					context.triggerReconciliation();
+				}
 			} catch (Exception ex) {
 				return "could not load the path " + pathString + " (reason: " + ex.getMessage() + ")";
 			}

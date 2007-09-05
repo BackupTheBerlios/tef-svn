@@ -75,8 +75,8 @@ public class ReconciliationUnit {
 				newModel = (IModelElement)fDocument.getTopLevelTemplate().getAdapter(
 						IASTProvider.class).createCompositeModel(null, null, newAST, true);
 				
-				final SemanticsContext semanticContext = new SemanticsContext(fDocument.getModelProvider(), fDocument,
-						newModel);
+				final SemanticsContext semanticContext = new SemanticsContext(
+						fDocument.getModelProvider(), fDocument, newModel);
 								
 				TEFPlugin.getDefault().getLog().log(
 						new Status(Status.INFO, TEFPlugin.PLUGIN_ID,
@@ -90,8 +90,14 @@ public class ReconciliationUnit {
 				// check the model and create error annotations				
 				newAST.getElement().getTemplate().getAdapter(ISemanticProvider.class).
 						check(newAST, semanticContext);								
-																				
-				return new ReconciliationResults(newModel, newAST);
+			
+				if (semanticContext.reconciliationIsTriggered()) {
+					// revert all changes made during reconciliation and do it again.
+					semanticContext.clear();
+					return run(fDocument);
+				} else {
+					return new ReconciliationResults(newModel, newAST);
+				}
 			} else {
 				int lastOffset = getParserInterface(fDocument.getTopLevelTemplate()).getLastOffset();
 				lastOffset += (content.length() > lastOffset) ? 1 : 0; 
@@ -115,7 +121,7 @@ public class ReconciliationUnit {
 				}
 			}
 			throw new ReconciliationFailedException(ex.getMessage());
-		}		
+		}			
 	}
 	
 	private ParserInterface getParserInterface(Template topLevelTemplate) {

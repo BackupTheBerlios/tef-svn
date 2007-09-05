@@ -143,6 +143,10 @@ public final class DocumentModel implements IDisposable, IDocumentModelProvider,
 	public void addAnnotation(Annotation annotation, Position position) {
 		annotations.put(annotation, position);
 	}
+	
+	public void clearAnnotations() {
+		annotations.clear();
+	}
 
 	public String getText() {
 		return text;

@@ -201,7 +201,7 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 				context.getAnnotationModelProvider().addAnnotation(new ErrorAnnotation(error),
 						new Position(representation.getAbsoluteOffset(0), representation.getLength()));
 			}
-			error = fElementTemplate.check(modelElement);
+			error = fElementTemplate.check(modelElement, context);
 			if (error != null) {
 				context.getAnnotationModelProvider().addAnnotation(new ErrorAnnotation(error),
 						new Position(representation.getAbsoluteOffset(0), representation.getLength()));

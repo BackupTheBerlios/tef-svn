@@ -14,6 +14,8 @@ public class SemanticsContext {
 	
 	private final IIdentifierResolver fResolver;
 	private final IChecker fChecker;
+	
+	private boolean reconciliationIsTriggered = false;
 
 	public SemanticsContext(final IDocumentModelProvider documentProvider, final ILanguageModelProvider languageModelProvider,
 			IModelElement newModel) {
@@ -45,4 +47,19 @@ public class SemanticsContext {
 		return fNewModel;
 	}
 	
+	/**
+	 * Allows checker or identifier resolver to trigger an additional reconciliation.
+	 * This feature is helpful, if some circumstances for a earlier element have changed.
+	 */
+	public void triggerReconciliation() {
+		reconciliationIsTriggered = true;
+	}
+	
+	public boolean reconciliationIsTriggered() {
+		return reconciliationIsTriggered;
+	}
+	
+	public void clear() {
+		getAnnotationModelProvider().clearAnnotations();
+	}
 }
