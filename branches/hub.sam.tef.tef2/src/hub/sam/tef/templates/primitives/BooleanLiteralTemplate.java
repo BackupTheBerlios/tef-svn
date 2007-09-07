@@ -16,10 +16,15 @@
  */
 package hub.sam.tef.templates.primitives;
 
+import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.IWordDetector;
 import org.eclipse.jface.text.rules.WordRule;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 
 import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.annotations.SemanticsContext;
@@ -109,7 +114,11 @@ public class BooleanLiteralTemplate extends PrimitiveValueLiteralTemplate<Boolea
 		result.addWord("true", token);
 		result.addWord("false", token);
 		return result;
-	}
-	
-	
+	}	
+
+	@Override
+	protected TextAttribute getHighlightAttribute() {
+		return new TextAttribute(new Color(Display.getCurrent(), new RGB(0,0,160)), 
+				null, SWT.NORMAL);
+	}	
 }

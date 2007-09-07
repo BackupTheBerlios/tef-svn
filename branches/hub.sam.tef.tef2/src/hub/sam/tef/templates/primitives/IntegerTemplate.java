@@ -17,32 +17,14 @@
 package hub.sam.tef.templates.primitives;
 
 import fri.patterns.interpreter.parsergenerator.Token;
-import hub.sam.tef.models.ICommand;
-import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.Template;
 
-import org.eclipse.jface.text.rules.IRule;
-import org.eclipse.jface.text.rules.IToken;
-
-public class IntegerTemplate extends PrimitiveValueLiteralTemplate<Integer>{
-	
-	private final Integer fDefaultValue;
+public class IntegerTemplate extends UnsignedIntegerTemplate {	
 	
 	public IntegerTemplate(Template template, int defaultValue) {
-		super(template, template.getModelProvider().getModel().getType(Integer.class));
-		fDefaultValue = defaultValue;
+		super(template, defaultValue);
 	}
-
-	@Override
-	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {
-		return getModel().getCommandFactory().set(owner, property, fDefaultValue);
-	}			
 	
-	@Override
-	protected Object getObjectValueFromStringValue(String value) {
-		return new Integer(value);
-	}
-
 	@Override
 	protected String getNonTerminal() {
 		return "signedInteger";
@@ -55,11 +37,5 @@ public class IntegerTemplate extends PrimitiveValueLiteralTemplate<Integer>{
 				{"signedInteger", "'-'", "`integer`"},
 				{"signedInteger", "`integer`"}
 		};
-	}
-
-	@Override
-	protected IRule getHightlightRule(IToken token) {
-		return null;
-	}
-		
+	}			
 }

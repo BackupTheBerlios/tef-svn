@@ -16,8 +16,13 @@
  */
 package hub.sam.tef.templates.primitives;
 
+import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
@@ -46,7 +51,13 @@ public class IdentifierTemplate extends PrimitiveValueLiteralTemplate<String> {
 
 	@Override
 	protected IRule getHightlightRule(IToken token) {
-		return null;
+		return new IdentifierRule(token);
+	}
+
+	@Override
+	protected TextAttribute getHighlightAttribute() {	
+		return new TextAttribute(new Color(Display.getCurrent(), new RGB(140,0,140)), 
+				null, SWT.NORMAL);
 	}		
 	
 }

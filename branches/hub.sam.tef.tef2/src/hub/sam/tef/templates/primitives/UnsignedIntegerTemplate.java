@@ -20,8 +20,14 @@ import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.Template;
 
+import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
+import org.eclipse.jface.text.rules.NumberRule;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 
 public class UnsignedIntegerTemplate extends PrimitiveValueLiteralTemplate<Integer>{
 	
@@ -46,10 +52,15 @@ public class UnsignedIntegerTemplate extends PrimitiveValueLiteralTemplate<Integ
 	protected String getNonTerminal() {
 		return "`integer`";
 	}
-
+	
 	@Override
 	protected IRule getHightlightRule(IToken token) {
-		return null;
+		return new NumberRule(token);
 	}
-		
+
+	@Override
+	protected TextAttribute getHighlightAttribute() {
+		return new TextAttribute(new Color(Display.getCurrent(), new RGB(0,0,160)), 
+				null, SWT.NORMAL);
+	}		
 }

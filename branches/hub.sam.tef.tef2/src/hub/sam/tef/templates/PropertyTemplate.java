@@ -53,7 +53,7 @@ public abstract class PropertyTemplate<ModelType> extends Template {
 	
 	@Override
 	protected Object getId() {	
-		return ((String)getParentTemplate().getId()) + super.getId();
+		return ((String)getParentTemplate().getId()) + super.getId() + fProperty;
 	}
 
 	@Override

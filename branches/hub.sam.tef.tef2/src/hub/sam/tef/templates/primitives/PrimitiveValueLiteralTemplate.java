@@ -83,11 +83,12 @@ public abstract class PrimitiveValueLiteralTemplate<ModelType> extends ValueTemp
 	
 	protected abstract IRule getHightlightRule(IToken token);
 	
+	protected abstract TextAttribute getHighlightAttribute();
+	
 	class SyntaxHighlighProvider implements ISyntaxHighlightProvider {
 		public Collection<IRule> getHighlightRules() {			
 			Collection<IRule> result = new Vector<IRule>();
-			IRule rule = getHightlightRule(new Token(
-					new TextAttribute(new Color(Display.getCurrent(), new RGB(0,0,160)), null, SWT.ITALIC)));
+			IRule rule = getHightlightRule(new Token(getHighlightAttribute()));
 			if (rule != null) {
 				result.add(rule);
 			}
