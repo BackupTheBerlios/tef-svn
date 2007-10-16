@@ -1,6 +1,7 @@
 package hub.sam.tef.rcc.parsertables;
 
 import hub.sam.tef.rcc.Token;
+import hub.sam.tef.rcc.generalutil.collections.UniqueAggregatingHashtable;
 import hub.sam.tef.rcc.syntax.Rule;
 import hub.sam.tef.rcc.syntax.Syntax;
 
@@ -9,7 +10,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import fri.util.collections.UniqueAggregatingHashtable;
 
 /**
 	Map of all FOLLOW-sets of a SLR syntax. Key is nonterminal.

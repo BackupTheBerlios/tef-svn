@@ -1,4 +1,4 @@
-package fri.util;
+package hub.sam.tef.rcc.generalutil;
 
 /**
  * Object utility. Equality and hash code for objects that may be null.

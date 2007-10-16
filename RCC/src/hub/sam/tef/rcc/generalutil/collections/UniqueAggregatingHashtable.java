@@ -1,4 +1,4 @@
-package fri.util.collections;
+package hub.sam.tef.rcc.generalutil.collections;
 
 import java.util.List;
 

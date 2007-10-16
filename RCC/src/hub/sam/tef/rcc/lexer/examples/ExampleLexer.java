@@ -43,7 +43,7 @@ public abstract class ExampleLexer
 		Syntax syntax = new Syntax(rules);
 
 		try	{
-			fri.util.TimeStopper ts = new fri.util.TimeStopper();
+			hub.sam.tef.rcc.generalutil.TimeStopper ts = new hub.sam.tef.rcc.generalutil.TimeStopper();
 
 			SyntaxSeparation separation = new SyntaxSeparation(syntax);
 			LexerBuilder builder = new LexerBuilder(separation.getLexerSyntax(), separation.getIgnoredSymbols());

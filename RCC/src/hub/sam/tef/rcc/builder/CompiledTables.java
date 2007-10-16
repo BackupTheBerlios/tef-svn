@@ -101,7 +101,7 @@ public class CompiledTables
 		}
 		
 		if (parserTables == null)	{
-			fri.util.TimeStopper ts = new fri.util.TimeStopper();
+			hub.sam.tef.rcc.generalutil.TimeStopper ts = new hub.sam.tef.rcc.generalutil.TimeStopper();
 
 			Syntax grammar = SerializedObject.toSyntax(syntaxInput);
 			parserTables = AbstractParserTables.construct(parserType, grammar);
@@ -154,7 +154,7 @@ public class CompiledTables
 		try	{
 			File syntaxFile = new File("fri/patterns/interpreter/parsergenerator/syntax/builder/examples/SyntaxBuilder.syntax");
 			Syntax syntax = new hub.sam.tef.rcc.syntax.builder.SyntaxBuilder(syntaxFile).getParserSyntax();
-			fri.util.TimeStopper ts = new fri.util.TimeStopper();
+			hub.sam.tef.rcc.generalutil.TimeStopper ts = new hub.sam.tef.rcc.generalutil.TimeStopper();
 			AbstractParserTables parserTables = new CompiledTables().get(syntax, "SyntaxBuilderParserTables");
 			System.err.println("ParserTables were built in "+ts.getTimeMillis()+" millis");
 		}

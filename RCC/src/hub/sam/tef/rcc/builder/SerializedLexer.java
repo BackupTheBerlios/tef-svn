@@ -1,7 +1,7 @@
 package hub.sam.tef.rcc.builder;
 
-import fri.util.TimeStopper;
 import hub.sam.tef.rcc.Lexer;
+import hub.sam.tef.rcc.generalutil.TimeStopper;
 import hub.sam.tef.rcc.lexer.LexerBuilder;
 import hub.sam.tef.rcc.lexer.LexerException;
 import hub.sam.tef.rcc.lexer.StandardLexerRules;

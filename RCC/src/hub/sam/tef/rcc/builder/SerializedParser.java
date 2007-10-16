@@ -87,7 +87,7 @@ public class SerializedParser extends SerializedObject
 	public Parser get(Class parserType, Object syntaxInput, String baseName)
 		throws Exception
 	{
-		fri.util.TimeStopper ts = new fri.util.TimeStopper();
+		hub.sam.tef.rcc.generalutil.TimeStopper ts = new hub.sam.tef.rcc.generalutil.TimeStopper();
 		
 		Parser parser = PRODUCTION ? (Parser) read(ensureFileName(syntaxInput, baseName)) : null;
 		if (parser == null)	{
@@ -129,7 +129,7 @@ public class SerializedParser extends SerializedObject
 			File ebnfFile = new File("fri/patterns/interpreter/parsergenerator/syntax/builder/examples/SyntaxBuilder.syntax");
 			File fileToParse = new File("fri/patterns/interpreter/parsergenerator/syntax/builder/examples/SimpleSyntax.syntax");
 
-			fri.util.TimeStopper ts = new fri.util.TimeStopper();
+			hub.sam.tef.rcc.generalutil.TimeStopper ts = new hub.sam.tef.rcc.generalutil.TimeStopper();
 			SerializedParser parserBuilder = new SerializedParser();
 			Parser parser = parserBuilder.get(null, ebnfFile, "SyntaxBuilder");
 			Lexer lexer = parser.getLexer();

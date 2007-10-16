@@ -1,6 +1,6 @@
 package hub.sam.tef.rcc.builder;
 
-import fri.util.props.ConfigDir;
+import hub.sam.tef.rcc.generalutil.props.ConfigDir;
 import hub.sam.tef.rcc.syntax.Syntax;
 import hub.sam.tef.rcc.syntax.builder.SyntaxBuilder;
 

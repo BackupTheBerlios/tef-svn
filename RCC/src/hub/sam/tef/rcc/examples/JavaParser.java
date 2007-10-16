@@ -1,10 +1,10 @@
 package hub.sam.tef.rcc.examples;
 
-import fri.util.TimeStopper;
 import hub.sam.tef.rcc.Lexer;
 import hub.sam.tef.rcc.Parser;
 import hub.sam.tef.rcc.Token;
 import hub.sam.tef.rcc.builder.SerializedParser;
+import hub.sam.tef.rcc.generalutil.TimeStopper;
 import hub.sam.tef.rcc.semantics.PrintSemantic;
 
 import java.io.FileReader;

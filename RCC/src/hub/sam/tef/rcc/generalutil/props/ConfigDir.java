@@ -1,4 +1,4 @@
-package fri.util.props;
+package hub.sam.tef.rcc.generalutil.props;
 
 import java.io.File;
 

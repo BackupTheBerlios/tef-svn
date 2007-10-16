@@ -1,4 +1,4 @@
-package fri.util.io;
+package hub.sam.tef.rcc.generalutil.io;
 
 import java.io.*;
 

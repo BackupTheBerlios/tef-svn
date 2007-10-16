@@ -1,6 +1,7 @@
 package hub.sam.tef.rcc.lexer;
 
 import hub.sam.tef.rcc.Token;
+import hub.sam.tef.rcc.generalutil.collections.AggregatingHashtable;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -11,7 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import fri.util.collections.AggregatingHashtable;
 
 /**
 	Strategy is the way how alternative concurrent character consumers are applied to input.

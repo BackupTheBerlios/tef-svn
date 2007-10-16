@@ -1,7 +1,7 @@
 package hub.sam.tef.rcc.examples;
 
-import fri.util.TimeStopper;
 import hub.sam.tef.rcc.builder.SerializedLexer;
+import hub.sam.tef.rcc.generalutil.TimeStopper;
 import hub.sam.tef.rcc.lexer.LexerImpl;
 import hub.sam.tef.rcc.syntax.Syntax;
 import hub.sam.tef.rcc.syntax.builder.SyntaxBuilder;

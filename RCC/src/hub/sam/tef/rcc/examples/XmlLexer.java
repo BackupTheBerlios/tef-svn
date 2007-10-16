@@ -1,8 +1,8 @@
 package hub.sam.tef.rcc.examples;
 
-import fri.util.TimeStopper;
-import fri.util.io.UnicodeReader;
 import hub.sam.tef.rcc.builder.SerializedLexer;
+import hub.sam.tef.rcc.generalutil.TimeStopper;
+import hub.sam.tef.rcc.generalutil.io.UnicodeReader;
 import hub.sam.tef.rcc.lexer.LexerImpl;
 import hub.sam.tef.rcc.lexer.LexerSemantic;
 import hub.sam.tef.rcc.lexer.ResultTree;

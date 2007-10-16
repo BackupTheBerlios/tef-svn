@@ -106,7 +106,7 @@ public class SerializedTables extends SerializedObject
 
 		Syntax syntax = parserSyntax == null ? toSyntax(syntaxInput) : parserSyntax;
 
-		fri.util.TimeStopper ts = new fri.util.TimeStopper();
+		hub.sam.tef.rcc.generalutil.TimeStopper ts = new hub.sam.tef.rcc.generalutil.TimeStopper();
 		AbstractParserTables parserTables = AbstractParserTables.construct(parserType, syntax);
 		System.err.println("ParserTables scratch construction took "+ts.getTimeMillis()+" millis");
 
@@ -123,7 +123,7 @@ public class SerializedTables extends SerializedObject
 		try	{
 			File syntaxFile = new File("fri/patterns/interpreter/parsergenerator/syntax/builder/examples/SyntaxBuilder.syntax");
 			Syntax syntax = new hub.sam.tef.rcc.syntax.builder.SyntaxBuilder(syntaxFile).getParserSyntax();
-			fri.util.TimeStopper ts = new fri.util.TimeStopper();
+			hub.sam.tef.rcc.generalutil.TimeStopper ts = new hub.sam.tef.rcc.generalutil.TimeStopper();
 			ParserTables parserTables = new SerializedTables().get(syntax, "SyntaxBuilder");
 			System.err.println("ParserTables were built in "+ts.getTimeMillis()+" millis");
 		}

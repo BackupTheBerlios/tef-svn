@@ -1,6 +1,6 @@
 package hub.sam.tef.rcc.lexer;
 
-import fri.util.Equals;
+import hub.sam.tef.rcc.generalutil.Equals;
 import hub.sam.tef.rcc.syntax.Rule;
 
 import java.io.IOException;

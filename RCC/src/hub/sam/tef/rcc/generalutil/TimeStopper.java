@@ -1,4 +1,4 @@
-package fri.util;
+package hub.sam.tef.rcc.generalutil;
 
 /**
 	Stopwatch, for testing purposes. Provides suspend and resume methods.
